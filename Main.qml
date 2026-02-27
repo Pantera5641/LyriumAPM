@@ -6,10 +6,15 @@ ApplicationWindow {
     visible: true
     width: 900
     height: 600
-    color: "#17171B"
+    color: "transparent"
     title: "LyriumAPM"
     flags: Qt.FramelessWindowHint | Qt.Window
 
+    Rectangle {
+        anchors.fill: parent
+        radius: 8
+        color: "#17171B"
+    }
 
     TittleBar {}
 }
