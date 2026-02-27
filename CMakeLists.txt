@@ -18,6 +18,16 @@ qt_add_qml_module(appLyriumAPM
     VERSION 1.0
     QML_FILES
         Main.qml
+        TittleBar.qml
+        PageTabButton.qml
+        TabText.qml
+        ImageButton.qml
+    RESOURCES
+        logo.png
+        logo64.png
+        icon_cross.png
+        icon_dash.png
+        icon_maximize.png
 )
 
 set_target_properties(appLyriumAPM PROPERTIES

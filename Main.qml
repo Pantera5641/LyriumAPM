@@ -2,8 +2,14 @@ import QtQuick
 import QtQuick.Controls
 
 ApplicationWindow {
-    width: 640
-    height: 480
+    id: window
     visible: true
-    title: qsTr("Hello World")
+    width: 900
+    height: 600
+    color: "#17171B"
+    title: "LyriumAPM"
+    flags: Qt.FramelessWindowHint | Qt.Window
+
+
+    TittleBar {}
 }
