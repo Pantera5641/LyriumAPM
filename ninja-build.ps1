@@ -5,7 +5,7 @@ mkdir build
 Set-Location build
 
 cmake -G Ninja `
-    -DCMAKE_CXX_COMPILER=clang++ `
+    -DCMAKE_CXX_COMPILER=g++ `
     -DCMAKE_BUILD_TYPE=Debug `
     -DCMAKE_EXPORT_COMPILE_COMMANDS=ON `
     ..
