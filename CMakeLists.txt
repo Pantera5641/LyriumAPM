@@ -5,6 +5,10 @@ project(LyriumAPM VERSION 0.1 LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
+set(CMAKE_AUTOUIC ON)
+
 find_package(Qt6 6.8 REQUIRED COMPONENTS Quick)
 
 qt_standard_project_setup(REQUIRES 6.8)
@@ -13,21 +17,37 @@ qt_add_executable(appLyriumAPM
     main.cpp
 )
 
+set(QML_DIR "${CMAKE_SOURCE_DIR}/qml")
+set(RES_DIR "${CMAKE_SOURCE_DIR}/resources")
+
+file(GLOB_RECURSE QML_FILES "${QML_DIR}/*.qml")
+file(GLOB_RECURSE RESOURCES_ABS "${RES_DIR}/*.png")
+
+file(GLOB_RECURSE QML_FILES RELATIVE "${CMAKE_SOURCE_DIR}" "qml/*.qml")
+set(QML_FILES_REL "")
+foreach(qml_file ${QML_FILES})
+    set(QML_FILES_REL ${QML_FILES_REL} "${CMAKE_SOURCE_DIR}/${qml_file}")
+    set_source_files_properties("${CMAKE_SOURCE_DIR}/${qml_file}" PROPERTIES
+        QT_RESOURCE_ALIAS "${qml_file}"
+    )
+endforeach()
+
+file(GLOB_RECURSE RESOURCES RELATIVE "${CMAKE_SOURCE_DIR}" "resources/*.png")
+set(RESOURCES_ABS "")
+foreach(res ${RESOURCES})
+    set(RESOURCES_ABS ${RESOURCES_ABS} "${CMAKE_SOURCE_DIR}/${res}")
+    set_source_files_properties("${CMAKE_SOURCE_DIR}/${res}" PROPERTIES
+        QT_RESOURCE_ALIAS "${res}"
+    )
+endforeach()
+
 qt_add_qml_module(appLyriumAPM
     URI LyriumAPM
     VERSION 1.0
     QML_FILES
-        Main.qml
-        TittleBar.qml
-        PageTabButton.qml
-        TabText.qml
-        ImageButton.qml
+        ${QML_FILES_REL}
     RESOURCES
-        logo.png
-        logo64.png
-        icon_cross.png
-        icon_dash.png
-        icon_maximize.png
+        ${RESOURCES_ABS}
 )
 
 set_target_properties(appLyriumAPM PROPERTIES

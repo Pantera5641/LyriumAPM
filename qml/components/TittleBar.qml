@@ -22,7 +22,7 @@ Grid {
         Image {
             height: 45
             width: 45
-            source: "logo.png"
+            source: "../../resources/logo.png"
             smooth: true
             mipmap: true
         }
@@ -46,21 +46,21 @@ Grid {
         ImageButton {
             height: 20
             width: 20
-            imgSource: "icon_dash.png"
+            imgSource: "../../resources/icon_dash.png"
             onClicked: window.showMinimized()
         }
 
         ImageButton {
             height: 20
             width: 20
-            imgSource: "icon_maximize.png"
+            imgSource: "../../resources/icon_maximize.png"
             onClicked: window.showMaximized()
         }
 
         ImageButton {
             height: 20
             width: 20
-            imgSource: "icon_cross.png"
+            imgSource: "../../resources/icon_cross.png"
             onClicked: Qt.quit()
         }
     }
