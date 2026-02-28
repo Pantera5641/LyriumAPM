@@ -1,5 +1,5 @@
 # LyriumAPM
-<p align="left"> <img alt="LyriumAPM" width="300" height="300" src="logo.png" /></p>
+<p align="left"> <img alt="LyriumAPM" width="300" height="300" src="resources/logo.png" /></p>
 
 ## Дедлайны:
 - анализ к требованию ПО - 19 ферваля
