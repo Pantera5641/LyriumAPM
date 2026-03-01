@@ -40,27 +40,35 @@ Grid {
     Row {
         anchors.right: parent.right
         anchors.verticalCenter: parent.verticalCenter
-        spacing: 15
-        anchors.rightMargin: 20
 
         ImageButton {
-            height: 15
-            width: 15
+            height: titleBar.height
+            width: titleBar.height     
+
+            imgHeight: 15
+            imgWidth: 15
             imgSource: "../../resources/icon_dash.png"
             onClicked: window.showMinimized()
         }
 
         ImageButton {
-            height: 15
-            width: 15
+            height: titleBar.height
+            width: titleBar.height     
+
+            imgHeight: 15
+            imgWidth: 15
             imgSource: "../../resources/icon_maximize.png"
             onClicked: window.showMaximized()
         }
 
         ImageButton {
-            height: 15
-            width: 15
+            height: titleBar.height
+            width: titleBar.height     
+
+            imgHeight: 15
+            imgWidth: 15
             imgSource: "../../resources/icon_cross.png"
+            hoverColor: '#FF0000'
             onClicked: Qt.quit()
         }
     }
