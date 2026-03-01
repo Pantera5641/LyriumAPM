@@ -4,7 +4,7 @@ import QtQuick.Controls
 
 Grid {
     id: titleBar
-    height: 75
+    height: 55
     width: parent.width
 
     MouseArea {
@@ -15,13 +15,13 @@ Grid {
     Row {
         anchors.left: parent.left
         anchors.verticalCenter: parent.verticalCenter
-        spacing: 30
-        anchors.leftMargin: 15
-        anchors.topMargin: 15
+        spacing: 25
+        anchors.leftMargin: 10
+        anchors.topMargin: 10
 
         Image {
-            height: 45
-            width: 45
+            height: 35
+            width: 35
             source: "../../resources/logo.png"
             smooth: true
             mipmap: true
@@ -40,26 +40,26 @@ Grid {
     Row {
         anchors.right: parent.right
         anchors.verticalCenter: parent.verticalCenter
-        spacing: 30
+        spacing: 15
         anchors.rightMargin: 20
 
         ImageButton {
-            height: 20
-            width: 20
+            height: 15
+            width: 15
             imgSource: "../../resources/icon_dash.png"
             onClicked: window.showMinimized()
         }
 
         ImageButton {
-            height: 20
-            width: 20
+            height: 15
+            width: 15
             imgSource: "../../resources/icon_maximize.png"
             onClicked: window.showMaximized()
         }
 
         ImageButton {
-            height: 20
-            width: 20
+            height: 15
+            width: 15
             imgSource: "../../resources/icon_cross.png"
             onClicked: Qt.quit()
         }

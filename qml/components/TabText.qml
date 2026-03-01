@@ -2,7 +2,7 @@ import QtQuick
 import QtQuick.Controls
 
 Text{
-    font.pixelSize: 32
+    font.pixelSize: 24
     font.weight: Font.DemiBold
     color: "#FFFFFF"
 }
