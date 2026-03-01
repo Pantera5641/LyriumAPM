@@ -29,7 +29,7 @@ Grid {
 
         TabBar {
             spacing: parent.spacing
-            //indicator: Item {} хз как пофиксить серую полоску
+            background: Item {}
 
             PageTabButton { text: "Запись" }
             PageTabButton { text: "База Данных" }
