@@ -11,7 +11,7 @@ TabButton{
     contentItem: TabText {
         text: pageTabButton.text
         anchors.centerIn: parent
-        color: pageTabButton.pressed ? '#9000FF' : '#FFFFFF'
+        color: pageTabButton.checked ? '#9000FF' : '#FFFFFF'
     }
 
     width: contentItem.implicitWidth + 10
@@ -20,7 +20,7 @@ TabButton{
     Rectangle{
         height: 3
         width: parent.width
-        color: pageTabButton.pressed ? '#9000FF' : 'transparent'
+        color: pageTabButton.checked ? '#9000FF' : 'transparent'
         anchors.bottom: parent.bottom
     }
 }
