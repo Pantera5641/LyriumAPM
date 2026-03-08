@@ -1,4 +1,5 @@
 import QtQuick
+
 import QtQuick.Controls
 import QtQuick.Layouts
 
@@ -6,7 +7,7 @@ ColumnLayout {
     anchors.fill: parent
     spacing: 0
 
-    Grid {
+    Item {
         id: titleBar
         Layout.fillWidth: true
         Layout.preferredHeight: 55
