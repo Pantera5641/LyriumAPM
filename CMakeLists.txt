@@ -48,6 +48,7 @@ qt_add_qml_module(appLyriumAPM
         ${QML_FILES_REL}
     RESOURCES
         ${RESOURCES_ABS}
+        resources/zaako.mp4
 )
 
 set_target_properties(appLyriumAPM PROPERTIES
