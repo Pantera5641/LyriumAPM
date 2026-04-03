@@ -1,0 +1,25 @@
+﻿Диагностика двигателя;engine_diagnostics;2250
+Замена масла;oil_change;1000
+Замена тормозных колодок;brake_pads_replacement;2000
+Замена тормозных дисков;brake_discs_replacement;4250
+Ремонт двигателя;engine_repair;27500
+Ремонт коробки передач;transmission_repair;33500
+Ремонт подвески;suspension_repair;8500
+Замена амортизаторов;shock_absorbers_replacement;5000
+Балансировка колес;wheel_balancing;450
+Шиномонтаж;tire_fitting;800
+Регулировка сход-развала;wheel_alignment;2000
+Замена аккумулятора;battery_replacement;3750
+Ремонт генератора;alternator_repair;5000
+Ремонт стартера;starter_repair;3250
+Замена сцепления;clutch_replacement;12500
+Замена ремня ГРМ;timing_belt_replacement;9000
+Ремонт системы охлаждения;cooling_system_repair;6000
+Ремонт системы выхлопа;exhaust_repair;4250
+Ремонт кондиционера;ac_repair;6000
+Кузовной ремонт и покраска;bodywork_painting;27500
+Замена стекол;glass_replacement;8500
+Установка сигнализации;alarm_installation;5000
+Установка аудиосистемы;car_audio_installation;9000
+Эвакуация автомобиля;towing_service;3000
+Техническое обслуживание;maintenance_service;6000
