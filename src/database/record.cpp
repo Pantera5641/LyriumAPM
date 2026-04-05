@@ -38,8 +38,7 @@ Record::Record(
     const QString& comment,
     const QString& masterFullName,
     const QString& serviceProvided,
-    const std::chrono::year_month_day& visitDate,
-    const QString& status) {
+    const std::chrono::year_month_day& visitDate) {
     this->id = id;
     this->clientFullName = clientFullName;
     this->phoneNumber = phoneNumber;
@@ -50,7 +49,7 @@ Record::Record(
     this->masterFullName = masterFullName;
     this->serviceProvided = serviceProvided;
     this->visitDate = visitDate;
-    this->status = status;
+    this->status = "accepted;
     for (auto item : serviceProvided.split(';'))
         updateRepairAmount(item);
 }
@@ -61,7 +60,7 @@ void Record::updateRepairAmount(const QString& serviceProvided)
     std::map <QString, int> servicesList {};
 
     QFile file(QCoreApplication::applicationDirPath() + "/data/servicesList.txt");
-    file.open(QIODevice::WriteOnly | QIODevice::Text);
+    file.open(QIODevice::ReadOnly | QIODevice::Text);
     QTextStream stream(&file);
     while (!stream.atEnd())
     {
@@ -72,6 +71,8 @@ void Record::updateRepairAmount(const QString& serviceProvided)
 
     if (const auto pair = servicesList.find(serviceProvided); pair != servicesList.end())
         amount+=pair->second;
+
+    file.close();
 
     repairAmount += amount;
 }

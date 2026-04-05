@@ -53,36 +53,48 @@ struct Record
         const QString& comment,
         const QString& masterFullName,
         const QString& serviceProvided,
-        const std::chrono::year_month_day& visitDate,
-        const QString& status);
+        const std::chrono::year_month_day& visitDate);
 
-    [[nodiscard]] int getId() const;
+    [[nodiscard]]
+    int getId() const;
 
-    [[nodiscard]] QString getClientFullName() const;
+    [[nodiscard]]
+    QString getClientFullName() const;
 
-    [[nodiscard]] QString getPhoneNumber() const;
+    [[nodiscard]]
+    QString getPhoneNumber() const;
 
-    [[nodiscard]] QString getEmail() const;
+    [[nodiscard]]
+    QString getEmail() const;
 
-    [[nodiscard]] QString getCarBrandName() const;
+    [[nodiscard]]
+    QString getCarBrandName() const;
 
-    [[nodiscard]] QString getCarModel() const;
+    [[nodiscard]]
+    QString getCarModel() const;
 
-    [[nodiscard]] QString getComment() const;
+    [[nodiscard]]
+    QString getComment() const;
 
-    [[nodiscard]] QString getMasterFullName() const;
+    [[nodiscard]]
+    QString getMasterFullName() const;
 
-    [[nodiscard]] QString getServiceProvided() const;
+    [[nodiscard]]
+    QString getServiceProvided() const;
 
-    [[nodiscard]] int getRepairAmount() const;
+    [[nodiscard]]
+    int getRepairAmount() const;
 
-    [[nodiscard]] std::chrono::year_month_day getVisitDate() const;
+    [[nodiscard]]
+    std::chrono::year_month_day getVisitDate() const;
 
-    [[nodiscard]] QString getStatus() const;
+    [[nodiscard]]
+    QString getStatus() const;
 
     Record* setStatus(const QString& status);
 
     Record* addService(const QString& serviceProvided);
 
-    [[nodiscard]] QString toString() const;
+    [[nodiscard]]
+    QString toString() const;
 };
