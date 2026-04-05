@@ -12,7 +12,7 @@ struct Record
 {
     private:
     int id {};
-    std::string clientName {};
+    std::string clientFullName {};
     std::string phoneNumber {};
     std::string email {};
     std::string carBrandName {};
@@ -31,7 +31,7 @@ struct Record
 
     Record(
     int id,
-    const std::string& clientName,
+    const std::string& clientFullName,
     const std::string& phoneNumber,
     const std::string& email,
     const std::string& carBrandName,
@@ -45,7 +45,7 @@ struct Record
 
     Record(
         int id,
-        const std::string& clientName,
+        const std::string& clientFullName,
         const std::string& phoneNumber,
         const std::string& email,
         const std::string& carBrandName,
@@ -58,7 +58,7 @@ struct Record
 
     [[nodiscard]] int getId() const;
 
-    [[nodiscard]] std::string getClientName() const;
+    [[nodiscard]] std::string getClientFullName() const;
 
     [[nodiscard]] std::string getPhoneNumber() const;
 

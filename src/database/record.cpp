@@ -3,7 +3,7 @@
 
 Record::Record(
     const int id,
-    const std::string &clientName,
+    const std::string &clientFullName,
     const std::string &phoneNumber,
     const std::string &email,
     const std::string &carBrandName,
@@ -15,7 +15,7 @@ Record::Record(
     const std::chrono::year_month_day &visitDate,
     const std::string &status) {
     this->id = id;
-    this->clientName = clientName;
+    this->clientFullName = clientFullName;
     this->phoneNumber = phoneNumber;
     this->email = email;
     this->carBrandName = carBrandName;
@@ -30,7 +30,7 @@ Record::Record(
 
 Record::Record(
     const int id,
-    const std::string& clientName,
+    const std::string& clientFullName,
     const std::string& phoneNumber,
     const std::string& email,
     const std::string& carBrandName,
@@ -41,7 +41,7 @@ Record::Record(
     const std::chrono::year_month_day& visitDate,
     const std::string& status) {
     this->id = id;
-    this->clientName = clientName;
+    this->clientFullName = clientFullName;
     this->phoneNumber = phoneNumber;
     this->email = email;
     this->carBrandName = carBrandName;
@@ -76,7 +76,7 @@ void Record::updateRepairAmount(const std::string& serviceProvided)
 
 int Record::getId() const {return id;}
 
-std::string Record::getClientName() const {return clientName;}
+std::string Record::getClientFullName() const {return clientFullName;}
 
 std::string Record::getPhoneNumber() const {return phoneNumber;}
 
@@ -129,7 +129,7 @@ std::string Record::toString() const
                 std::to_string(static_cast<unsigned>(this->visitDate.day()))
     };
 
-    return std::to_string(this->id) + ',' + this->clientName + ',' + this->phoneNumber + ',' + this->email + ',' +
+    return std::to_string(this->id) + ',' + this->clientFullName + ',' + this->phoneNumber + ',' + this->email + ',' +
         this->carBrandName + ',' + this->carModel + ',' + this->comment + ',' + this->masterFullName + ',' +
             this->serviceProvided + ',' + std::to_string(this->repairAmount) + ',' + data + ',' + this->status;
 }
