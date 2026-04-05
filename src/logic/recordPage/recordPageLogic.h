@@ -15,6 +15,5 @@ class RecordPageLogic : public QObject
     const QString &carModel,
     const QString &comment,
     const QString &masterFullName,
-    const QString &serviceProvided,
-    const QString &status);
+    const QString &serviceProvided);
 };
