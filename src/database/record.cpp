@@ -49,7 +49,7 @@ Record::Record(
     this->masterFullName = masterFullName;
     this->serviceProvided = serviceProvided;
     this->visitDate = visitDate;
-    this->status = "accepted;
+    this->status = "accepted";
     for (auto item : serviceProvided.split(';'))
         updateRepairAmount(item);
 }
