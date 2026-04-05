@@ -1,23 +1,25 @@
 ﻿#include "database.h"
 
+
 void Database::initializeDatabase()
 {
-    std::ifstream file("data/dataBase.txt");
-    std::string line;
-    while (std::getline(file, line))
+    QFile file("data/dataBase.txt");
+    file.open(QIODevice::ReadOnly | QIODevice::Text);
+    QTextStream stream(&file);
+    while (!stream.atEnd())
     {
-        std::vector tokens {Utils::split(line, ';')};
-
-        std::vector dataTokens {Utils::split(tokens.at(10), '.')};
+        QString line = stream.readLine();
+        QStringList tokens {line.split(';')};
+        QStringList dataTokens {tokens.at(10).split('.')};
         std::chrono::year_month_day data
         {
-            std::chrono::year(std::stoi(dataTokens.at(0))),
-            std::chrono::month(std::stoi(dataTokens.at(1))),
-            std::chrono::day(std::stoi(dataTokens.at(2)))
+            std::chrono::year(dataTokens.at(0).toInt()),
+            std::chrono::month(dataTokens.at(1).toInt()),
+            std::chrono::day(dataTokens.at(2).toUInt())
         };
 
         Record record(
-        std::stoi(tokens.at(0)),
+        tokens.at(0).toInt(),
         tokens.at(1),
         tokens.at(2),
         tokens.at(3),
@@ -26,7 +28,7 @@ void Database::initializeDatabase()
         tokens.at(6),
         tokens.at(7),
         tokens.at(8),
-        std::stoi(tokens.at(9)),
+        tokens.at(9).toInt(),
         data,
         tokens.at(11));
 
@@ -37,9 +39,11 @@ void Database::initializeDatabase()
 
 void Database::saveDatabase() const
 {
-    std::ofstream file("data/dataBase.txt", std::ios::trunc);
+    QFile file("data/dataBase.txt");
+    file.open(QIODevice::WriteOnly | QIODevice::Text);
+    QTextStream stream(&file);
     for (auto item : dataStore)
-        file << item.toString();
+        stream << item.toString() << "\n";
 }
 
 Database& Database::getInstance()
@@ -49,8 +53,31 @@ Database& Database::getInstance()
     return instance;
 }
 
-Database* Database::addRecord(Record record)
+Database* Database::addRecord(
+        const QString& clientFullName,
+        const QString& phoneNumber,
+        const QString& email,
+        const QString& carBrandName,
+        const QString& carModel,
+        const QString& comment,
+        const QString& masterFullName,
+        const QString& serviceProvided,
+        const QString& status)
 {
+    const int id {dataStore.size() == 0 ? 1 : dataStore.at(dataStore.size() - 1).getId() + 1};
+    const Record record(
+        id,
+        clientFullName,
+        phoneNumber,
+        email,
+        carBrandName,
+        carModel,
+        comment,
+        masterFullName,
+        serviceProvided,
+        std::chrono::floor<std::chrono::days>(std::chrono::system_clock::now()),
+        status
+        );
     dataStore.push_back(record);
     saveDatabase();
     return this;
@@ -74,12 +101,12 @@ std::vector<Record> Database::getRecordsByPattern(Record pattern) const
     for (auto item : dataStore)
     {
         bool flag {true};
-        flag *= item.getClientName().contains(pattern.getClientName()) || pattern.getClientName() == std::string();
-        flag *= item.getPhoneNumber().contains(pattern.getPhoneNumber()) || pattern.getPhoneNumber() == std::string();
-        flag *= item.getEmail().contains(pattern.getEmail()) || pattern.getEmail() == std::string();
-        flag *= item.getCarBrandName().contains(pattern.getCarBrandName()) || pattern.getCarBrandName() == std::string();
-        flag *= item.getCarModel().contains(pattern.getCarModel()) || pattern.getCarModel() == std::string();
-        flag *= item.getMasterFullName().contains(pattern.getMasterFullName()) || pattern.getMasterFullName() == std::string();
+        flag *= item.getClientFullName().contains(pattern.getClientFullName()) || pattern.getClientFullName() == QString();
+        flag *= item.getPhoneNumber().contains(pattern.getPhoneNumber()) || pattern.getPhoneNumber() == QString();
+        flag *= item.getEmail().contains(pattern.getEmail()) || pattern.getEmail() == QString();
+        flag *= item.getCarBrandName().contains(pattern.getCarBrandName()) || pattern.getCarBrandName() == QString();
+        flag *= item.getCarModel().contains(pattern.getCarModel()) || pattern.getCarModel() == QString();
+        flag *= item.getMasterFullName().contains(pattern.getMasterFullName()) || pattern.getMasterFullName() == QString();
         //i too lazy to do it
     }
 }

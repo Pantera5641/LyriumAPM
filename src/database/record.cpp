@@ -1,19 +1,21 @@
 #include "record.h"
 
+#include "src/utils/utils.h"
+
 
 Record::Record(
     const int id,
-    const std::string &clientFullName,
-    const std::string &phoneNumber,
-    const std::string &email,
-    const std::string &carBrandName,
-    const std::string &carModel,
-    const std::string &comment,
-    const std::string &masterFullName,
-    const std::string &serviceProvided,
+    const QString &clientFullName,
+    const QString &phoneNumber,
+    const QString &email,
+    const QString &carBrandName,
+    const QString &carModel,
+    const QString &comment,
+    const QString &masterFullName,
+    const QString &serviceProvided,
     const int repairAmount,
     const std::chrono::year_month_day &visitDate,
-    const std::string &status) {
+    const QString &status) {
     this->id = id;
     this->clientFullName = clientFullName;
     this->phoneNumber = phoneNumber;
@@ -30,16 +32,16 @@ Record::Record(
 
 Record::Record(
     const int id,
-    const std::string& clientFullName,
-    const std::string& phoneNumber,
-    const std::string& email,
-    const std::string& carBrandName,
-    const std::string& carModel,
-    const std::string& comment,
-    const std::string& masterFullName,
-    const std::string& serviceProvided,
+    const QString& clientFullName,
+    const QString& phoneNumber,
+    const QString& email,
+    const QString& carBrandName,
+    const QString& carModel,
+    const QString& comment,
+    const QString& masterFullName,
+    const QString& serviceProvided,
     const std::chrono::year_month_day& visitDate,
-    const std::string& status) {
+    const QString& status) {
     this->id = id;
     this->clientFullName = clientFullName;
     this->phoneNumber = phoneNumber;
@@ -51,21 +53,23 @@ Record::Record(
     this->serviceProvided = serviceProvided;
     this->visitDate = visitDate;
     this->status = status;
-    for (auto item : Utils::split(serviceProvided, ';'))
+    for (auto item : serviceProvided.split(';'))
         updateRepairAmount(item);
 }
 
-void Record::updateRepairAmount(const std::string& serviceProvided)
+void Record::updateRepairAmount(const QString& serviceProvided)
 {
     int amount {};
-    std::map <std::string, int> servicesList {};
-    std::ifstream file("data/servicesList.txt");
-    std::string line;
+    std::map <QString, int> servicesList {};
 
-    while (std::getline(file, line))
+    QFile file("data/servicesList.txt");
+    file.open(QIODevice::WriteOnly | QIODevice::Text);
+    QTextStream stream(&file);
+    while (!stream.atEnd())
     {
-        std::vector tokens {Utils::split(line, ';')};
-        servicesList.insert(std::make_pair(tokens.at(1), std::stoi(tokens.at(2))));
+        QString line = stream.readLine();
+        QStringList tokens = line.split(';');
+        servicesList.insert(std::make_pair(tokens.at(1), tokens.at(2).toInt()));
     }
 
     if (const auto pair = servicesList.find(serviceProvided); pair != servicesList.end())
@@ -76,60 +80,60 @@ void Record::updateRepairAmount(const std::string& serviceProvided)
 
 int Record::getId() const {return id;}
 
-std::string Record::getClientFullName() const {return clientFullName;}
+QString Record::getClientFullName() const {return clientFullName;}
 
-std::string Record::getPhoneNumber() const {return phoneNumber;}
+QString Record::getPhoneNumber() const {return phoneNumber;}
 
-std::string Record::getEmail() const {return email;}
+QString Record::getEmail() const {return email;}
 
-std::string Record::getCarBrandName() const {return carBrandName;}
+QString Record::getCarBrandName() const {return carBrandName;}
 
-std::string Record::getCarModel() const {return carModel;}
+QString Record::getCarModel() const {return carModel;}
 
-std::string Record::getComment() const {return comment;}
+QString Record::getComment() const {return comment;}
 
-std::string Record::getMasterFullName() const {return masterFullName;}
+QString Record::getMasterFullName() const {return masterFullName;}
 
-std::string Record::getServiceProvided() const {return serviceProvided;}
+QString Record::getServiceProvided() const {return serviceProvided;}
 
 int Record::getRepairAmount() const {return repairAmount;}
 
 std::chrono::year_month_day Record::getVisitDate() const {return visitDate;}
 
-std::string Record::getStatus() const {return status;}
+QString Record::getStatus() const {return status;}
 
-Record* Record::setStatus(const std::string& status)
+Record* Record::setStatus(const QString& status)
 {
     this->status = status;
     return this;
 }
 
-Record* Record::addService(const std::string& serviceProvided)
+Record* Record::addService(const QString& serviceProvided)
 {
-    if (this->serviceProvided.empty())
+    if (this->serviceProvided.isEmpty())
         this->serviceProvided = serviceProvided;
 
-    if (this->serviceProvided.find(serviceProvided) == std::string::npos)
+    if (this->serviceProvided.indexOf(serviceProvided) == -1)
     {
         this->serviceProvided += ";" + serviceProvided;
     }
     else
     {
-        throw std::runtime_error("Service provided " + serviceProvided);
+        throw std::runtime_error("Service provided " + serviceProvided.toStdString());
     }
     return this;
 }
 
-std::string Record::toString() const
+QString Record::toString() const
 {
-    const std::string data
+    const QString data
     {
-        std::to_string(static_cast<int>(this->visitDate.year())) + '.' +
-            std::to_string(static_cast<unsigned>(this->visitDate.month())) + '.' +
-                std::to_string(static_cast<unsigned>(this->visitDate.day()))
+        QString::number(static_cast<int>(this->visitDate.year())) + '.' +
+            QString::number(static_cast<unsigned>(this->visitDate.month())) + '.' +
+                QString::number(static_cast<unsigned>(this->visitDate.day()))
     };
 
-    return std::to_string(this->id) + ',' + this->clientFullName + ',' + this->phoneNumber + ',' + this->email + ',' +
+    return QString::number(this->id) + ',' + this->clientFullName + ',' + this->phoneNumber + ',' + this->email + ',' +
         this->carBrandName + ',' + this->carModel + ',' + this->comment + ',' + this->masterFullName + ',' +
-            this->serviceProvided + ',' + std::to_string(this->repairAmount) + ',' + data + ',' + this->status;
+            this->serviceProvided + ',' + QString::number(this->repairAmount) + ',' + data + ',' + this->status;
 }

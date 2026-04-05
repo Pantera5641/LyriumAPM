@@ -1,88 +1,87 @@
 #pragma once
+#include <QFile>
+#include <QTextStream>
 #include <chrono>
-#include <string>
 #include <utility>
 #include <fstream>
 #include <map>
-
-#include "src/utils/utils.h"
 
 
 struct Record
 {
     private:
     int id {};
-    std::string clientFullName {};
-    std::string phoneNumber {};
-    std::string email {};
-    std::string carBrandName {};
-    std::string carModel {};
-    std::string comment {};
-    std::string masterFullName {};
-    std::string serviceProvided {};
+    QString clientFullName {};
+    QString phoneNumber {};
+    QString email {};
+    QString carBrandName {};
+    QString carModel {};
+    QString comment {};
+    QString masterFullName {};
+    QString serviceProvided {};
     int repairAmount {};
     std::chrono::year_month_day visitDate {};
-    std::string status {};
+    QString status {};
 
-    void updateRepairAmount(const std::string& serviceProvided);
+    void updateRepairAmount(const QString& serviceProvided);
 
     public:
     Record() = delete;
 
     Record(
     int id,
-    const std::string& clientFullName,
-    const std::string& phoneNumber,
-    const std::string& email,
-    const std::string& carBrandName,
-    const std::string& carModel,
-    const std::string& comment,
-    const std::string& masterFullName,
-    const std::string& serviceProvided,
+    const QString& clientFullName,
+    const QString& phoneNumber,
+    const QString& email,
+    const QString& carBrandName,
+    const QString& carModel,
+    const QString& comment,
+    const QString& masterFullName,
+    const QString& serviceProvided,
     int repairAmount,
     const std::chrono::year_month_day& visitDate,
-    const std::string& status);
+    const QString& status);
 
     Record(
         int id,
-        const std::string& clientFullName,
-        const std::string& phoneNumber,
-        const std::string& email,
-        const std::string& carBrandName,
-        const std::string& carModel,
-        const std::string& comment,
-        const std::string& masterFullName,
-        const std::string& serviceProvided,
+        const QString& clientFullName,
+        const QString& phoneNumber,
+        const QString& email,
+        const QString& carBrandName,
+        const QString& carModel,
+        const QString& comment,
+        const QString& masterFullName,
+        const QString& serviceProvided,
         const std::chrono::year_month_day& visitDate,
-        const std::string& status);
+        const QString& status);
 
     [[nodiscard]] int getId() const;
 
-    [[nodiscard]] std::string getClientFullName() const;
+    [[nodiscard]] QString getClientFullName() const;
 
-    [[nodiscard]] std::string getPhoneNumber() const;
+    [[nodiscard]] QString getPhoneNumber() const;
 
-    [[nodiscard]] std::string getEmail() const;
+    [[nodiscard]] QString getEmail() const;
 
-    [[nodiscard]] std::string getCarBrandName() const;
+    [[nodiscard]] QString getCarBrandName() const;
 
-    [[nodiscard]] std::string getCarModel() const;
+    [[nodiscard]] QString getCarModel() const;
 
-    [[nodiscard]] std::string getComment() const;
+    [[nodiscard]] QString getComment() const;
 
-    [[nodiscard]] std::string getMasterFullName() const;
+    [[nodiscard]] QString getMasterFullName() const;
 
-    [[nodiscard]] std::string getServiceProvided() const;
+    [[nodiscard]] QString getServiceProvided() const;
 
     [[nodiscard]] int getRepairAmount() const;
 
     [[nodiscard]] std::chrono::year_month_day getVisitDate() const;
 
-    [[nodiscard]] std::string getStatus() const;
+    [[nodiscard]] QString getStatus() const;
 
-    Record* setStatus(const std::string& status);
+    Record* setStatus(const QString& status);
 
-    Record* addService(const std::string& serviceProvided);
+    Record* addService(const QString& serviceProvided);
 
-    [[nodiscard]] std::string toString() const;
+    [[nodiscard]] QString toString() const;
 };
