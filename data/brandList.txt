@@ -1,0 +1,49 @@
+﻿Abarth;abarth
+Alfa Romeo;alfa_romeo
+Alpine;alpine
+Aston Martin;aston_martin
+Audi;audi
+BMW;bmw
+Bentley;bentley
+Bugatti;bugatti
+Buick;buick
+Cadillac;cadillac
+Chevrolet;chevrolet
+Chrysler;chrysler
+Citroën;citroen
+Dacia;dacia
+DS Automobiles;ds
+Ferrari;ferrari
+Fiat;fiat
+Ford;ford
+Genesis;genesis
+GMC;gmc
+Honda;honda
+Hyundai;hyundai
+Infiniti;infiniti
+Jaguar;jaguar
+Jeep;jeep
+Kia;kia
+Land Rover;land_rover
+Lexus;lexus
+Maserati;maserati
+Mazda;mazda
+McLaren;mclaren
+Mercedes-Benz;mercedes_benz
+MINI;mini
+Mitsubishi;mitsubishi
+Nissan;nissan
+Opel;opel
+Peugeot;peugeot
+Porsche;porsche
+Renault;renault
+SEAT;seat
+Škoda;skoda
+Smart;smart
+Subaru;subaru
+Suzuki;suzuki
+Tesla;tesla
+Toyota;toyota
+Volkswagen;volkswagen
+Volvo;volvo
+BYD;byd
