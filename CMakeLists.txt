@@ -17,6 +17,10 @@ qt_add_executable(appLyriumAPM
     main.cpp
         src/database/database.cpp
         src/database/database.h
+        src/database/record.cpp
+        src/database/record.h
+        src/utils/utils.cpp
+        src/utils/utils.h
 )
 
 set(QML_DIR "${CMAKE_SOURCE_DIR}/qml")
