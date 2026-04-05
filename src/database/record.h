@@ -1,6 +1,7 @@
 #pragma once
 #include <QFile>
 #include <QTextStream>
+#include <qcoreapplication.h>
 #include <chrono>
 #include <utility>
 #include <fstream>

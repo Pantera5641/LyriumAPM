@@ -1,7 +1,5 @@
 #include "record.h"
 
-#include "src/utils/utils.h"
-
 
 Record::Record(
     const int id,
@@ -62,7 +60,7 @@ void Record::updateRepairAmount(const QString& serviceProvided)
     int amount {};
     std::map <QString, int> servicesList {};
 
-    QFile file("data/servicesList.txt");
+    QFile file(QCoreApplication::applicationDirPath() + "/data/servicesList.txt");
     file.open(QIODevice::WriteOnly | QIODevice::Text);
     QTextStream stream(&file);
     while (!stream.atEnd())
