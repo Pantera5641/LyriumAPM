@@ -21,6 +21,8 @@ qt_add_executable(appLyriumAPM
         src/database/record.h
         src/utils/utils.cpp
         src/utils/utils.h
+        src/logic/recordPage/recordPageLogic.cpp
+        src/logic/recordPage/recordPageLogic.h
 )
 
 set(QML_DIR "${CMAKE_SOURCE_DIR}/qml")
