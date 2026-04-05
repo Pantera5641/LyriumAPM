@@ -1,15 +1,24 @@
 ﻿#include "database.h"
 
+#include <iostream>
+#include <qcoreapplication.h>
+#include <QDebug>
+
 
 void Database::initializeDatabase()
 {
-    QFile file("data/dataBase.txt");
+    if (this->isInitialized)
+    {
+        throw std::runtime_error("Database is already initialized");
+    }
+
+    QFile file(QCoreApplication::applicationDirPath() + "/data/dataBase.txt");
     file.open(QIODevice::ReadOnly | QIODevice::Text);
     QTextStream stream(&file);
     while (!stream.atEnd())
     {
         QString line = stream.readLine();
-        QStringList tokens {line.split(';')};
+        QStringList tokens {line.split(',')};
         QStringList dataTokens {tokens.at(10).split('.')};
         std::chrono::year_month_day data
         {
@@ -34,22 +43,24 @@ void Database::initializeDatabase()
 
         dataStore.push_back(record);
     }
+    file.close();
+
     this->isInitialized = true;
 }
 
 void Database::saveDatabase() const
 {
-    QFile file("data/dataBase.txt");
+    QFile file(QCoreApplication::applicationDirPath() + "/data/dataBase.txt");
     file.open(QIODevice::WriteOnly | QIODevice::Text);
     QTextStream stream(&file);
     for (auto item : dataStore)
         stream << item.toString() << "\n";
+    file.close();
 }
 
 Database& Database::getInstance()
 {
     static Database instance;
-    if (!instance.isInitialized) instance.initializeDatabase();
     return instance;
 }
 

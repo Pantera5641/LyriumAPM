@@ -15,8 +15,6 @@ class Database
 
     ~Database() = default;
 
-    void initializeDatabase();
-
     void saveDatabase() const;
 
     public:
@@ -25,6 +23,8 @@ class Database
     Database& operator = (const Database&) = delete;
 
     static Database& getInstance();
+
+    void initializeDatabase();
 
     Database* addRecord(
         const QString& clientFullName,
