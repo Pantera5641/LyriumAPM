@@ -40,7 +40,9 @@ Item {
 
             // Машина
             ComboBox {
-                model: ["Toyota", "BMW", "Audi", "Lada"]
+                id: carBrand
+                model: carBrandModel
+                textRole: "name"
             }
 
             TextField {
@@ -50,12 +52,16 @@ Item {
 
             // Услуги
             ComboBox {
-                model: ["ТО", "Ремонт двигателя", "Замена масла"]
+                id: services
+                model: servicesModel
+                textRole: "name"
             }
 
             // Мастер
             ComboBox {
-                model: ["Иванов И.И.", "Петров П.П.", "Сидоров С.С."]
+                id: employee
+                model: employeeModel
+                textRole: "name"
             }
 
             // Примерная цена (только просмотр)
@@ -78,12 +84,11 @@ Item {
                         lastName.text + " " + firstName.text + " " + middleName.text,
                         phoneNumber.text,
                         email.text,
-                        "dfdfdfd",
+                        carBrandModel.getTag(carBrand.currentIndex),
                         carModel.text,
                         comment.text,
-                        "dfdfdfd",
-                        "dsfdsfsdf",
-                        "fsddsfsdf"
+                        employeeModel.getTag(employee.currentIndex),
+                        servicesModel.getTag(services.currentIndex)
                     )
                 }
             }

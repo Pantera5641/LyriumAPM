@@ -23,6 +23,9 @@ qt_add_executable(appLyriumAPM
         src/utils/utils.h
         src/logic/recordPage/recordPageLogic.cpp
         src/logic/recordPage/recordPageLogic.h
+        src/logic/tagListModel/tagListModel.cpp
+        src/logic/tagListModel/tagListModel.h
+        src/logic/tagListModel/tagItem.h
 )
 
 set(QML_DIR "${CMAKE_SOURCE_DIR}/qml")
