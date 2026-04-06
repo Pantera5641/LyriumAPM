@@ -24,7 +24,7 @@ qt_add_executable(appLyriumAPM
         src/logic/recordPage/recordPageLogic.cpp
         src/logic/recordPage/recordPageLogic.h
 )
-
+file(COPY ${CMAKE_SOURCE_DIR}/data DESTINATION ${CMAKE_BINARY_DIR})
 set(QML_DIR "${CMAKE_SOURCE_DIR}/qml")
 set(RES_DIR "${CMAKE_SOURCE_DIR}/resources")
 
