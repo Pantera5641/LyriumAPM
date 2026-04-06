@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Controls
+import QtQuick.Layouts
 
 Item {
     id: recordPage
@@ -11,88 +12,227 @@ Item {
 
         Column {
             width: parent.width
-            spacing: 10
-            padding: 10
+            spacing: 20
+            padding: 20
 
-            // ФИО
-            TextField {
-                id: lastName
-                placeholderText: "Фамилия"
+            Item {
+                width: 1
+                height: 5
             }
-            TextField {
-                id: firstName
-                placeholderText: "Имя"
-            }
-            TextField {
-                id: middleName
-                placeholderText: "Отчество"
+
+            Row {
+                spacing: 10
+
+                BaseTextField {
+                    id: lastName
+                    placeholderText: "Фамилия"
+                    width: 280
+                    height: 45
+                }
+
+                BaseTextField {
+                    id: firstName
+                    placeholderText: "Имя"
+                    width: 280
+                    height: 45
+                }
+
+                BaseTextField {
+                    id: middleName
+                    placeholderText: "Отчество"
+                    width: 280
+                    height: 45
+                }
             }
 
             // Контакты
-            TextField {
-                id: phoneNumber
-                placeholderText: "Номер телефона"
-            }
-            TextField {
-                id: email
-                placeholderText: "Электронная почта"
+            Row {
+                spacing: 30
+
+                BaseTextField {
+                    id: phoneNumber
+                    placeholderText: "Номер телефона"
+                    width: 415
+                    height: 45
+                }
+
+                BaseTextField {
+                    id: email
+                    placeholderText: "Электронная почта"
+                    width: 415
+                    height: 45
+                }
             }
 
-            // Машина
-            ComboBox {
-                id: carBrand
-                model: carBrandModel
-                textRole: "name"
+            Rectangle {
+                width: 900
+                height: 15
+                color: "transparent"
             }
 
-            TextField {
-                id: carModel
-                placeholderText: "Модель машины"
+            // МАШИНА
+            Row {
+                spacing: 30
+
+                BaseComboBox {
+                    id: carBrand
+                    width: 415
+                    height: 45
+                    model: carBrandModel
+                    textRole: "name"
+                }
+
+                BaseTextField {
+                    id: carModel
+                    placeholderText: "Модель машины"
+                    width: 415
+                    height: 45
+                }
             }
 
-            // Услуги
-            ComboBox {
-                id: services
-                model: servicesModel
-                textRole: "name"
+            Rectangle {
+                width: 900
+                height: 15
+                color: "transparent"
             }
 
-            // Мастер
-            ComboBox {
-                id: employee
-                model: employeeModel
-                textRole: "name"
+            Row {
+                spacing: 30
+
+                //УСЛУГИ
+                BaseComboBox {
+                    id: services
+                    model: servicesModel
+                    width: 415
+                    height: 45
+                }
+
+                // МАСТЕР
+                BaseComboBox {
+                    id: employee
+                    model: employeeModel
+                    width: 415
+                    height: 45
+                }
             }
 
-            // Примерная цена (только просмотр)
-            TextField {
+            // ПРИМЕРНАЯ ЦЕНА (только просмотр)
+            BaseTextField {
                 placeholderText: "Примерная цена"
                 readOnly: true
+                width: 280
+                height: 45
             }
 
-            // Комментарий
-            TextArea {
-                id: comment
-                placeholderText: "Комментарий"
-                height: 100
+            // КОММЕНТАРИЙ
+            ScrollView {
+                width: 855
+                height: 120
+                font.pixelSize: 16
+                clip: true
+
+                background: Rectangle {
+                    color: "#000000"
+                    border.color: comment.focus ? "#d05ce3" : "#8a2be2"
+                    border.width: 2
+                    radius: 12
+
+                    Behavior on border
+                    .
+                    color {
+                        ColorAnimation {
+                            duration: 200
+                        }
+                    }
+                }
+
+                //область ввода
+                TextArea {
+                    id: comment
+                    placeholderText: "Комментарий"
+                    width: parent.width
+                    height: Math.max(implicitHeight, parent.height)
+
+                    color: "#d05ce3"
+                    placeholderTextColor: "#8a2be2"
+
+                    wrapMode: Text.WrapAnywhere
+                    horizontalAlignment: Text.AlignLeft
+                    verticalAlignment: Text.AlignTop
+
+                    leftPadding: 15
+                    rightPadding: 15
+                    topPadding: 10
+                    bottomPadding: 10
+
+                    background: Item {
+                    }
+                }
             }
 
-            Button {
-                text: "Отправить"
-                onClicked: {
-                    recordPageLogic.addRecordInDataBase(
-                        lastName.text + " " + firstName.text + " " + middleName.text,
-                        phoneNumber.text,
-                        email.text,
-                        carBrandModel.getTag(carBrand.currentIndex),
-                        carModel.text,
-                        comment.text,
-                        employeeModel.getTag(employee.currentIndex),
-                        servicesModel.getTag(services.currentIndex)
-                    )
+            //КНОПКА
+            Row {
+                spacing: 30
+
+                Item {
+                    width: 630
+                    height: 1
+                }
+
+                Button {
+                    id: submitBtn
+                    text: "Отправить"
+                    width: 180
+                    height: 40
+
+                    contentItem: Text {
+                        text: parent.text
+                        font.bold: true
+                        font.pixelSize: 16
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
+
+                        color: parent.pressed ? "#8a2be2" : "#ffffff"
+
+                        Behavior on color {
+                            ColorAnimation {
+                                duration: 150
+                            }
+                        }
+                    }
+
+                    background: Rectangle {
+                        implicitWidth: 100
+                        implicitHeight: 40
+
+                        color: parent.pressed ? "#000000" : "#8a2be2"
+
+                        border.color: parent.pressed ? "#8a2be2" : "transparent"
+                        border.width: 2
+
+                        radius: 12
+                        Behavior on color {
+                            ColorAnimation {
+                                duration: 150
+                            }
+                        }
+                        Behavior on border.color {ColorAnimation {duration: 150}}
+                    }
+
+                    onClicked: {
+                        recordPageLogic.addRecordInDataBase(
+                            lastName.text + " " + firstName.text + " " + middleName.text,
+                            phoneNumber.text,
+                            email.text,
+                            carBrandModel.getTag(carBrand.currentIndex),
+                            carModel.text,
+                            comment.text,
+                            employeeModel.getTag(employee.currentIndex),
+                            servicesModel.getTag(services.currentIndex)
+                        )
+                    }
                 }
             }
         }
     }
-
 }
