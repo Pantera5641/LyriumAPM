@@ -2,8 +2,8 @@
 import QtQuick.Controls
 
 ComboBox {
+    id: baseComboBox
     background: Rectangle {
-        z: 0
         color: "#000000"
         border.color: "#8a2be2"
         border.width: 2
@@ -21,7 +21,6 @@ ComboBox {
 
         verticalAlignment: Text.AlignVCenter
         elide: Text.ElideRight
-        z: 1
     }
 
     indicator: Canvas {
@@ -30,7 +29,6 @@ ComboBox {
         width: 12
         height: 8
         contextType: "2d"
-        z: 2
 
         onPaint: {
             context.reset()
@@ -48,7 +46,7 @@ ComboBox {
         highlighted: ListView.isCurrentItem
 
         contentItem: Text {
-            text: modelData
+            text: name
             color: "#ffffff"
             font.pixelSize: 16
 

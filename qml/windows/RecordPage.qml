@@ -6,7 +6,6 @@ Item {
     id: recordPage
     anchors.fill: parent
 
-    //при переделке оставить onClicked и айдишники
     ScrollView {
         anchors.fill: parent
 
@@ -76,10 +75,10 @@ Item {
 
                 BaseComboBox {
                     id: carBrand
-                    width: 415
-                    height: 45
                     model: carBrandModel
                     textRole: "name"
+                    width: 415
+                    height: 45
                 }
 
                 BaseTextField {
@@ -103,6 +102,7 @@ Item {
                 BaseComboBox {
                     id: services
                     model: servicesModel
+                    textRole: "name"
                     width: 415
                     height: 45
                 }
@@ -111,6 +111,7 @@ Item {
                 BaseComboBox {
                     id: employee
                     model: employeeModel
+                    textRole: "name"
                     width: 415
                     height: 45
                 }
@@ -137,9 +138,7 @@ Item {
                     border.width: 2
                     radius: 12
 
-                    Behavior on border
-                    .
-                    color {
+                    Behavior on border.color {
                         ColorAnimation {
                             duration: 200
                         }
