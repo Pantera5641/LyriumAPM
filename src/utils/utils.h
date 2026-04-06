@@ -1,10 +1,16 @@
 ﻿#pragma once
-#include <string>
-#include <vector>
-#include <sstream>
+#include <QString>
+#include <QList>
+#include <QFile>
+#include <QTextStream>
+#include <qcoreapplication.h>
+
+#include "src/logic/tagListModel/tagItem.h"
+#include "src/logic/tagListModel/tagListModel.h"
+
 
 class Utils
 {
     public:
-    static std::vector<std::string> split(const std::string& str, char delimiter);
+    static QList<TagItem> parseToModel(const QString &filename);
 };

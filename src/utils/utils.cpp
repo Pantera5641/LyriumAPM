@@ -1,16 +1,23 @@
 ﻿#include "utils.h"
 
 
-std::vector<std::string> Utils::split(const std::string& str,const char delimiter)
+QList<TagItem> Utils::parseToModel(const QString &filename)
 {
-    std::vector<std::string> result;
-    std::stringstream ss(str);
-    std::string token;
+    QList<TagItem> items;
 
-    while (std::getline(ss, token, delimiter))
+    QFile file(QCoreApplication::applicationDirPath() + "/data/" + filename);
+    file.open(QIODevice::ReadOnly | QIODevice::Text);
+    QTextStream stream(&file);
+    while (!stream.atEnd())
     {
-        result.push_back(token);
+        QString line = stream.readLine();
+        QStringList tokens {line.split(';')};
+        TagItem item;
+        item.name = tokens.at(0);
+        item.tag = tokens.at(1);
+        items.append(item);
     }
+    file.close();
 
-    return result;
+    return items;
 }

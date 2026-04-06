@@ -9,8 +9,7 @@ void RecordPageLogic::addRecordInDataBase(
     const QString &carModel,
     const QString &comment,
     const QString &masterFullName,
-    const QString &serviceProvided,
-    const QString &status)
+    const QString &serviceProvided)
 {
     Database& database {Database::getInstance()};
     database.addRecord(
@@ -22,5 +21,5 @@ void RecordPageLogic::addRecordInDataBase(
         comment,
         masterFullName,
         serviceProvided,
-        status);
+        "accepted");
 }
