@@ -11,6 +11,10 @@ void RecordPageLogic::addRecordInDataBase(
     const QString &masterFullName,
     const QString &serviceProvided)
 {
+    //Сделать отдельный класс для валидации
+    QString safeComment {comment};
+    safeComment.replace(";", ",").replace("\n", "\\n");
+
     Database& database {Database::getInstance()};
     database.addRecord(
         clientFullName,
@@ -18,7 +22,7 @@ void RecordPageLogic::addRecordInDataBase(
         email,
         carBrandName,
         carModel,
-        comment,
+        safeComment,
         masterFullName,
         serviceProvided,
         "accepted");
