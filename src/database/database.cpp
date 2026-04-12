@@ -86,9 +86,7 @@ Database* Database::addRecord(
         comment,
         masterFullName,
         serviceProvided,
-        std::chrono::floor<std::chrono::days>(std::chrono::system_clock::now()),
-        status
-        );
+        std::chrono::floor<std::chrono::days>(std::chrono::system_clock::now()));
     dataStore.push_back(record);
     saveDatabase();
     return this;

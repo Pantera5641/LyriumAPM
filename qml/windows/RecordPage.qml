@@ -6,7 +6,6 @@ Item {
     id: recordPage
     anchors.fill: parent
 
-    //при переделке оставить onClicked и айдишники
     ScrollView {
         anchors.fill: parent
 
@@ -23,281 +22,72 @@ Item {
             Row {
                 spacing: 10
 
-                TextField {
+                BaseTextField {
                     id: lastName
                     placeholderText: "Фамилия"
                     width: 280
                     height: 45
-                    font.pixelSize: 16
-
-
-                    color: "#d05ce3"
-                    placeholderTextColor: "#8a2be2"
-
-                    leftPadding: 15
-                    rightPadding: 15
-                    verticalAlignment: Text.AlignVCenter
-
-                    background: Rectangle {
-                        anchors.fill: parent
-                        color: "#000000"
-                        border.width: 2
-                        radius: 12
-
-                        border.color: parent.focus ? "#d05ce3" : "#8a2be2"
-                        Behavior on border
-                        .
-                        color {
-                            ColorAnimation {
-                                duration: 200
-                            }
-                        }
-                    }
                 }
 
-                TextField {
+                BaseTextField {
                     id: firstName
                     placeholderText: "Имя"
                     width: 280
                     height: 45
-                    font.pixelSize: 16
-
-                    color: "#d05ce3"
-                    placeholderTextColor: "#8a2be2"
-
-                    leftPadding: 15
-                    rightPadding: 15
-                    verticalAlignment: Text.AlignVCenter
-
-                    background: Rectangle {
-                        anchors.fill: parent
-                        color: "#000000"
-                        border.width: 2
-                        radius: 12
-                        border.color: parent.focus ? "#d05ce3" : "#8a2be2"
-                        Behavior on border
-                        .
-                        color {
-                            ColorAnimation {
-                                duration: 200
-                            }
-                        }
-                    }
                 }
 
-                TextField {
+                BaseTextField {
                     id: middleName
                     placeholderText: "Отчество"
                     width: 280
                     height: 45
-                    font.pixelSize: 16
-
-
-                    color: "#d05ce3"
-                    placeholderTextColor: "#8a2be2"
-
-                    leftPadding: 15
-                    rightPadding: 15
-                    verticalAlignment: Text.AlignVCenter
-
-                    background: Rectangle {
-                        anchors.fill: parent
-                        color: "#000000"
-                        border.width: 2
-                        radius: 12
-                        border.color: parent.focus ? "#d05ce3" : "#8a2be2"
-                        Behavior on border
-                        .
-                        color {
-                            ColorAnimation {
-                                duration: 200
-                            }
-                        }
-                    }
                 }
             }
-
 
             // Контакты
             Row {
                 spacing: 30
 
-
-                TextField {
+                BaseTextField {
                     id: phoneNumber
                     placeholderText: "Номер телефона"
                     width: 415
                     height: 45
-                    font.pixelSize: 16
-
-                    color: "#d05ce3"
-                    placeholderTextColor: "#8a2be2"
-
-                    leftPadding: 15
-                    rightPadding: 15
-                    verticalAlignment: Text.AlignVCenter
-
-                    background: Rectangle {
-                        anchors.fill: parent
-                        color: "#000000"
-                        border.width: 2
-                        radius: 12
-                        border.color: parent.focus ? "#d05ce3" : "#8a2be2"
-                        Behavior on border
-                        .
-                        color {
-                            ColorAnimation {
-                                duration: 200
-                            }
-                        }
-                    }
                 }
 
-                TextField {
+                BaseTextField {
                     id: email
                     placeholderText: "Электронная почта"
                     width: 415
                     height: 45
-                    font.pixelSize: 16
-
-                    color: "#d05ce3"
-                    placeholderTextColor: "#8a2be2"
-
-                    leftPadding: 15
-                    rightPadding: 15
-                    verticalAlignment: Text.AlignVCenter
-
-                    background: Rectangle {
-                        anchors.fill: parent
-                        color: "#000000"
-                        border.width: 2
-                        radius: 12
-                        border.color: parent.focus ? "#d05ce3" : "#8a2be2"
-                        Behavior on border
-                        .
-                        color {
-                            ColorAnimation {
-                                duration: 200
-                            }
-                        }
-                    }
                 }
             }
-
 
             Rectangle {
                 width: 900
                 height: 15
                 color: "transparent"
             }
-
 
             // МАШИНА
             Row {
                 spacing: 30
 
-                ComboBox {
+                BaseComboBox {
                     id: carBrand
+                    model: carBrandModel
+                    textRole: "name"
                     width: 415
                     height: 45
-                    model: ["Марка машины", "Toyota", "BMW", "Audi", "Lada"]
-                    currentIndex: 0
-
-                    // Фон поля
-                    background: Rectangle {
-                        z: 0
-                        color: "#000000"
-                        border.color: "#8a2be2"
-                        border.width: 2
-                        radius: 12
-                    }
-
-                    // Текст внутри поля
-                    contentItem: Text {
-                        leftPadding: 15
-                        rightPadding: 40
-                        text: parent.displayText
-
-                        color: parent.currentIndex === 0 ? "#8a2be2" : "#d05ce3"
-
-                        font.pixelSize: 16
-
-                        verticalAlignment: Text.AlignVCenter
-                        elide: Text.ElideRight
-                        z: 1
-                    }
-
-                    // Стрелка
-                    indicator: Canvas {
-                        x: parent.width - width - 15
-                        y: parent.height / 2 - height / 2
-                        width: 12
-                        height: 8
-                        contextType: "2d"
-                        z: 2
-
-                        onPaint: {
-                            context.reset()
-                            context.moveTo(0, 0)
-                            context.lineTo(width, 0)
-                            context.lineTo(width / 2, height)
-                            context.closePath()
-                            context.fillStyle = "#8a2be2"
-                            context.fill()
-                        }
-                    }
-
-                    // Элементы списка
-                    delegate: ItemDelegate {
-                        width: parent.width
-                        highlighted: ListView.isCurrentItem
-
-                        contentItem: Text {
-                            text: modelData
-                            color: "#ffffff"
-                            font.pixelSize: 16
-
-                            leftPadding: 15
-                            verticalAlignment: Text.AlignVCenter
-                        }
-
-                        background: Rectangle {
-                            color: highlighted ? "#3d0e69" : "#09020f"
-                        }
-                    }
                 }
 
-                TextField {
+                BaseTextField {
                     id: carModel
                     placeholderText: "Модель машины"
                     width: 415
                     height: 45
-                    font.pixelSize: 16
-
-                    color: "#d05ce3"
-                    placeholderTextColor: "#8a2be2"
-
-                    leftPadding: 15
-                    rightPadding: 15
-                    verticalAlignment: Text.AlignVCenter
-
-                    background: Rectangle {
-                        anchors.fill: parent
-                        color: "#000000"
-                        border.width: 2
-                        radius: 12
-                        border.color: parent.focus ? "#d05ce3" : "#8a2be2"
-                        Behavior on border
-                        .
-                        color {
-                            ColorAnimation {
-                                duration: 200
-                            }
-                        }
-                    }
                 }
             }
-
 
             Rectangle {
                 width: 900
@@ -305,179 +95,34 @@ Item {
                 color: "transparent"
             }
 
-
             Row {
                 spacing: 30
 
                 //УСЛУГИ
-                ComboBox {
-                    model: ["Услуги", "ТО", "Ремонт двигателя", "Замена масла"]
+                BaseComboBox {
+                    id: services
+                    model: servicesModel
+                    textRole: "name"
                     width: 415
                     height: 45
-
-
-                    // Фон поля
-                    background: Rectangle {
-                        z: 0
-                        color: "#000000"
-                        border.color: "#8a2be2"
-                        border.width: 2
-                        radius: 12
-                    }
-
-                    // Текст внутри поля
-                    contentItem: Text {
-                        leftPadding: 15
-                        rightPadding: 40
-                        text: parent.displayText
-
-                        color: parent.currentIndex === 0 ? "#8a2be2" : "#d05ce3"
-
-                        font.pixelSize: 16
-
-                        verticalAlignment: Text.AlignVCenter
-                        elide: Text.ElideRight
-                        z: 1
-                    }
-
-                    // Стрелка
-                    indicator: Canvas {
-                        x: parent.width - width - 15
-                        y: parent.height / 2 - height / 2
-                        width: 12
-                        height: 8
-                        contextType: "2d"
-                        z: 2
-
-                        onPaint: {
-                            context.reset()
-                            context.moveTo(0, 0)
-                            context.lineTo(width, 0)
-                            context.lineTo(width / 2, height)
-                            context.closePath()
-                            context.fillStyle = "#8a2be2"
-                            context.fill()
-                        }
-                    }
-
-                    // Элементы списка
-                    delegate: ItemDelegate {
-                        width: parent.width
-                        highlighted: ListView.isCurrentItem
-
-                        contentItem: Text {
-                            text: modelData
-                            color: "#ffffff"
-                            font.pixelSize: 16
-
-                            leftPadding: 15
-                            verticalAlignment: Text.AlignVCenter
-                        }
-
-                        background: Rectangle {
-                            color: highlighted ? "#3d0e69" : "#09020f"
-                        }
-                    }
                 }
 
                 // МАСТЕР
-                ComboBox {
-                    model: ["Мастер", "Иванов И.И.", "Петров П.П.", "Сидоров С.С."]
+                BaseComboBox {
+                    id: employee
+                    model: employeeModel
+                    textRole: "name"
                     width: 415
                     height: 45
-
-
-                    // Фон поля
-                    background: Rectangle {
-                        z: 0
-                        color: "#000000"
-                        border.color: "#8a2be2"
-                        border.width: 2
-                        radius: 12
-                    }
-
-                    // Текст внутри поля
-                    contentItem: Text {
-                        leftPadding: 15
-                        rightPadding: 40
-                        text: parent.displayText
-
-                        color: parent.currentIndex === 0 ? "#8a2be2" : "#d05ce3"
-
-                        font.pixelSize: 16
-
-                        verticalAlignment: Text.AlignVCenter
-                        elide: Text.ElideRight
-                        z: 1
-                    }
-
-                    // Стрелка
-                    indicator: Canvas {
-                        x: parent.width - width - 15
-                        y: parent.height / 2 - height / 2
-                        width: 12
-                        height: 8
-                        contextType: "2d"
-                        z: 2
-
-                        onPaint: {
-                            context.reset()
-                            context.moveTo(0, 0)
-                            context.lineTo(width, 0)
-                            context.lineTo(width / 2, height)
-                            context.closePath()
-                            context.fillStyle = "#8a2be2"
-                            context.fill()
-                        }
-                    }
-
-                    // Элементы списка
-                    delegate: ItemDelegate {
-                        width: parent.width
-                        highlighted: ListView.isCurrentItem
-
-                        contentItem: Text {
-                            text: modelData
-                            color: "#ffffff"
-                            font.pixelSize: 16
-
-                            leftPadding: 15
-                            verticalAlignment: Text.AlignVCenter
-                        }
-
-                        background: Rectangle {
-                            color: highlighted ? "#3d0e69" : "#09020f"
-                        }
-                    }
                 }
             }
 
-
             // ПРИМЕРНАЯ ЦЕНА (только просмотр)
-            TextField {
+            BaseTextField {
                 placeholderText: "Примерная цена"
                 readOnly: true
                 width: 280
                 height: 45
-                font.pixelSize: 16
-
-
-                color: "#d05ce3"
-                placeholderTextColor: "#8a2be2"
-
-                leftPadding: 15
-                rightPadding: 15
-                verticalAlignment: Text.AlignVCenter
-
-                background: Rectangle {
-                    anchors.fill: parent
-                    color: "#000000"
-                    border.width: 2
-                    radius: 12
-
-                    border.color: parent.focus ? "#d05ce3" : "#8a2be2"
-                    Behavior on border.color {ColorAnimation {duration: 200}}
-                }
             }
 
             // КОММЕНТАРИЙ
@@ -493,9 +138,7 @@ Item {
                     border.width: 2
                     radius: 12
 
-                    Behavior on border
-                    .
-                    color {
+                    Behavior on border.color {
                         ColorAnimation {
                             duration: 200
                         }
@@ -527,7 +170,6 @@ Item {
             }
 
             //КНОПКА
-
             Row {
                 spacing: 30
 
@@ -581,12 +223,11 @@ Item {
                             lastName.text + " " + firstName.text + " " + middleName.text,
                             phoneNumber.text,
                             email.text,
-                            "dfdfdfd",
+                            carBrandModel.getTag(carBrand.currentIndex),
                             carModel.text,
                             comment.text,
-                            "dfdfdfd",
-                            "dsfdsfsdf",
-                            "fsddsfsdf"
+                            employeeModel.getTag(employee.currentIndex),
+                            servicesModel.getTag(services.currentIndex)
                         )
                     }
                 }
@@ -594,4 +235,3 @@ Item {
         }
     }
 }
-
