@@ -39,12 +39,7 @@ Item {
                 }
 
                 BaseComboBox {
-                    model: [
-                        { name: "None", teg:"non" },
-                        { name: "Дата" },
-                        { name: "Цена" },
-                        { name: "Имя заказчика" }
-                    ]
+                    model: sortTagModel
                     textRole: "name"
                     width: 300
                     height: 45
@@ -173,57 +168,17 @@ Item {
                         clip: true
 
                         Column {
+                            id: rootColumn
                             width: parent.width
                             spacing: 0
 
-                            property var dataList: [
-                                {
-                                    id: 1,
-                                    fio: "Иванов И.И.",
-                                    date: "12.04.2026",
-                                    brand: "Toyota Camry",
-                                    price: "5 000 ₽",
-                                    status: "Новая"
-                                },
-                                {
-                                    id: 2,
-                                    fio: "Петров П.П.",
-                                    date: "13.04.2026",
-                                    brand: "BMW X5",
-                                    price: "12 500 ₽",
-                                    status: "В работе"
-                                },
-                                {
-                                    id: 3,
-                                    fio: "Сидоров С.С.",
-                                    date: "10.04.2026",
-                                    brand: "Lada Vesta",
-                                    price: "2 000 ₽",
-                                    status: "Готов"
-                                },
-                                {
-                                    id: 4,
-                                    fio: "Кузнецова А.А.",
-                                    date: "15.04.2026",
-                                    brand: "Kia Rio",
-                                    price: "8 000 ₽",
-                                    status: "Отменён"
-                                },
-                                {
-                                    id: 5,
-                                    fio: "Смирнов А.Д.",
-                                    date: "11.04.2026",
-                                    brand: "Hyundai",
-                                    price: "4 500 ₽",
-                                    status: "Новая"
-                                }
-                            ]
+                            property var dataList: databaseModel
 
                             Repeater {
                                 model: parent.dataList
 
                                 delegate: Row {
-                                    width: parent.width
+                                    width: rootColumn.width
                                     height: 40
 
                                     Rectangle {
@@ -235,35 +190,35 @@ Item {
                                     Item {
                                         width: 60; height: parent.height
                                         Text {
-                                            text: modelData.id; color: "#d05ce3"; font.pixelSize: 14; anchors.centerIn: parent
+                                            text: idRole; color: "#d05ce3"; font.pixelSize: 14; anchors.centerIn: parent
                                         }
                                     }
                                     // ФИО
                                     Item {
                                         width: 200; height: parent.height
                                         Text {
-                                            text: modelData.fio; color: "#d05ce3"; font.pixelSize: 14; anchors.centerIn: parent; elide: Text.ElideRight
+                                            text: username; color: "#d05ce3"; font.pixelSize: 14; anchors.centerIn: parent; elide: Text.ElideRight
                                         }
                                     }
                                     // Дата
                                     Item {
                                         width: 120; height: parent.height
                                         Text {
-                                            text: modelData.date; color: "#d05ce3"; font.pixelSize: 14; anchors.centerIn: parent
+                                            text: date; color: "#d05ce3"; font.pixelSize: 14; anchors.centerIn: parent
                                         }
                                     }
                                     // Марка
                                     Item {
                                         width: 140; height: parent.height
                                         Text {
-                                            text: modelData.brand; color: "#d05ce3"; font.pixelSize: 14; anchors.centerIn: parent; elide: Text.ElideRight
+                                            text: carBrand; color: "#d05ce3"; font.pixelSize: 14; anchors.centerIn: parent; elide: Text.ElideRight
                                         }
                                     }
                                     // Цена
                                     Item {
                                         width: 130; height: parent.height
                                         Text {
-                                            text: modelData.price; color: "#d05ce3"; font.pixelSize: 14; anchors.centerIn: parent
+                                            text: price; color: "#d05ce3"; font.pixelSize: 14; anchors.centerIn: parent
                                         }
                                     }
 
