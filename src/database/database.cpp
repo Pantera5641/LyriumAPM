@@ -58,6 +58,24 @@ void Database::saveDatabase() const
     file.close();
 }
 
+QList<Record> Database::getRecords(const QString& sortTag, const QString &search)
+{
+    QList<Record> newRecords {};
+
+    for (auto item : dataStore)
+        if (item.toString().contains(search)) newRecords.push_back(item);
+
+    if (sortTag != "none")
+    {
+        std::ranges::sort(newRecords, [sortTag](const Record& a, const Record& b)
+        {
+            return a.getFieldByTag(sortTag) < b.getFieldByTag(sortTag);
+        });
+    }
+
+    return newRecords;
+}
+
 Database& Database::getInstance()
 {
     static Database instance;

@@ -8,7 +8,7 @@
 class Database
 {
     private:
-    std::vector<Record> dataStore;
+    QList<Record> dataStore;
     bool isInitialized {};
 
     Database() = default;
@@ -21,6 +21,8 @@ class Database
     Database(const Database&) = delete;
 
     Database& operator = (const Database&) = delete;
+
+    QList<Record> getRecords(const QString & chars, const QString & string);
 
     static Database& getInstance();
 
