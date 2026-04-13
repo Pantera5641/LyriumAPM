@@ -99,7 +99,37 @@ int Record::getRepairAmount() const {return repairAmount;}
 
 std::chrono::year_month_day Record::getVisitDate() const {return visitDate;}
 
+QString Record::getVisitDateStr() const
+{
+    const QString data
+    {
+        QString::number(static_cast<unsigned>(this->visitDate.day())) + '.' +
+        QString::number(static_cast<unsigned>(this->visitDate.month())) + '.' +
+        QString::number(static_cast<int>(this->visitDate.year()))
+    };
+
+    return data;
+}
+
 QString Record::getStatus() const {return status;}
+
+QString Record::getFieldByTag(const QString& tag) const
+{
+    if (tag == "id") return QString::number(this->id);
+    if (tag == "client_full_name") return this->clientFullName;
+    if (tag == "phone_number") return this->phoneNumber;
+    if (tag == "email") return this->email;
+    if (tag == "car_brand_name") return this->carBrandName;
+    if (tag == "car_model") return this->carModel;
+    if (tag == "comment") return this->comment;
+    if (tag == "master_full_name") return this->masterFullName;
+    if (tag == "service_provided") return this->serviceProvided;
+    if (tag == "repair_amount") return QString::number(this->repairAmount);
+    if (tag == "visit_date") return getVisitDateStr();
+    if (tag == "status") return this->status;
+
+    throw std::runtime_error("Unknown tag");
+}
 
 Record* Record::setStatus(const QString& status)
 {
@@ -125,14 +155,7 @@ Record* Record::addService(const QString& serviceProvided)
 
 QString Record::toString() const
 {
-    const QString data
-    {
-        QString::number(static_cast<int>(this->visitDate.year())) + '.' +
-            QString::number(static_cast<unsigned>(this->visitDate.month())) + '.' +
-                QString::number(static_cast<unsigned>(this->visitDate.day()))
-    };
-
     return QString::number(this->id) + ',' + this->clientFullName + ',' + this->phoneNumber + ',' + this->email + ',' +
         this->carBrandName + ',' + this->carModel + ',' + this->comment + ',' + this->masterFullName + ',' +
-            this->serviceProvided + ',' + QString::number(this->repairAmount) + ',' + data + ',' + this->status;
+            this->serviceProvided + ',' + QString::number(this->repairAmount) + ',' + getVisitDateStr() + ',' + this->status;
 }

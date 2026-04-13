@@ -3,6 +3,6 @@
 
 struct TagItem
 {
-    QString name;
-    QString tag;
+    QString name {};
+    QString tag {};
 };

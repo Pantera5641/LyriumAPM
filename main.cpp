@@ -6,7 +6,8 @@
 #include "src/utils/utils.h"
 #include "src/database/database.h"
 #include "src/logic/recordPage/recordPageLogic.h"
-#include "src/logic/tagListModel/tagListModel.h"
+#include "src/logic/models/tagListModel/tagListModel.h"
+#include "src/logic/models/databaseModel/databaseModel.h"
 
 int main(int argc, char *argv[])
 {
@@ -23,6 +24,10 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("carBrandModel", createModel("brandList.txt"));
     engine.rootContext()->setContextProperty("servicesModel", createModel("servicesList.txt"));
     engine.rootContext()->setContextProperty("employeeModel", createModel("employeeList.txt"));
+    engine.rootContext()->setContextProperty("sortTagModel", createModel("sortTagList.txt"));
+
+    const auto databaseModel =  new DatabaseModel(&engine);
+    engine.rootContext()->setContextProperty("databaseModel", databaseModel);
 
     QObject::connect(
         &engine,
@@ -34,6 +39,7 @@ int main(int argc, char *argv[])
 
     Database& database {Database::getInstance()};
     database.initializeDatabase();
+    databaseModel->updateDatabase("none", "");
 
     return app.exec();
 }

@@ -1,4 +1,5 @@
-﻿Принята;accepted
+﻿Статус;none
+Принята;accepted
 В работе;in_progress
 Завершена;completed
 Отменена;canceled

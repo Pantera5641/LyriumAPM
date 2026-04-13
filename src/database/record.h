@@ -89,7 +89,13 @@ struct Record
     std::chrono::year_month_day getVisitDate() const;
 
     [[nodiscard]]
+    QString getVisitDateStr() const;
+
+    [[nodiscard]]
     QString getStatus() const;
+
+    [[nodiscard]]
+    QString getFieldByTag(const QString& tag) const;
 
     Record* setStatus(const QString& status);
 
