@@ -1,4 +1,5 @@
-﻿Abarth;abarth
+﻿Модель;none
+Abarth;abarth
 Alfa Romeo;alfa_romeo
 Alpine;alpine
 Aston Martin;aston_martin

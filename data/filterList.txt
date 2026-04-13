@@ -1,0 +1,4 @@
+﻿None;none
+Дата;date
+Цена;price
+Имя заказчика;client_name
