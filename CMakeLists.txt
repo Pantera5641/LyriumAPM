@@ -27,8 +27,9 @@ qt_add_executable(appLyriumAPM
         src/logic/models/tagListModel/tagListModel.h
         src/logic/models/tagListModel/tagItem.h
         src/logic/models/databaseModel/databaseModel.h
-        src/logic/models/databaseModel/shortRecord.h
+        src/database/simpleRecord.h
         src/logic/models/databaseModel/databaseModel.cpp
+        src/database/simpleRecord.cpp
 )
 file(COPY ${CMAKE_SOURCE_DIR}/data DESTINATION ${CMAKE_BINARY_DIR})
 set(QML_DIR "${CMAKE_SOURCE_DIR}/qml")

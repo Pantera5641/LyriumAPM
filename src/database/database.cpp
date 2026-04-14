@@ -63,18 +63,28 @@ QList<Record> Database::getRecords(const QString& sortTag, const QString &search
     QList<Record> newRecords {};
 
     for (auto item : dataStore)
-        if (item.toString().contains(search)) newRecords.push_back(item);
+        if (item.toSimpleRecord().toString().contains(search)) newRecords.push_back(item);
 
     if (sortTag != "none")
     {
         std::ranges::sort(newRecords, [sortTag](const Record& a, const Record& b)
         {
-            return a.getFieldByTag(sortTag) < b.getFieldByTag(sortTag);
+            const auto& strA = a.getFieldByTag(sortTag);
+            const auto& strB = b.getFieldByTag(sortTag);
+
+            bool okA, okB;
+            const int valA = strA.toInt(&okA);
+            const int valB = strB.toInt(&okB);
+
+            if (okA && okB) return valA < valB;
+
+            return strA < strB;
         });
     }
 
     return newRecords;
 }
+
 
 Database& Database::getInstance()
 {
@@ -136,4 +146,10 @@ std::vector<Record> Database::getRecordsByPattern(Record pattern) const
         flag *= item.getMasterFullName().contains(pattern.getMasterFullName()) || pattern.getMasterFullName() == QString();
         //i too lazy to do it
     }
+}
+
+void Database::setStatus(const int id, const QString &status)
+{
+    dataStore[id - 1].setStatus(status);
+    saveDatabase();
 }

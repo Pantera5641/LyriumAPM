@@ -42,4 +42,6 @@ class Database
     [[nodiscard]] Record* getRecordById(int id) const;
 
     [[nodiscard]] std::vector<Record> getRecordsByPattern(Record pattern) const;
+
+    void setStatus(int id, const QString& status);
 };

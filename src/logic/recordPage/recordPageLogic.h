@@ -7,7 +7,8 @@ class RecordPageLogic : public QObject
     public:
     explicit RecordPageLogic(QObject *parent = nullptr) : QObject(parent) {};
 
-    Q_INVOKABLE static void addRecordInDataBase(
+    Q_INVOKABLE
+    static void addRecordInDataBase(
     const QString &clientFullName,
     const QString &phoneNumber,
     const QString &email,
@@ -16,4 +17,7 @@ class RecordPageLogic : public QObject
     const QString &comment,
     const QString &masterFullName,
     const QString &serviceProvided);
+
+    Q_INVOKABLE
+    static QString getPrice(const QString& serviceProvided);
 };
