@@ -99,16 +99,28 @@ int Record::getRepairAmount() const {return repairAmount;}
 
 std::chrono::year_month_day Record::getVisitDate() const {return visitDate;}
 
-QString Record::getVisitDateStr() const
+QString Record::getVisitDateYMN() const
 {
-    const QString data
-    {
-        QString::number(static_cast<unsigned>(this->visitDate.day())) + '.' +
-        QString::number(static_cast<unsigned>(this->visitDate.month())) + '.' +
-        QString::number(static_cast<int>(this->visitDate.year()))
-    };
+    QString year {QString::number(static_cast<int>(this->visitDate.year()))};
+    QString month {QString::number(static_cast<unsigned>(this->visitDate.month()))};
+    QString day {QString::number(static_cast<unsigned>(this->visitDate.day()))};
 
-    return data;
+    if (month.size() != 2) month = '0' + month;
+    if (day.size() != 2) day = '0' + day;
+
+    return year + '.' + month + '.' + day;
+}
+
+QString Record::getVisitDateDMY() const
+{
+    QString year {QString::number(static_cast<int>(this->visitDate.year()))};
+    QString month {QString::number(static_cast<unsigned>(this->visitDate.month()))};
+    QString day {QString::number(static_cast<unsigned>(this->visitDate.day()))};
+
+    if (month.size() != 2) month = '0' + month;
+    if (day.size() != 2) day = '0' + day;
+
+    return day + '.' + month + '.' + year;
 }
 
 QString Record::getStatus() const {return status;}
@@ -125,7 +137,7 @@ QString Record::getFieldByTag(const QString& tag) const
     if (tag == "master_full_name") return this->masterFullName;
     if (tag == "service_provided") return this->serviceProvided;
     if (tag == "repair_amount") return QString::number(this->repairAmount);
-    if (tag == "visit_date") return getVisitDateStr();
+    if (tag == "visit_date") return getVisitDateYMN();
     if (tag == "status") return this->status;
 
     throw std::runtime_error("Unknown tag");
@@ -157,5 +169,46 @@ QString Record::toString() const
 {
     return QString::number(this->id) + ',' + this->clientFullName + ',' + this->phoneNumber + ',' + this->email + ',' +
         this->carBrandName + ',' + this->carModel + ',' + this->comment + ',' + this->masterFullName + ',' +
-            this->serviceProvided + ',' + QString::number(this->repairAmount) + ',' + getVisitDateStr() + ',' + this->status;
+            this->serviceProvided + ',' + QString::number(this->repairAmount) + ',' + getVisitDateYMN() + ',' + this->status;
+}
+
+SimpleRecord Record::toSimpleRecord() const
+{
+    SimpleRecord simpleRecord {};
+
+    simpleRecord.id = QString::number(this->id);
+
+    simpleRecord.clientFullName = this->clientFullName;
+
+    const auto clientNameTokens {this->clientFullName.split(' ')};
+    simpleRecord.clientShortName = clientNameTokens.at(0) + " " +
+        clientNameTokens.at(1).at(0) + ". " + clientNameTokens.at(2).at(0) + ".";
+
+    simpleRecord.phoneNumber = this->phoneNumber;
+
+    simpleRecord.email = this->email;
+
+    simpleRecord.carBrand = Utils::tagToName("brandList.txt", this->carBrandName);
+
+    simpleRecord.carModel = this->carModel;
+
+    simpleRecord.comment = this->comment;
+    simpleRecord.comment.replace("\\n", "\n");
+
+    simpleRecord.masterFullName = Utils::tagToName("employeeList.txt", this->masterFullName);
+
+    const auto masterNameTokens {simpleRecord.masterFullName.split(' ')};
+    simpleRecord.masterShortName = masterNameTokens.at(0) + " " +
+        masterNameTokens.at(1).at(0) + ". " + masterNameTokens.at(2).at(0) + ".";
+
+    //tags
+    simpleRecord.serviceProvided = this->serviceProvided;
+
+    simpleRecord.price = QString::number(this->repairAmount) + "₽";
+
+    simpleRecord.status = Utils::tagToName("statusList.txt", this->status);
+
+    simpleRecord.date = getVisitDateDMY();
+
+    return simpleRecord;
 }

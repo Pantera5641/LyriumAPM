@@ -7,6 +7,9 @@
 #include <fstream>
 #include <map>
 
+#include "../utils/utils.h"
+#include "simpleRecord.h"
+
 
 struct Record
 {
@@ -89,7 +92,10 @@ struct Record
     std::chrono::year_month_day getVisitDate() const;
 
     [[nodiscard]]
-    QString getVisitDateStr() const;
+    QString getVisitDateYMN() const;
+
+    [[nodiscard]]
+    QString getVisitDateDMY() const;
 
     [[nodiscard]]
     QString getStatus() const;
@@ -103,4 +109,7 @@ struct Record
 
     [[nodiscard]]
     QString toString() const;
+
+    [[nodiscard]]
+    SimpleRecord toSimpleRecord() const;
 };
