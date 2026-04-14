@@ -1,14 +1,14 @@
 ﻿#pragma once
 #include <QAbstractListModel>
 
-#include "shortRecord.h"
+#include "../../../database/simpleRecord.h"
 #include "../../../database/database.h"
 
 
 class DatabaseModel : public QAbstractListModel
 {
     private:
-    QList<ShortRecord> records {};
+    QList<SimpleRecord> records {};
 
     Q_OBJECT
     public:
@@ -23,6 +23,11 @@ class DatabaseModel : public QAbstractListModel
     [[nodiscard]]
     QHash<int, QByteArray> roleNames() const override;
 
+    void update();
+
     Q_INVOKABLE
-    void updateDatabase(const QString& sortTag, const QString& search);
+    void update(const QString& sortTag, const QString& search);
+
+    Q_INVOKABLE
+    static void setStatus(const QString& id, const QString& status);
 };
