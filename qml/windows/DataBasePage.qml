@@ -22,67 +22,52 @@ Item {
         // === ВЕРХНЯЯ ПАНЕЛЬ УПРАВЛЕНИЯ ===
         Row {
             width: parent.width
-            padding: 20
-            spacing: 50
+            padding: 30
+            spacing: 55
 
             // Блок Сортировки
             Row {
                 spacing: 15
-                anchors.verticalCenter: parent.verticalCenter
 
                 Text {
                     text: "Сортировка"
                     color: "#8a2be2"
                     font.bold: true
                     font.pixelSize: 16
-                    verticalAlignment: Text.AlignVCenter
+                    anchors.verticalCenter: parent.verticalCenter
                 }
 
                 BaseComboBox {
                     model: sortTagModel
                     textRole: "name"
-                    width: 300
+                    width: 250
                     height: 45
                 }
-
             }
-
 
             // Блок Поиска
             Row {
                 spacing: 15
-                anchors.verticalCenter: parent.verticalCenter
 
                 Text {
                     text: "Поиск"
-                    color: "#ffffff"
-                    font.pixelSize: 14
-                    verticalAlignment: Text.AlignVCenter
+                    color: "#8a2be2"
+                    font.bold: true
+                    font.pixelSize: 16
+                    anchors.verticalCenter: parent.verticalCenter
                 }
 
-                TextField {
+                BaseTextField {
                     id: searchField
                     placeholderText: "Начните печатать..."
-                    width: 250
-                    height: 35
-
-                    color: "#d05ce3"
-                    placeholderTextColor: "#555555"
-                    leftPadding: 10
-                    verticalAlignment: Text.AlignVCenter
-
-                    background: Rectangle {
-                        color: "#000000"
-                        border.color: "#8a2be2"
-                        border.width: 2
-                        radius: 8
-                    }
+                    width: 310
+                    height: 45
                 }
             }
         }
 
         // === ТАБЛИЦА ===
-        // Контейнер для рамки (фиолетовый фон)
+        // Контейнер для рамки
         Rectangle {
             width: 804
             height: 454
@@ -91,7 +76,7 @@ Item {
             color: "#8a2be2"
             radius: 17
 
-            // Внутренняя таблица (черная)
+            // Внутренняя таблица
             Rectangle {
                 anchors.centerIn: parent
                 width: 800
@@ -99,7 +84,7 @@ Item {
 
                 color: "#000000"
                 radius: 15
-                clip: true // Обрезаем содержимое по скругленным углам
+                clip: true
 
                 Column {
                     anchors.fill: parent
@@ -121,41 +106,101 @@ Item {
                             anchors.fill: parent
                             z: 10
 
-                            // Ширины подогнаны под 800px: 60+200+120+140+130+150 = 800
-                            Item {
-                                width: 60; height: parent.height
+                            // ID
+                            Rectangle {
+                                width: 50
+                                height: parent.height
+                                color: "transparent"
                                 Text {
-                                    text: "ID"; color: "#FFFFFF"; font.bold: true; font.pixelSize: 14; anchors.centerIn: parent
+                                    text: "ID"
+                                    color: "#FFFFFF"
+                                    font.bold: true
+                                    font.pixelSize: 14
+                                    anchors.centerIn: parent
                                 }
                             }
-                            Item {
-                                width: 200; height: parent.height
+
+                            // Заказчик
+                            Rectangle {
+                                width: 160
+                                height: parent.height
+                                color: "transparent"
                                 Text {
-                                    text: "ФИО"; color: "#FFFFFF"; font.bold: true; font.pixelSize: 14; anchors.centerIn: parent
+                                    text: "Заказчик"
+                                    color: "#FFFFFF"
+                                    font.bold: true
+                                    font.pixelSize: 14
+                                    anchors.centerIn: parent
                                 }
                             }
-                            Item {
-                                width: 120; height: parent.height
+
+                            // Дата
+                            Rectangle {
+                                width: 100
+                                height: parent.height
+                                color: "transparent"
                                 Text {
-                                    text: "Дата"; color: "#FFFFFF"; font.bold: true; font.pixelSize: 14; anchors.centerIn: parent
+                                    text: "Дата"
+                                    color: "#FFFFFF"
+                                    font.bold: true
+                                    font.pixelSize: 14
+                                    anchors.centerIn: parent
                                 }
                             }
-                            Item {
-                                width: 140; height: parent.height
+
+                            // Марка
+                            Rectangle {
+                                width: 140
+                                height: parent.height
+                                color: "transparent"
                                 Text {
-                                    text: "Марка"; color: "#FFFFFF"; font.bold: true; font.pixelSize: 14; anchors.centerIn: parent
+                                    text: "Марка"
+                                    color: "#FFFFFF"
+                                    font.bold: true
+                                    font.pixelSize: 14
+                                    anchors.centerIn: parent
                                 }
                             }
-                            Item {
-                                width: 130; height: parent.height
+
+                            // Мастер
+                            Rectangle {
+                                width: 100
+                                height: parent.height
+                                color: "transparent"
                                 Text {
-                                    text: "Цена"; color: "#FFFFFF"; font.bold: true; font.pixelSize: 14; anchors.centerIn: parent
+                                    text: "Мастер"
+                                    color: "#FFFFFF"
+                                    font.bold: true
+                                    font.pixelSize: 14
+                                    anchors.centerIn: parent
                                 }
                             }
-                            Item {
-                                width: 150; height: parent.height
+
+                            // Цена
+                            Rectangle {
+                                width: 100
+                                height: parent.height
+                                color: "transparent"
                                 Text {
-                                    text: "Статус"; color: "#FFFFFF"; font.bold: true; font.pixelSize: 14; anchors.centerIn: parent
+                                    text: "Цена"
+                                    color: "#FFFFFF"
+                                    font.bold: true
+                                    font.pixelSize: 14
+                                    anchors.centerIn: parent
+                                }
+                            }
+
+                            // Статус
+                            Rectangle {
+                                width: 150
+                                height: parent.height
+                                color: "transparent"
+                                Text {
+                                    text: "Статус"
+                                    color: "#FFFFFF"
+                                    font.bold: true
+                                    font.pixelSize: 14
+                                    anchors.centerIn: parent
                                 }
                             }
                         }
@@ -163,13 +208,15 @@ Item {
 
                     // --- СПИСОК ДАННЫХ ---
                     ScrollView {
+                        id: scrollView
                         width: parent.width
                         height: parent.height - 40
                         clip: true
+                        contentWidth: width
 
                         Column {
                             id: rootColumn
-                            width: parent.width
+                            width: scrollView.width
                             spacing: 0
 
                             property var dataList: databaseModel
@@ -177,107 +224,169 @@ Item {
                             Repeater {
                                 model: parent.dataList
 
-                                delegate: Row {
+                                delegate: Item {
                                     width: rootColumn.width
                                     height: 40
 
+                                    // Фон строки
                                     Rectangle {
                                         anchors.fill: parent
                                         color: (index % 2 === 0) ? "#050505" : "#000000"
                                     }
 
-                                    // ID
-                                    Item {
-                                        width: 60; height: parent.height
-                                        Text {
-                                            text: idRole; color: "#d05ce3"; font.pixelSize: 14; anchors.centerIn: parent
-                                        }
-                                    }
-                                    // ФИО
-                                    Item {
-                                        width: 200; height: parent.height
-                                        Text {
-                                            text: username; color: "#d05ce3"; font.pixelSize: 14; anchors.centerIn: parent; elide: Text.ElideRight
-                                        }
-                                    }
-                                    // Дата
-                                    Item {
-                                        width: 120; height: parent.height
-                                        Text {
-                                            text: date; color: "#d05ce3"; font.pixelSize: 14; anchors.centerIn: parent
-                                        }
-                                    }
-                                    // Марка
-                                    Item {
-                                        width: 140; height: parent.height
-                                        Text {
-                                            text: carBrand; color: "#d05ce3"; font.pixelSize: 14; anchors.centerIn: parent; elide: Text.ElideRight
-                                        }
-                                    }
-                                    // Цена
-                                    Item {
-                                        width: 130; height: parent.height
-                                        Text {
-                                            text: price; color: "#d05ce3"; font.pixelSize: 14; anchors.centerIn: parent
-                                        }
-                                    }
+                                    Row {
+                                        anchors.fill: parent
+                                        spacing: 0
 
-                                    // === СТАТУС С ВЫБОРОМ ===
-                                    Item {
-                                        width: 150; height: parent.height
-
-                                        ComboBox {
-                                            id: status
-                                            model: [" ", "В работе", "Готов", "Отменен"]
-                                            textRole: "name"
-                                            width: 100
-                                            height: 45
-
-                                            background: Rectangle {
-                                                color: "#000000"
+                                        // ID
+                                        Rectangle {
+                                            width: 50
+                                            height: parent.height
+                                            color: "transparent"
+                                            Text {
+                                                text: idRole
+                                                color: "#d05ce3"
+                                                font.pixelSize: 14
+                                                anchors.centerIn: parent
                                             }
+                                        }
 
-                                            contentItem: Text {
-                                                leftPadding: 15
-                                                rightPadding: 40
-                                                text: parent.displayText
-
-                                                color: parent.currentIndex === 0 ? "#8a2be2" : "#d05ce3"
-
-                                                font.pixelSize: 16
-
+                                        // Заказчик
+                                        Rectangle {
+                                            width: 160
+                                            height: parent.height
+                                            color: "transparent"
+                                            Text {
+                                                text: clientFullName
+                                                color: "#d05ce3"
+                                                font.pixelSize: 14
+                                                anchors.fill: parent
+                                                horizontalAlignment: Text.AlignHCenter
                                                 verticalAlignment: Text.AlignVCenter
                                                 elide: Text.ElideRight
+                                                leftPadding: 5
+                                                rightPadding: 5
                                             }
+                                        }
 
-                                            indicator: Canvas {
-                                                x: parent.width - width - 15
-                                                y: parent.height / 2 - height / 2
-                                                width: 12
-                                                height: 8
-                                                contextType: "2d"
+                                        // Дата
+                                        Rectangle {
+                                            width: 100
+                                            height: parent.height
+                                            color: "transparent"
+                                            Text {
+                                                text: date
+                                                color: "#d05ce3"
+                                                font.pixelSize: 14
+                                                anchors.centerIn: parent
+                                            }
+                                        }
 
-                                                onPaint: {
-                                                    context.reset()
-                                                    context.moveTo(0, 0)
-                                                    context.lineTo(width, 0)
-                                                    context.lineTo(width / 2, height)
-                                                    context.closePath()
-                                                    context.fillStyle = "#8a2be2"
-                                                    context.fill()
+                                        // Марка
+                                        Rectangle {
+                                            width: 140
+                                            height: parent.height
+                                            color: "transparent"
+                                            Text {
+                                                text: carBrand
+                                                color: "#d05ce3"
+                                                font.pixelSize: 14
+                                                anchors.fill: parent
+                                                horizontalAlignment: Text.AlignHCenter
+                                                verticalAlignment: Text.AlignVCenter
+                                                elide: Text.ElideRight
+                                                leftPadding: 5
+                                                rightPadding: 5
+                                            }
+                                        }
+
+                                        // Мастер
+                                        Rectangle {
+                                            width: 100
+                                            height: parent.height
+                                            color: "transparent"
+                                            Text {
+                                                text: masterFullName
+                                                color: "#d05ce3"
+                                                font.pixelSize: 14
+                                                anchors.fill: parent
+                                                horizontalAlignment: Text.AlignHCenter
+                                                verticalAlignment: Text.AlignVCenter
+                                                elide: Text.ElideRight
+                                                leftPadding: 5
+                                                rightPadding: 5
+                                            }
+                                        }
+
+                                        // Цена
+                                        Rectangle {
+                                            width: 100
+                                            height: parent.height
+                                            color: "transparent"
+                                            Text {
+                                                text: price
+                                                color: "#d05ce3"
+                                                font.pixelSize: 14
+                                                anchors.centerIn: parent
+                                            }
+                                        }
+
+                                        // Статус
+                                        Rectangle {
+                                            width: 150
+                                            height: parent.height
+                                            color: "transparent"
+
+                                            ComboBox {
+                                                id: status
+                                                model: [" ", "В работе", "Готов", "Отменен"]
+                                                width: 130
+                                                height: 35
+                                                anchors.centerIn: parent
+
+                                                background: Rectangle {
+                                                    color: "transparent"
                                                 }
 
+                                                contentItem: Text {
+                                                    leftPadding: 10
+                                                    rightPadding: 25
+                                                    text: parent.displayText
+                                                    color: parent.currentIndex === 0 ? "#8a2be2" : "#d05ce3"
+                                                    font.pixelSize: 14
+                                                    horizontalAlignment: Text.AlignHCenter
+                                                    verticalAlignment: Text.AlignVCenter
+                                                    elide: Text.ElideRight
+                                                }
+
+                                                indicator: Canvas {
+                                                    x: parent.width - width - 8
+                                                    y: parent.height / 2 - height / 2
+                                                    width: 10
+                                                    height: 6
+                                                    contextType: "2d"
+
+                                                    onPaint: {
+                                                        context.reset()
+                                                        context.moveTo(0, 0)
+                                                        context.lineTo(width, 0)
+                                                        context.lineTo(width / 2, height)
+                                                        context.closePath()
+                                                        context.fillStyle = "#8a2be2"
+                                                        context.fill()
+                                                    }
+                                                }
                                             }
                                         }
+                                    }
 
-                                        // ============================
-
-                                        Rectangle {
-                                            anchors.bottom: parent.bottom
-                                            width: parent.width
-                                            height: 1
-                                            color: "#333333"
-                                        }
+                                    // Разделительная линия
+                                    Rectangle {
+                                        anchors.bottom: parent.bottom
+                                        width: parent.width
+                                        height: 1
+                                        color: "#333333"
+                                        z: 1
                                     }
                                 }
                             }
