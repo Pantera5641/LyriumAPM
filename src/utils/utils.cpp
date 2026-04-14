@@ -21,3 +21,14 @@ QList<TagItem> Utils::parseToModel(const QString &filename)
 
     return items;
 }
+
+QString Utils::tagToName(const QString &filename, const QString &tag)
+{
+    if (tag == "none") return tag;
+
+    const auto tagItems = parseToModel(filename);
+    for (const auto &item : tagItems)
+        if (item.tag == tag) return item.name;
+
+    return tag;
+}
