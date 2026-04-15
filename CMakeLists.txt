@@ -32,6 +32,7 @@ qt_add_executable(appLyriumAPM
         src/database/simpleRecord.cpp
 )
 file(COPY ${CMAKE_SOURCE_DIR}/data DESTINATION ${CMAKE_BINARY_DIR})
+file(COPY ${CMAKE_SOURCE_DIR}/logo.png DESTINATION ${CMAKE_BINARY_DIR})
 set(QML_DIR "${CMAKE_SOURCE_DIR}/qml")
 set(RES_DIR "${CMAKE_SOURCE_DIR}/resources")
 
