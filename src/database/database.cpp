@@ -18,7 +18,7 @@ void Database::initializeDatabase()
     while (!stream.atEnd())
     {
         QString line = stream.readLine();
-        QStringList tokens {line.split(',')};
+        QStringList tokens {line.split(';')};
         QStringList dataTokens {tokens.at(10).split('.')};
         std::chrono::year_month_day data
         {
@@ -114,7 +114,8 @@ Database* Database::addRecord(
         comment,
         masterFullName,
         serviceProvided,
-        std::chrono::floor<std::chrono::days>(std::chrono::system_clock::now()));
+        std::chrono::floor<std::chrono::days>(std::chrono::system_clock::now()),
+        status);
     dataStore.push_back(record);
     saveDatabase();
     return this;
@@ -135,4 +136,9 @@ void Database::setStatus(const int id, const QString &status)
 {
     dataStore[id - 1].setStatus(status);
     saveDatabase();
+}
+
+void Database::setValueByIdTag(const int id, const QString &tag, const QString &status)
+{
+    dataStore[id - 1].setValueByTag(tag, status);
 }

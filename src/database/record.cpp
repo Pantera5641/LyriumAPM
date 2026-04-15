@@ -38,7 +38,8 @@ Record::Record(
     const QString& comment,
     const QString& masterFullName,
     const QString& serviceProvided,
-    const std::chrono::year_month_day& visitDate) {
+    const std::chrono::year_month_day& visitDate,
+    const QString& status) {
     this->id = id;
     this->clientFullName = clientFullName;
     this->phoneNumber = phoneNumber;
@@ -49,8 +50,8 @@ Record::Record(
     this->masterFullName = masterFullName;
     this->serviceProvided = serviceProvided;
     this->visitDate = visitDate;
-    this->status = "accepted";
-    for (auto item : serviceProvided.split(';'))
+    this->status = status;
+    for (auto item : serviceProvided.split(','))
         updateRepairAmount(item);
 }
 
@@ -149,6 +150,40 @@ Record* Record::setStatus(const QString& status)
     return this;
 }
 
+Record* Record::setDate(const QString& date)
+{
+    QList<int> ymdTokens {};
+    for (const auto token : date.split('.'))
+        ymdTokens.append(token.toInt());
+
+    std::chrono::year_month_day ymd
+    {
+        std::chrono::year(ymdTokens.at(0)),
+        std::chrono::month(ymdTokens.at(1)),
+        std::chrono::day(ymdTokens.at(2))
+    };
+    this->visitDate = ymd;
+    return this;
+}
+
+void Record::setValueByTag(const QString& tag, const QString& value)
+{
+    if (tag == "id") this->id = value.toInt();
+    if (tag == "client_full_name") this->clientFullName;
+    if (tag == "phone_number") this->phoneNumber = value;
+    if (tag == "email") this->email = value;
+    if (tag == "car_brand_name") this->carBrandName = value;
+    if (tag == "car_model") this->carModel = value;
+    if (tag == "comment") this->comment = value;
+    if (tag == "master_full_name") this->masterFullName = value;
+    if (tag == "service_provided") this->serviceProvided = value;
+    if (tag == "repair_amount") this->repairAmount = value.toInt();
+    if (tag == "visit_date") setDate(value);
+    if (tag == "status") this->status = value;
+
+    throw std::runtime_error("Unknown tag");
+}
+
 Record* Record::addService(const QString& serviceProvided)
 {
     if (this->serviceProvided.isEmpty())
@@ -156,7 +191,7 @@ Record* Record::addService(const QString& serviceProvided)
 
     if (this->serviceProvided.indexOf(serviceProvided) == -1)
     {
-        this->serviceProvided += ";" + serviceProvided;
+        this->serviceProvided += "," + serviceProvided;
     }
     else
     {
@@ -167,9 +202,9 @@ Record* Record::addService(const QString& serviceProvided)
 
 QString Record::toString() const
 {
-    return QString::number(this->id) + ',' + this->clientFullName + ',' + this->phoneNumber + ',' + this->email + ',' +
-        this->carBrandName + ',' + this->carModel + ',' + this->comment + ',' + this->masterFullName + ',' +
-            this->serviceProvided + ',' + QString::number(this->repairAmount) + ',' + getVisitDateYMN() + ',' + this->status;
+    return QString::number(this->id) + ';' + this->clientFullName + ';' + this->phoneNumber + ';' + this->email + ';' +
+        this->carBrandName + ';' + this->carModel + ';' + this->comment + ';' + this->masterFullName + ';' +
+            this->serviceProvided + ';' + QString::number(this->repairAmount) + ';' + getVisitDateYMN() + ';' + this->status;
 }
 
 SimpleRecord Record::toSimpleRecord() const
