@@ -25,6 +25,7 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("servicesModel", createModel("servicesList.txt"));
     engine.rootContext()->setContextProperty("employeeModel", createModel("employeeList.txt"));
     engine.rootContext()->setContextProperty("sortTagModel", createModel("sortTagList.txt"));
+    engine.rootContext()->setContextProperty("statusModel", createModel("statusList.txt"));
 
     const auto databaseModel =  new DatabaseModel(&engine);
     engine.rootContext()->setContextProperty("databaseModel", databaseModel);
@@ -39,7 +40,7 @@ int main(int argc, char *argv[])
 
     Database& database {Database::getInstance()};
     database.initializeDatabase();
-    databaseModel->updateDatabase("none", "");
+    databaseModel->update();
 
     return app.exec();
 }

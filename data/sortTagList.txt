@@ -1,4 +1,4 @@
-﻿None;none
-Дата;date
-Цена;price
-Имя заказчика;client_name
+﻿Не сортировать;none
+Дата;visit_date
+Цена;repair_amount
+Имя заказчика;client_full_name

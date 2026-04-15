@@ -13,4 +13,6 @@ class Utils
 {
     public:
     static QList<TagItem> parseToModel(const QString &filename);
+
+    static QString tagToName(const QString &filename, const QString &tag);
 };

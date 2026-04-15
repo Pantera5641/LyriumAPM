@@ -38,10 +38,15 @@ Item {
                 }
 
                 BaseComboBox {
+                    id: sortBox
                     model: sortTagModel
                     textRole: "name"
                     width: 250
                     height: 45
+
+                    onActivated: {
+                        databaseModel.update(sortTagModel.getTag(sortBox.currentIndex), searchField.text)
+                    }
                 }
             }
 
@@ -62,6 +67,10 @@ Item {
                     placeholderText: "Начните печатать..."
                     width: 310
                     height: 45
+
+                    onTextChanged: {
+                        databaseModel.update(sortTagModel.getTag(sortBox.currentIndex), searchField.text)
+                    }
                 }
             }
         }
@@ -213,6 +222,7 @@ Item {
                         height: parent.height - 40
                         clip: true
                         contentWidth: width
+                        ScrollBar.vertical.policy: ScrollBar.AlwaysOff
 
                         Column {
                             id: rootColumn
@@ -257,7 +267,7 @@ Item {
                                             height: parent.height
                                             color: "transparent"
                                             Text {
-                                                text: username
+                                                text: clientShortName
                                                 color: "#d05ce3"
                                                 font.pixelSize: 14
                                                 anchors.fill: parent
@@ -306,7 +316,7 @@ Item {
                                             height: parent.height
                                             color: "transparent"
                                             Text {
-                                                text: master
+                                                text: masterShortName
                                                 color: "#d05ce3"
                                                 font.pixelSize: 14
                                                 anchors.fill: parent
@@ -337,12 +347,21 @@ Item {
                                             height: parent.height
                                             color: "transparent"
 
-                                            ComboBox {
-                                                id: status
-                                                model: [" ", "В работе", "Готов", "Отменен"]
+                                            BaseComboBox {
+                                                id: statusBox
+                                                model: statusModel
+                                                textRole: "name"
                                                 width: 130
                                                 height: 35
                                                 anchors.centerIn: parent
+
+                                                Component.onCompleted: {
+                                                    currentIndex = find(status)
+                                                }
+
+                                                onActivated: {
+                                                    databaseModel.setStatus(idRole, statusModel.getTag(statusBox.currentIndex))
+                                                }
 
                                                 background: Rectangle {
                                                     color: "transparent"
@@ -352,7 +371,7 @@ Item {
                                                     leftPadding: 10
                                                     rightPadding: 25
                                                     text: parent.displayText
-                                                    color: parent.currentIndex === 0 ? "#8a2be2" : "#d05ce3"
+                                                    color: "#d05ce3"
                                                     font.pixelSize: 14
                                                     horizontalAlignment: Text.AlignHCenter
                                                     verticalAlignment: Text.AlignVCenter

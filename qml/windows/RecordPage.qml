@@ -102,6 +102,10 @@ Item {
                 textRole: "name"
                 width: 415
                 height: 45
+
+                onActivated: {
+                    priceBox.text = recordPageLogic.getPrice(servicesModel.getTag(services.currentIndex)) + "₽"
+                }
             }
 
             // МАСТЕР
@@ -116,6 +120,7 @@ Item {
 
         // ПРИМЕРНАЯ ЦЕНА (только просмотр)
         BaseTextField {
+            id: priceBox
             placeholderText: "Примерная цена"
             readOnly: true
             width: 280
@@ -228,6 +233,7 @@ Item {
                         employeeModel.getTag(employee.currentIndex),
                         servicesModel.getTag(services.currentIndex)
                     )
+                    databaseModel.update()
                 }
             }
         }
