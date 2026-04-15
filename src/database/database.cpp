@@ -141,4 +141,5 @@ void Database::setStatus(const int id, const QString &status)
 void Database::setValueByIdTag(const int id, const QString &tag, const QString &status)
 {
     dataStore[id - 1].setValueByTag(tag, status);
+    saveDatabase();
 }
