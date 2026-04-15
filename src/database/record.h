@@ -56,7 +56,8 @@ struct Record
         const QString& comment,
         const QString& masterFullName,
         const QString& serviceProvided,
-        const std::chrono::year_month_day& visitDate);
+        const std::chrono::year_month_day& visitDate,
+        const QString& status);
 
     [[nodiscard]]
     int getId() const;
@@ -104,6 +105,10 @@ struct Record
     QString getFieldByTag(const QString& tag) const;
 
     Record* setStatus(const QString& status);
+
+    Record *setDate(const QString &date);
+
+    void setValueByTag(const QString &tag, const QString &value);
 
     Record* addService(const QString& serviceProvided);
 

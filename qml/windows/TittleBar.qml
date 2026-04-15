@@ -65,16 +65,6 @@ ColumnLayout {
 
                 imgHeight: 15
                 imgWidth: 15
-                imgSource: "../../resources/icon_maximize.png"
-                onClicked: window.showMaximized()
-            }
-
-            ImageButton {
-                height: titleBar.height
-                width: titleBar.height     
-
-                imgHeight: 15
-                imgWidth: 15
                 imgSource: "../../resources/icon_cross.png"
                 hoverColor: '#FF0000'
                 onClicked: Qt.quit()

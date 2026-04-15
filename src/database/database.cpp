@@ -18,7 +18,7 @@ void Database::initializeDatabase()
     while (!stream.atEnd())
     {
         QString line = stream.readLine();
-        QStringList tokens {line.split(',')};
+        QStringList tokens {line.split(';')};
         QStringList dataTokens {tokens.at(10).split('.')};
         std::chrono::year_month_day data
         {
@@ -114,7 +114,8 @@ Database* Database::addRecord(
         comment,
         masterFullName,
         serviceProvided,
-        std::chrono::floor<std::chrono::days>(std::chrono::system_clock::now()));
+        std::chrono::floor<std::chrono::days>(std::chrono::system_clock::now()),
+        status);
     dataStore.push_back(record);
     saveDatabase();
     return this;
@@ -131,25 +132,14 @@ Record* Database::getRecordById(const int id) const
     return nullptr;
 }
 
-std::vector<Record> Database::getRecordsByPattern(Record pattern) const
-{
-    throw std::runtime_error("Not implemented");
-    std::vector<Record> records;
-    for (auto item : dataStore)
-    {
-        bool flag {true};
-        flag *= item.getClientFullName().contains(pattern.getClientFullName()) || pattern.getClientFullName() == QString();
-        flag *= item.getPhoneNumber().contains(pattern.getPhoneNumber()) || pattern.getPhoneNumber() == QString();
-        flag *= item.getEmail().contains(pattern.getEmail()) || pattern.getEmail() == QString();
-        flag *= item.getCarBrandName().contains(pattern.getCarBrandName()) || pattern.getCarBrandName() == QString();
-        flag *= item.getCarModel().contains(pattern.getCarModel()) || pattern.getCarModel() == QString();
-        flag *= item.getMasterFullName().contains(pattern.getMasterFullName()) || pattern.getMasterFullName() == QString();
-        //i too lazy to do it
-    }
-}
-
 void Database::setStatus(const int id, const QString &status)
 {
     dataStore[id - 1].setStatus(status);
+    saveDatabase();
+}
+
+void Database::setValueByIdTag(const int id, const QString &tag, const QString &status)
+{
+    dataStore[id - 1].setValueByTag(tag, status);
     saveDatabase();
 }

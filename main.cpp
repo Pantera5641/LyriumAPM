@@ -11,8 +11,8 @@
 
 int main(int argc, char *argv[])
 {
-    QGuiApplication app(argc, argv);
-    app.setWindowIcon(QIcon("resources/logo.png"));
+    const QGuiApplication app(argc, argv);
+    app.setWindowIcon(QIcon(QCoreApplication::applicationDirPath() + "/logo.png"));
 
     QQmlApplicationEngine engine;
 
