@@ -107,3 +107,9 @@ void DatabaseModel::setStatus(const QString &id, const QString &status)
     Database& database = Database::getInstance();
     database.setStatus(id.toInt(), status);
 }
+
+void DatabaseModel::setValueByIdTag(const QString &id, const QString &tag, const QString &value)
+{
+    Database& database = Database::getInstance();
+    database.setValueByIdTag(id.toInt(), tag, value);
+}
