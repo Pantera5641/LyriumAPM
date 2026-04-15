@@ -131,23 +131,6 @@ Record* Database::getRecordById(const int id) const
     return nullptr;
 }
 
-std::vector<Record> Database::getRecordsByPattern(Record pattern) const
-{
-    throw std::runtime_error("Not implemented");
-    std::vector<Record> records;
-    for (auto item : dataStore)
-    {
-        bool flag {true};
-        flag *= item.getClientFullName().contains(pattern.getClientFullName()) || pattern.getClientFullName() == QString();
-        flag *= item.getPhoneNumber().contains(pattern.getPhoneNumber()) || pattern.getPhoneNumber() == QString();
-        flag *= item.getEmail().contains(pattern.getEmail()) || pattern.getEmail() == QString();
-        flag *= item.getCarBrandName().contains(pattern.getCarBrandName()) || pattern.getCarBrandName() == QString();
-        flag *= item.getCarModel().contains(pattern.getCarModel()) || pattern.getCarModel() == QString();
-        flag *= item.getMasterFullName().contains(pattern.getMasterFullName()) || pattern.getMasterFullName() == QString();
-        //i too lazy to do it
-    }
-}
-
 void Database::setStatus(const int id, const QString &status)
 {
     dataStore[id - 1].setStatus(status);
