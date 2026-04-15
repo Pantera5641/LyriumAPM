@@ -3,9 +3,16 @@ import QtQuick.Controls
 
 ComboBox {
     id: baseComboBox
+    property bool error: false
+
+    onActivated: {
+        if (currentIndex !== 0 && error)
+            error = false;
+    }
+
     background: Rectangle {
         color: "#000000"
-        border.color: "#8a2be2"
+        border.color: error ? "#ff0000" : "#8a2be2"
         border.width: 2
         radius: 12
     }
@@ -15,7 +22,9 @@ ComboBox {
         rightPadding: 40
         text: parent.displayText
 
-        color: parent.currentIndex === 0 ? "#8a2be2" : "#d05ce3"
+        color: parent.currentIndex === 0
+            ? (error ? "#ff0000" : "#8a2be2")
+            : (error ? "#c60046" : "#d05ce3")
 
         font.pixelSize: 16
 
@@ -36,7 +45,7 @@ ComboBox {
             context.lineTo(width, 0)
             context.lineTo(width / 2, height)
             context.closePath()
-            context.fillStyle = "#8a2be2"
+            context.fillStyle = error ? "#ff0000" : "#8a2be2"
             context.fill()
         }
     }

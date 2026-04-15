@@ -23,6 +23,7 @@ class DatabaseModel : public QAbstractListModel
     [[nodiscard]]
     QHash<int, QByteArray> roleNames() const override;
 
+    Q_INVOKABLE
     void update();
 
     Q_INVOKABLE

@@ -223,6 +223,18 @@ Item {
                 }
 
                 onClicked: {
+                    let valid = true;
+                    valid = validateName(lastName) && valid;
+                    valid = validateName(firstName) && valid;
+                    valid = validateName(middleName) && valid;
+                    valid = validatePhone(phoneNumber)&& valid;
+                    valid = validateEmail(email) && valid;
+                    valid = validateComboBox(carBrand) && valid;
+                    valid = validateName(carModel) && valid;
+                    valid = validateComboBox(employee) && valid;
+                    valid = validateComboBox(services) && valid;
+                    if(!valid) return;
+
                     recordPageLogic.addRecordInDataBase(
                         lastName.text + " " + firstName.text + " " + middleName.text,
                         phoneNumber.text,
@@ -233,7 +245,58 @@ Item {
                         employeeModel.getTag(employee.currentIndex),
                         servicesModel.getTag(services.currentIndex)
                     )
+                    lastName.text = "";
+                    firstName.text = "";
+                    middleName.text = "";
+                    phoneNumber.text = "";
+                    email.text = "";
+                    carBrand.currentIndex = 0;
+                    carModel.text = "";
+                    comment.text = "";
+                    employee.currentIndex = 0;
+                    services.currentIndex = 0;
+                    priceBox.text = "";
                     databaseModel.update()
+                }
+
+                function validateName(name) {
+                    const re = /^[a-zA-Z0-9а-яА-ЯёЁ]+$/;
+                    if (name.text && re.test(name.text.trim())) {
+                        name.error = false;
+                        return true;
+                    }
+                    name.error = true;
+                    return false;
+                }
+
+                function validateComboBox(box)
+                {
+                    if (box.currentIndex !== 0) {
+                        box.error = false;
+                        return true;
+                    }
+                    box.error = true;
+                    return false;
+                }
+
+                function validatePhone(phone) {
+                    const re = /^(\+7|8)\s?\(?\d{3}\)?\s?\d{3}[-\s]?\d{2}[-\s]?\d{2}$/;
+                    if (phone.text && re.test(phone.text.trim())) {
+                        phone.error = false;
+                        return true;
+                    }
+                    phone.error = true;
+                    return false;
+                }
+
+                function validateEmail(email) {
+                    const re = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+                    if (email.text && re.test(email.text.trim())) {
+                        email.error = false;
+                        return true;
+                    }
+                    email.error = true;
+                    return false;
                 }
             }
         }
