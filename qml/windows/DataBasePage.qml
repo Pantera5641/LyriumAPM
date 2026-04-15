@@ -1,12 +1,54 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
+import QtQuick.Window 2.15
 
 Item {
     id: dataBasePage
     anchors.fill: parent
 
-    // Темный фон страницы
+    property var editWindow: null
+
+    function openEditWindow(orderData) {
+        var component = Qt.createComponent("EditWindow.qml")
+
+        if (component.status === Component.Ready) {
+            editWindow = component.createObject(dataBasePage, {
+                "orderData": orderData
+            })
+
+            editWindow.orderSaved.connect(function(updatedData) {
+                console.log("Сохранены данные:", JSON.stringify(updatedData))
+
+                databaseModel.updateRecord(
+                    updatedData.id,
+                    updatedData.clientName,
+                    updatedData.clientPhone,
+                    updatedData.clientEmail,
+                    updatedData.carBrand,
+                    updatedData.carModel,
+                    updatedData.serviceTag,
+                    updatedData.serviceName,
+                    updatedData.masterTag,
+                    updatedData.masterName,
+                    updatedData.date,
+                    updatedData.price,
+                    updatedData.statusTag,
+                    updatedData.status,
+                    updatedData.comment
+                )
+
+                databaseModel.update(sortTagModel.getTag(sortBox.currentIndex), searchField.text)
+
+                editWindow = null
+            })
+
+            editWindow.show()
+        } else {
+            console.error("Ошибка загрузки EditWindow.qml:", component.errorString())
+        }
+    }
+
     Rectangle {
         anchors.fill: parent
         color: "#121212"
@@ -18,17 +60,14 @@ Item {
         spacing: 20
         padding: 20
 
-
         // === ВЕРХНЯЯ ПАНЕЛЬ УПРАВЛЕНИЯ ===
         Row {
             width: parent.width
             padding: 30
             spacing: 55
 
-            // Блок Сортировки
             Row {
                 spacing: 15
-
                 Text {
                     text: "Сортировка"
                     color: "#8a2be2"
@@ -36,24 +75,20 @@ Item {
                     font.pixelSize: 16
                     anchors.verticalCenter: parent.verticalCenter
                 }
-
                 BaseComboBox {
                     id: sortBox
                     model: sortTagModel
                     textRole: "name"
                     width: 250
                     height: 45
-
                     onActivated: {
                         databaseModel.update(sortTagModel.getTag(sortBox.currentIndex), searchField.text)
                     }
                 }
             }
 
-            // Блок Поиска
             Row {
                 spacing: 15
-
                 Text {
                     text: "Поиск"
                     color: "#8a2be2"
@@ -61,13 +96,11 @@ Item {
                     font.pixelSize: 16
                     anchors.verticalCenter: parent.verticalCenter
                 }
-
                 BaseTextField {
                     id: searchField
                     placeholderText: "Начните печатать..."
                     width: 310
                     height: 45
-
                     onTextChanged: {
                         databaseModel.update(sortTagModel.getTag(sortBox.currentIndex), searchField.text)
                     }
@@ -76,21 +109,17 @@ Item {
         }
 
         // === ТАБЛИЦА ===
-        // Контейнер для рамки
         Rectangle {
-            width: 804
-            height: 454
+            width: 805
+            height: 455
             anchors.horizontalCenter: parent.horizontalCenter
-
             color: "#8a2be2"
             radius: 17
 
-            // Внутренняя таблица
             Rectangle {
                 anchors.centerIn: parent
                 width: 800
                 height: 450
-
                 color: "#000000"
                 radius: 15
                 clip: true
@@ -115,7 +144,6 @@ Item {
                             anchors.fill: parent
                             z: 10
 
-                            // ID
                             Rectangle {
                                 width: 50
                                 height: parent.height
@@ -129,7 +157,6 @@ Item {
                                 }
                             }
 
-                            // Заказчик
                             Rectangle {
                                 width: 160
                                 height: parent.height
@@ -143,7 +170,6 @@ Item {
                                 }
                             }
 
-                            // Дата
                             Rectangle {
                                 width: 100
                                 height: parent.height
@@ -157,7 +183,6 @@ Item {
                                 }
                             }
 
-                            // Марка
                             Rectangle {
                                 width: 140
                                 height: parent.height
@@ -171,7 +196,6 @@ Item {
                                 }
                             }
 
-                            // Мастер
                             Rectangle {
                                 width: 100
                                 height: parent.height
@@ -185,7 +209,6 @@ Item {
                                 }
                             }
 
-                            // Цена
                             Rectangle {
                                 width: 100
                                 height: parent.height
@@ -199,7 +222,6 @@ Item {
                                 }
                             }
 
-                            // Статус
                             Rectangle {
                                 width: 150
                                 height: parent.height
@@ -219,7 +241,7 @@ Item {
                     ScrollView {
                         id: scrollView
                         width: parent.width
-                        height: parent.height - 40
+                        height: parent.height - 50
                         clip: true
                         contentWidth: width
                         ScrollBar.vertical.policy: ScrollBar.AlwaysOff
@@ -228,7 +250,6 @@ Item {
                             id: rootColumn
                             width: scrollView.width
                             spacing: 0
-
                             property var dataList: databaseModel
 
                             Repeater {
@@ -238,7 +259,6 @@ Item {
                                     width: rootColumn.width
                                     height: 40
 
-                                    // Фон строки
                                     Rectangle {
                                         anchors.fill: parent
                                         color: (index % 2 === 0) ? "#050505" : "#000000"
@@ -248,20 +268,47 @@ Item {
                                         anchors.fill: parent
                                         spacing: 0
 
-                                        // ID
                                         Rectangle {
                                             width: 50
                                             height: parent.height
                                             color: "transparent"
+
                                             Text {
+                                                id: idText
                                                 text: idRole
-                                                color: "#d05ce3"
+                                                color: idMouseArea.containsMouse ? "#8a2be2" : "#d05ce3"
                                                 font.pixelSize: 14
+                                                font.underline: idMouseArea.containsMouse
                                                 anchors.centerIn: parent
+                                            }
+
+                                            MouseArea {
+                                                id: idMouseArea
+                                                anchors.fill: parent
+                                                cursorShape: Qt.PointingHandCursor
+                                                hoverEnabled: true
+
+                                                onClicked: {
+                                                    var orderData = {
+                                                        id: idRole,
+                                                        clientName: clientFullName,
+                                                        clientPhone: phoneNumber,
+                                                        clientEmail: email,
+                                                        carBrand: carBrand,
+                                                        carModel: carModel,
+                                                        serviceName: serviceProvided,
+                                                        masterName: masterFullName,
+                                                        date: date,
+                                                        price: price,
+                                                        status: status,
+                                                        comment: comment
+                                                    }
+                                                    console.log("Opening edit window with data:", JSON.stringify(orderData))
+                                                    dataBasePage.openEditWindow(orderData)
+                                                }
                                             }
                                         }
 
-                                        // Заказчик
                                         Rectangle {
                                             width: 160
                                             height: parent.height
@@ -279,7 +326,6 @@ Item {
                                             }
                                         }
 
-                                        // Дата
                                         Rectangle {
                                             width: 100
                                             height: parent.height
@@ -292,7 +338,6 @@ Item {
                                             }
                                         }
 
-                                        // Марка
                                         Rectangle {
                                             width: 140
                                             height: parent.height
@@ -310,7 +355,6 @@ Item {
                                             }
                                         }
 
-                                        // Мастер
                                         Rectangle {
                                             width: 100
                                             height: parent.height
@@ -328,7 +372,6 @@ Item {
                                             }
                                         }
 
-                                        // Цена
                                         Rectangle {
                                             width: 100
                                             height: parent.height
@@ -341,7 +384,6 @@ Item {
                                             }
                                         }
 
-                                        // Статус
                                         Rectangle {
                                             width: 150
                                             height: parent.height
@@ -384,7 +426,6 @@ Item {
                                                     width: 10
                                                     height: 6
                                                     contextType: "2d"
-
                                                     onPaint: {
                                                         context.reset()
                                                         context.moveTo(0, 0)
@@ -399,7 +440,6 @@ Item {
                                         }
                                     }
 
-                                    // Разделительная линия
                                     Rectangle {
                                         anchors.bottom: parent.bottom
                                         width: parent.width
