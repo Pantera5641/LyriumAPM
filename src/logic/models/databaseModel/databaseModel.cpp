@@ -113,3 +113,33 @@ void DatabaseModel::setValueByIdTag(const QString &id, const QString &tag, const
     Database& database = Database::getInstance();
     database.setValueByIdTag(id.toInt(), tag, value);
 }
+
+QVariantMap DatabaseModel::getById(const int id)
+{
+    for (const auto& record : records)
+    {
+        if (record.id.toInt() == id)
+        {
+            QVariantMap map {};
+
+            map["idRole"] = record.id;
+            map["clientFullName"] = record.clientFullName;
+            map["clientShortName"] = record.clientShortName;
+            map["phoneNumber"] = record.phoneNumber;
+            map["email"] = record.email;
+            map["carBrand"] = record.carBrand;
+            map["carModel"] = record.carModel;
+            map["comment"] = record.comment;
+            map["masterFullName"] = record.masterFullName;
+            map["masterShortName"] = record.masterShortName;
+            map["serviceProvided"] = record.serviceProvided;
+            map["price"] = record.price;
+            map["status"] = record.status;
+            map["date"] = record.date;
+
+            return map;
+        }
+    }
+
+    throw std::runtime_error("No such record in database");
+}

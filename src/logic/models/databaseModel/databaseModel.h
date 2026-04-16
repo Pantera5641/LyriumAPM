@@ -34,4 +34,7 @@ class DatabaseModel : public QAbstractListModel
 
     Q_INVOKABLE
     static void setValueByIdTag(const QString& id, const QString& tag, const QString& value);
+
+    Q_INVOKABLE
+    QVariantMap getById(int id);
 };
