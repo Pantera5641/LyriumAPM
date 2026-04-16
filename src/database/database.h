@@ -39,7 +39,8 @@ class Database
         const QString& serviceProvided,
         const QString& status);
 
-    [[nodiscard]] Record* getRecordById(int id) const;
+    [[nodiscard]]
+    Record getRecordById(int id) const;
 
     void setStatus(int id, const QString& status);
 

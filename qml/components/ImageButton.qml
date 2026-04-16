@@ -1,12 +1,12 @@
-import QtQuick
-import QtQuick.Controls
+import QtQuick 2.15
+import QtQuick.Controls 2.15
 
 Item {
     id: imageButton
     property alias imgSource: image.source
     property alias imgHeight: image.height
     property alias imgWidth: image.width
-    property color hoverColor: '#2B2B2F'
+    property color hoverColor: '#2b2b2f'
     signal clicked
 
     Rectangle{
@@ -17,7 +17,6 @@ Item {
     Image {
         id: image
         anchors.centerIn: parent
-        source: ""
         smooth: true
         mipmap: true
     }

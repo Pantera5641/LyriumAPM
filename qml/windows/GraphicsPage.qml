@@ -1,22 +1,20 @@
-import QtQuick
-import QtQuick.Controls
-import QtMultimedia
+import QtQuick 2.15
+import QtQuick.Controls 2.15
+import QtMultimedia 5.15
 
 Item {
     MediaPlayer {
         id: mediaPlayer
-        source: "../../resources/zaako.mp4"
-        audioOutput: AudioOutput {}
-        videoOutput: videoOutput
+        source: "qrc:/resources/zaako.mp4"
     }
 
     VideoOutput {
-        id: videoOutput
         anchors.fill: parent
+        source: mediaPlayer
     }
 
     MouseArea {
         anchors.fill: parent
-        onPressed: mediaPlayer.play();
+        onPressed: mediaPlayer.play()
     }
 }

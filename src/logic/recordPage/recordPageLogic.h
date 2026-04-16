@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "src/database/database.h"
+#include "../../database/database.h"
 
 class RecordPageLogic : public QObject
 {

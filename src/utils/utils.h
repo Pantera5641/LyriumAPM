@@ -5,8 +5,8 @@
 #include <QTextStream>
 #include <qcoreapplication.h>
 
-#include "src/logic/models/tagListModel/tagItem.h"
-#include "src/logic/models/tagListModel/tagListModel.h"
+#include "../logic/models/tagListModel/tagItem.h"
+#include "../logic/models/tagListModel/tagListModel.h"
 
 
 class Utils

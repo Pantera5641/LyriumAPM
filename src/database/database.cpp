@@ -3,6 +3,7 @@
 #include <iostream>
 #include <qcoreapplication.h>
 #include <QDebug>
+#include <algorithm>
 
 
 void Database::initializeDatabase()
@@ -15,6 +16,7 @@ void Database::initializeDatabase()
     QFile file(QCoreApplication::applicationDirPath() + "/data/dataBase.txt");
     file.open(QIODevice::ReadOnly | QIODevice::Text);
     QTextStream stream(&file);
+    stream.setCodec("UTF-8");
     while (!stream.atEnd())
     {
         QString line = stream.readLine();
@@ -50,9 +52,10 @@ void Database::initializeDatabase()
 
 void Database::saveDatabase() const
 {
-    QFile file(QCoreApplication::applicationDirPath() + "/data/dataBase.txt");
+    QFile file("/data/dataBase.txt");
     file.open(QIODevice::WriteOnly | QIODevice::Text);
     QTextStream stream(&file);
+    stream.setCodec("UTF-8");
     for (auto item : dataStore)
         stream << item.toString() << "\n";
     file.close();
@@ -67,7 +70,8 @@ QList<Record> Database::getRecords(const QString& sortTag, const QString &search
 
     if (sortTag != "none")
     {
-        std::ranges::sort(newRecords, [sortTag](const Record& a, const Record& b)
+        std::sort(newRecords.begin(), newRecords.end(),
+            [sortTag](const Record& a, const Record& b)
         {
             const auto& strA = a.getFieldByTag(sortTag);
             const auto& strB = b.getFieldByTag(sortTag);
@@ -121,15 +125,15 @@ Database* Database::addRecord(
     return this;
 }
 
-Record* Database::getRecordById(const int id) const
+Record Database::getRecordById(const int id) const
 {
     for (auto item : dataStore)
     {
         if (item.getId() == id)
-            return &item;
+            return item;
     }
 
-    return nullptr;
+    throw std::out_of_range("Record does not exist");
 }
 
 void Database::setStatus(const int id, const QString &status)

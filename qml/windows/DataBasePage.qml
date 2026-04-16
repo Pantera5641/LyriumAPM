@@ -1,6 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
+import "../components"
 
 Item {
     id: dataBasePage
@@ -58,12 +59,6 @@ Item {
         } else {
             console.error("Ошибка загрузки EditWindow.qml:", component.errorString())
         }
-    }
-
-    Rectangle {
-        anchors.fill: parent
-        color: "#121212"
-        z: -1
     }
 
     Column {

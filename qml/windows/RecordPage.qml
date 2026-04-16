@@ -1,6 +1,7 @@
-import QtQuick
-import QtQuick.Controls
-import QtQuick.Layouts
+import QtQuick 2.15
+import QtQuick.Controls 2.15
+import QtQuick.Layouts 1.15
+import "../components"
 
 Item {
     id: recordPage
@@ -236,7 +237,7 @@ Item {
                     if(!valid) return;
 
                     recordPageLogic.addRecordInDataBase(
-                        lastName.text + " " + firstName.text + " " + middleName.text,
+                        formatText(lastName.text) + " " + formatText(firstName.text) + " " + formatText(middleName.text),
                         phoneNumber.text,
                         email.text,
                         carBrandModel.getTag(carBrand.currentIndex),
@@ -297,6 +298,11 @@ Item {
                     }
                     email.error = true;
                     return false;
+                }
+
+                function formatText(text) {
+                    let t = text.trim();
+                    return t.charAt(0).toUpperCase() + t.slice(1)
                 }
             }
         }

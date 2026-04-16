@@ -1,7 +1,7 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QIcon>
-#include <qqmlcontext.h>
+#include <QQmlContext>
 
 #include "src/utils/utils.h"
 #include "src/database/database.h"
@@ -11,7 +11,12 @@
 
 int main(int argc, char *argv[])
 {
-    const QGuiApplication app(argc, argv);
+    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+    QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
+    QGuiApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
+    qputenv("QT_SCALE_FACTOR", "0.8");
+    QGuiApplication app(argc, argv);
+
     app.setWindowIcon(QIcon(QCoreApplication::applicationDirPath() + "/logo.png"));
 
     QQmlApplicationEngine engine;
@@ -20,25 +25,31 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("recordPageLogic", &recordPageLogic);
 
     auto createModel = [&](const QString& type) {
-        return new TagListModel(Utils::parseToModel(type), &engine);};
+        return new TagListModel(Utils::parseToModel(type), &engine);
+    };
+
     engine.rootContext()->setContextProperty("carBrandModel", createModel("brandList.txt"));
     engine.rootContext()->setContextProperty("servicesModel", createModel("servicesList.txt"));
     engine.rootContext()->setContextProperty("employeeModel", createModel("employeeList.txt"));
     engine.rootContext()->setContextProperty("sortTagModel", createModel("sortTagList.txt"));
     engine.rootContext()->setContextProperty("statusModel", createModel("statusList.txt"));
 
-    const auto databaseModel =  new DatabaseModel(&engine);
+    auto databaseModel = new DatabaseModel(&engine);
     engine.rootContext()->setContextProperty("databaseModel", databaseModel);
 
     QObject::connect(
         &engine,
-        &QQmlApplicationEngine::objectCreationFailed,
+        &QQmlApplicationEngine::objectCreated,
         &app,
-        []() { QCoreApplication::exit(-1); },
+        [&](QObject *obj, const QUrl &) {
+            if (!obj)
+                QCoreApplication::exit(-1);
+        },
         Qt::QueuedConnection);
-    engine.loadFromModule("LyriumAPM", "Main");
 
-    Database& database {Database::getInstance()};
+    engine.load(QUrl(QStringLiteral("qrc:/qml/Main.qml")));
+
+    Database& database = Database::getInstance();
     database.initializeDatabase();
     databaseModel->update();
 

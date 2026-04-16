@@ -1,6 +1,7 @@
-import QtQuick
-import QtQuick.Controls
-import QtQuick.Layouts
+import QtQuick 2.15
+import QtQuick.Controls 2.15
+import QtQuick.Layouts 1.15
+import "../components"
 
 ColumnLayout {
     anchors.fill: parent
@@ -26,7 +27,7 @@ ColumnLayout {
             Image {
                 height: 35
                 width: 35
-                source: "../../resources/logo.png"
+                source: "qrc:/resources/logo.png"
                 smooth: true
                 mipmap: true
             }
@@ -51,22 +52,22 @@ ColumnLayout {
 
             ImageButton {
                 height: titleBar.height
-                width: titleBar.height     
+                width: titleBar.height
 
                 imgHeight: 15
                 imgWidth: 15
-                imgSource: "../../resources/icon_dash.png"
+                imgSource: "qrc:/resources/icon_dash.png"
                 onClicked: window.showMinimized()
             }
 
             ImageButton {
                 height: titleBar.height
-                width: titleBar.height     
+                width: titleBar.height
 
                 imgHeight: 15
                 imgWidth: 15
-                imgSource: "../../resources/icon_cross.png"
-                hoverColor: '#FF0000'
+                imgSource: "qrc:/resources/icon_cross.png"
+                hoverColor: '#ff0000'
                 onClicked: Qt.quit()
             }
         }
@@ -74,7 +75,7 @@ ColumnLayout {
         Rectangle{
             height: 2
             width: parent.width
-            color: '#9000FF'
+            color: '#9000ff'
             anchors.bottom: parent.bottom
         }
     }

@@ -1,5 +1,5 @@
-import QtQuick
-import QtQuick.Controls
+import QtQuick 2.15
+import QtQuick.Controls 2.15
 
 TabButton{
     id: pageTabButton
@@ -10,12 +10,11 @@ TabButton{
 
     contentItem: TabText {
         text: pageTabButton.text
-        anchors.centerIn: parent
         color: pageTabButton.checked ? '#9000FF' : '#FFFFFF'
     }
 
     width: contentItem.implicitWidth + 10
-    height: contentItem.implicitHeight + 5
+    height: contentItem.implicitHeight + 10
 
     Rectangle{
         height: 3

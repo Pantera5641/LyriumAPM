@@ -1,0 +1,24 @@
+﻿<RCC>
+    <qresource prefix="/">
+        <file>qml/Main.qml</file>
+
+        <file>qml/components/BaseComboBox.qml</file>
+        <file>qml/components/BaseTextField.qml</file>
+        <file>qml/components/ImageButton.qml</file>
+        <file>qml/components/PageTabButton.qml</file>
+        <file>qml/components/Substrate.qml</file>
+        <file>qml/components/TabText.qml</file>
+
+        <file>qml/windows/DataBasePage.qml</file>
+        <file>qml/windows/EditWindow.qml</file>
+        <file>qml/windows/GraphicsPage.qml</file>
+        <file>qml/windows/RecordPage.qml</file>
+        <file>qml/windows/TitleBar.qml</file>
+
+        <file>logo.png</file>
+        <file>resources/logo.png</file>
+        <file>resources/icon_cross.png</file>
+        <file>resources/icon_dash.png</file>
+        <file>resources/zaako.mp4</file>
+    </qresource>
+</RCC>
