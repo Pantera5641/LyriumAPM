@@ -11,7 +11,7 @@ set(CMAKE_AUTOUIC ON)
 
 find_package(Qt5 REQUIRED COMPONENTS Core Quick Qml)
 
-add_executable(appLyriumAPM
+add_executable(LyriumAPM
         main.cpp
         src/database/database.cpp
         src/database/database.h
@@ -32,10 +32,10 @@ add_executable(appLyriumAPM
         resources.qrc
 )
 
-target_link_libraries(appLyriumAPM PRIVATE Qt5::Core Qt5::Quick Qt5::Qml)
+target_link_libraries(LyriumAPM PRIVATE Qt5::Core Qt5::Quick Qt5::Qml)
 
-#set_target_properties(appLyriumAPM PROPERTIES WIN32_EXECUTABLE TRUE)
+#set_target_properties(LyriumAPM PROPERTIES WIN32_EXECUTABLE TRUE)
 
 include(GNUInstallDirs)
 
-install(TARGETS appLyriumAPM RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+install(TARGETS LyriumAPM RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
