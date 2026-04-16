@@ -2,6 +2,7 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Window 2.15
+import "../components"
 
 Window {
     id: editOrderWindow
@@ -11,30 +12,15 @@ Window {
     minimumHeight: 750
     modality: Qt.ApplicationModal
     flags: Qt.FramelessWindowHint | Qt.Dialog
-    color: "#121212"
-    title: "Редактирование заказа"
+    color: "transparent"
 
-    property var orderData: null
-    signal orderSaved(var updatedData)
-
-    property string currentCarBrandTag: ""
-    property string currentServiceTag: ""
-    property string currentMasterTag: ""
-    property string currentStatusTag: ""
-
-    function findIndexByTag(model, tag) {
-        if (!model || !tag) return -1;
-        for (var i = 0; i < model.count; i++) {
-            if (model.getTag(i) === tag) {
-                return i;
-            }
-        }
-        return -1;
-    }
+    property var recordId : 0
+    property var orderData: databaseModel.getById(recordId)
 
     Rectangle {
         anchors.fill: parent
         color: "#121212"
+        radius: 8
 
         ColumnLayout {
             anchors.fill: parent
@@ -47,7 +33,7 @@ Window {
                 color: "transparent"
 
                 Text {
-                    text: orderData ? "Заказ  #" + orderData.id : "Новый заказ"
+                    text: "Заказ  №" + recordId
                     color: "#8a2be2"
                     font.bold: true
                     font.pixelSize: 20
@@ -77,521 +63,113 @@ Window {
                     LabeledTextField {
                         id: clientNameField
                         label: "ФИО клиента"
-                        text: orderData ? (orderData.clientName || "") : ""
-                        Layout.fillWidth: true
+                        text: orderData.clientFullName
                     }
 
                     LabeledTextField {
                         id: clientPhoneField
                         label: "Телефон"
-                        text: orderData ? (orderData.clientPhone || "") : ""
-                        Layout.fillWidth: true
+                        text: orderData.phoneNumber
                     }
 
                     LabeledTextField {
                         id: clientEmailField
                         label: "Email"
-                        text: orderData ? (orderData.clientEmail || "") : ""
-                        Layout.fillWidth: true
+                        text: orderData.email
                     }
 
                     SectionHeader { text: "Информация об автомобиле" }
 
-                    ColumnLayout {
-                        Layout.fillWidth: true
-                        spacing: 8
-
-                        Text {
-                            text: "Марка автомобиля"
-                            color: "#8a2be2"
-                            font.pixelSize: 13
-                            font.bold: true
-                        }
-
-                        RowLayout {
-                            Layout.fillWidth: true
-                            spacing: 10
-
-                            Rectangle {
-                                Layout.preferredWidth: 280
-                                Layout.preferredHeight: 45
-                                color: "#1a1a1a"
-                                radius: 8
-                                border.color: "#8a2be2"
-                                border.width: 2
-
-                                Text {
-                                    id: currentCarBrand
-                                    anchors.fill: parent
-                                    anchors.margins: 1
-                                    text: orderData ? (orderData.carBrand || "Не выбрано") : "Не выбрано"
-                                    color: "#d05ce3"
-                                    font.pixelSize: 14
-                                    verticalAlignment: Text.AlignVCenter
-                                    horizontalAlignment: Text.AlignLeft
-                                    leftPadding: 12
-                                    elide: Text.ElideRight
-                                }
-                            }
-
-                            ComboBox {
-                                id: carBrandField
-                                model: carBrandModel
-                                textRole: "name"
-                                Layout.preferredWidth: 170
-                                Layout.preferredHeight: 45
-                                currentIndex: -1
-                                displayText: currentIndex === -1 ? "Изменить" : currentText
-                                property int previousIndex: currentIndex
-
-                                background: Rectangle {
-                                    color: "#000000"
-                                    border.color: "#8a2be2"
-                                    border.width: 2
-                                    radius: 8
-                                }
-
-                                contentItem: Text {
-                                    leftPadding: 12
-                                    rightPadding: 30
-                                    text: parent.displayText
-                                    color: parent.currentIndex === -1 ? "#8a2be2" : "#d05ce3"
-                                    font.pixelSize: 14
-                                    verticalAlignment: Text.AlignVCenter
-                                    elide: Text.ElideRight
-                                }
-
-                                indicator: Canvas {
-                                    x: parent.width - width - 12
-                                    y: parent.height / 2 - height / 2
-                                    width: 12
-                                    height: 8
-                                    contextType: "2d"
-                                    onPaint: {
-                                        context.reset()
-                                        context.moveTo(0, 0)
-                                        context.lineTo(width, 0)
-                                        context.lineTo(width / 2, height)
-                                        context.closePath()
-                                        context.fillStyle = "#8a2be2"
-                                        context.fill()
-                                    }
-                                }
-
-                                delegate: ItemDelegate {
-                                    width: ListView.view.width
-                                    highlighted: ListView.isCurrentItem
-                                    contentItem: Text {
-                                        text: name
-                                        color: "#ffffff"
-                                        font.pixelSize: 14
-                                        leftPadding: 12
-                                        verticalAlignment: Text.AlignVCenter
-                                        elide: Text.ElideRight
-                                    }
-                                    background: Rectangle {
-                                        color: highlighted ? "#3d0e69" : "#09020f"
-                                    }
-                                }
-
-                                Component.onCompleted: {
-                                    if (orderData && orderData.carBrandTag) {
-                                        currentIndex = findIndexByTag(carBrandModel, orderData.carBrandTag);
-                                        if (currentIndex !== -1) {
-                                            currentCarBrandTag = orderData.carBrandTag;
-                                        }
-                                    }
-                                }
-
-                                onActivated: {
-                                    if (currentIndex !== -1) {
-                                        currentCarBrandTag = carBrandModel.getTag(currentIndex);
-                                        currentCarBrand.text = carBrandModel.getName(currentIndex);
-                                        displayText = "Изменить";
-                                    }
-                                }
-                            }
-                        }
+                    TextFieldAndComboBox{
+                        id: carBrandBox
+                        topText: "Марка автомобиля"
+                        fieldText: orderData.carBrand
+                        comboBoxModel: carBrandModel
                     }
 
                     LabeledTextField {
                         id: carModelField
                         label: "Модель автомобиля"
-                        text: orderData ? (orderData.carModel || "") : ""
-                        Layout.fillWidth: true
+                        text: orderData.carModel
                     }
 
                     SectionHeader { text: "Услуга" }
+                    TextFieldAndComboBox{
+                        id: servicesBox
+                        topText: "Услуга"
+                        fieldText: orderData.serviceProvided
+                        comboBoxModel: servicesModel
 
-                    ColumnLayout {
-                        Layout.fillWidth: true
-                        spacing: 8
-
-                        Text {
-                            text: "Услуга"
-                            color: "#8a2be2"
-                            font.pixelSize: 13
-                            font.bold: true
+                        onModelIdChanged: {
+                            priceField.text = recordPageLogic.getPrice(servicesModel.getTag(servicesBox.modelId)) + "₽"
                         }
-
-                        RowLayout {
-                            Layout.fillWidth: true
-                            spacing: 10
-
-                            Rectangle {
-                                Layout.preferredWidth: 280
-                                Layout.preferredHeight: 45
-                                color: "#1a1a1a"
-                                radius: 8
-                                border.color: "#8a2be2"
-                                border.width: 2
-
-                                Text {
-                                    id: currentService
-                                    anchors.fill: parent
-                                    anchors.margins: 1
-                                    text: orderData ? (orderData.serviceName || "Не выбрано") : "Не выбрано"
-                                    color: "#d05ce3"
-                                    font.pixelSize: 14
-                                    verticalAlignment: Text.AlignVCenter
-                                    horizontalAlignment: Text.AlignLeft
-                                    leftPadding: 12
-                                    elide: Text.ElideRight
-                                }
-                            }
-
-                            ComboBox {
-                                id: serviceField
-                                model: servicesModel
-                                textRole: "name"
-                                Layout.preferredWidth: 170
-                                Layout.preferredHeight: 45
-                                currentIndex: -1
-                                displayText: currentIndex === -1 ? "Изменить" : currentText
-
-                                background: Rectangle {
-                                    color: "#000000"
-                                    border.color: "#8a2be2"
-                                    border.width: 2
-                                    radius: 8
-                                }
-
-                                contentItem: Text {
-                                    leftPadding: 12
-                                    rightPadding: 30
-                                    text: parent.displayText
-                                    color: parent.currentIndex === -1 ? "#8a2be2" : "#d05ce3"
-                                    font.pixelSize: 14
-                                    verticalAlignment: Text.AlignVCenter
-                                    elide: Text.ElideRight
-                                }
-
-                                indicator: Canvas {
-                                    x: parent.width - width - 12
-                                    y: parent.height / 2 - height / 2
-                                    width: 12
-                                    height: 8
-                                    contextType: "2d"
-                                    onPaint: {
-                                        context.reset()
-                                        context.moveTo(0, 0)
-                                        context.lineTo(width, 0)
-                                        context.lineTo(width / 2, height)
-                                        context.closePath()
-                                        context.fillStyle = "#8a2be2"
-                                        context.fill()
-                                    }
-                                }
-
-                                delegate: ItemDelegate {
-                                    width: ListView.view.width
-                                    highlighted: ListView.isCurrentItem
-                                    contentItem: Text {
-                                        text: name
-                                        color: "#ffffff"
-                                        font.pixelSize: 14
-                                        leftPadding: 12
-                                        verticalAlignment: Text.AlignVCenter
-                                        elide: Text.ElideRight
-                                    }
-                                    background: Rectangle {
-                                        color: highlighted ? "#3d0e69" : "#09020f"
-                                    }
-                                }
-
-                                Component.onCompleted: {
-                                    if (orderData && orderData.serviceTag) {
-                                        currentIndex = findIndexByTag(servicesModel, orderData.serviceTag);
-                                        if (currentIndex !== -1) {
-                                            currentServiceTag = orderData.serviceTag;
-                                        }
-                                    }
-                                }
-
-                                onActivated: {
-                                    if (currentIndex !== -1) {
-                                        var newTag = servicesModel.getTag(currentIndex);
-                                        currentServiceTag = newTag;
-                                        var price = recordPageLogic.getPrice(newTag);
-                                        priceField.text = price + "₽";
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    SectionHeader { text: "Информация о мастере" }
-
-                    ColumnLayout {
-                        Layout.fillWidth: true
-                        spacing: 8
-
-                        Text {
-                            text: "Мастер"
-                            color: "#8a2be2"
-                            font.pixelSize: 13
-                            font.bold: true
-                        }
-
-                        RowLayout {
-                            Layout.fillWidth: true
-                            spacing: 10
-
-                            Rectangle {
-                                Layout.preferredWidth: 280
-                                Layout.preferredHeight: 45
-                                color: "#1a1a1a"
-                                radius: 8
-                                border.color: "#8a2be2"
-                                border.width: 2
-
-                                Text {
-                                    id: currentMaster
-                                    anchors.fill: parent
-                                    anchors.margins: 1
-                                    text: orderData ? (orderData.masterName || "Не выбрано") : "Не выбрано"
-                                    color: "#d05ce3"
-                                    font.pixelSize: 14
-                                    verticalAlignment: Text.AlignVCenter
-                                    horizontalAlignment: Text.AlignLeft
-                                    leftPadding: 12
-                                    elide: Text.ElideRight
-                                }
-                            }
-
-                            ComboBox {
-                                id: masterField
-                                model: employeeModel
-                                textRole: "name"
-                                Layout.preferredWidth: 170
-                                Layout.preferredHeight: 45
-                                currentIndex: -1
-                                displayText: currentIndex === -1 ? "Изменить" : currentText
-
-                                background: Rectangle {
-                                    color: "#000000"
-                                    border.color: "#8a2be2"
-                                    border.width: 2
-                                    radius: 8
-                                }
-
-                                contentItem: Text {
-                                    leftPadding: 12
-                                    rightPadding: 30
-                                    text: parent.displayText
-                                    color: parent.currentIndex === -1 ? "#8a2be2" : "#d05ce3"
-                                    font.pixelSize: 14
-                                    verticalAlignment: Text.AlignVCenter
-                                    elide: Text.ElideRight
-                                }
-
-                                indicator: Canvas {
-                                    x: parent.width - width - 12
-                                    y: parent.height / 2 - height / 2
-                                    width: 12
-                                    height: 8
-                                    contextType: "2d"
-                                    onPaint: {
-                                        context.reset()
-                                        context.moveTo(0, 0)
-                                        context.lineTo(width, 0)
-                                        context.lineTo(width / 2, height)
-                                        context.closePath()
-                                        context.fillStyle = "#8a2be2"
-                                        context.fill()
-                                    }
-                                }
-
-                                delegate: ItemDelegate {
-                                    width: ListView.view.width
-                                    highlighted: ListView.isCurrentItem
-                                    contentItem: Text {
-                                        text: name
-                                        color: "#ffffff"
-                                        font.pixelSize: 14
-                                        leftPadding: 12
-                                        verticalAlignment: Text.AlignVCenter
-                                        elide: Text.ElideRight
-                                    }
-                                    background: Rectangle {
-                                        color: highlighted ? "#3d0e69" : "#09020f"
-                                    }
-                                }
-
-                                Component.onCompleted: {
-                                    if (orderData && orderData.masterTag) {
-                                        currentIndex = findIndexByTag(employeeModel, orderData.masterTag);
-                                        if (currentIndex !== -1) {
-                                            currentMasterTag = orderData.masterTag;
-                                        }
-                                    }
-                                }
-
-                                onActivated: {
-                                    if (currentIndex !== -1) {
-                                        currentMasterTag = employeeModel.getTag(currentIndex);
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    SectionHeader { text: "Информация о заказе" }
-
-                    LabeledTextField {
-                        id: dateField
-                        label: "Дата"
-                        text: orderData ? (orderData.date || "") : Qt.formatDate(new Date(), "dd.MM.yyyy")
-                        Layout.fillWidth: true
                     }
 
                     LabeledTextField {
                         id: priceField
                         label: "Цена"
-                        text: orderData ? (orderData.price || "") : ""
-                        Layout.fillWidth: true
+                        text: orderData.price
                         readOnly: true
                     }
 
+                    SectionHeader { text: "Информация о мастере" }
+                    TextFieldAndComboBox{
+                        id: masterField
+                        topText: "Мастер"
+                        fieldText: orderData.masterFullName
+                        comboBoxModel: employeeModel
+                    }
+
+                    SectionHeader { text: "Информация о заказе" }
+                    LabeledTextField {
+                        id: dateField
+                        label: "Дата"
+                        text: orderData.date
+                    }
+
+                    TextFieldAndComboBox{
+                        id: statusBox
+                        topText: "Статус"
+                        fieldText: orderData.status
+                        comboBoxModel: statusModel
+                    }
+
                     ColumnLayout {
+                        id: commentField
                         Layout.fillWidth: true
-                        spacing: 8
+                        Layout.preferredHeight: 120
+                        spacing: 5
 
                         Text {
-                            text: "Статус"
+                            text: "Примечания"
                             color: "#8a2be2"
                             font.pixelSize: 13
                             font.bold: true
                         }
 
-                        RowLayout {
+                        Rectangle {
                             Layout.fillWidth: true
-                            spacing: 10
-
-                            Rectangle {
-                                Layout.preferredWidth: 280
-                                Layout.preferredHeight: 45
-                                color: "#1a1a1a"
-                                radius: 8
-                                border.color: "#8a2be2"
-                                border.width: 2
-
-                                Text {
-                                    id: currentStatus
-                                    anchors.fill: parent
-                                    anchors.margins: 1
-                                    text: orderData ? (orderData.status || "Принята") : "Принята"
+                            Layout.fillHeight: true
+                            color: "#000000"
+                            radius: 8
+                            border.color: textArea.focus ? "#d05ce3" : "#8a2be2"
+                            border.width: 2
+                            ScrollView {
+                                anchors.fill: parent
+                                anchors.margins: 1
+                                clip: true
+                                TextArea {
+                                    id: textArea
+                                    width: parent.width
+                                    text: orderData.comment
                                     color: "#d05ce3"
                                     font.pixelSize: 14
-                                    verticalAlignment: Text.AlignVCenter
-                                    horizontalAlignment: Text.AlignLeft
-                                    leftPadding: 12
-                                    elide: Text.ElideRight
-                                }
-                            }
-
-                            ComboBox {
-                                id: statusField
-                                model: statusModel
-                                textRole: "name"
-                                Layout.preferredWidth: 170
-                                Layout.preferredHeight: 45
-                                currentIndex: -1
-                                displayText: currentIndex === -1 ? "Изменить" : currentText
-
-                                background: Rectangle {
-                                    color: "#000000"
-                                    border.color: "#8a2be2"
-                                    border.width: 2
-                                    radius: 8
-                                }
-
-                                contentItem: Text {
-                                    leftPadding: 12
-                                    rightPadding: 30
-                                    text: parent.displayText
-                                    color: parent.currentIndex === -1 ? "#8a2be2" : "#d05ce3"
-                                    font.pixelSize: 14
-                                    verticalAlignment: Text.AlignVCenter
-                                    elide: Text.ElideRight
-                                }
-
-                                indicator: Canvas {
-                                    x: parent.width - width - 12
-                                    y: parent.height / 2 - height / 2
-                                    width: 12
-                                    height: 8
-                                    contextType: "2d"
-                                    onPaint: {
-                                        context.reset()
-                                        context.moveTo(0, 0)
-                                        context.lineTo(width, 0)
-                                        context.lineTo(width / 2, height)
-                                        context.closePath()
-                                        context.fillStyle = "#8a2be2"
-                                        context.fill()
-                                    }
-                                }
-
-                                delegate: ItemDelegate {
-                                    width: ListView.view.width
-                                    highlighted: ListView.isCurrentItem
-                                    contentItem: Text {
-                                        text: name
-                                        color: "#ffffff"
-                                        font.pixelSize: 14
-                                        leftPadding: 12
-                                        verticalAlignment: Text.AlignVCenter
-                                    }
-                                    background: Rectangle {
-                                        color: highlighted ? "#3d0e69" : "#09020f"
-                                    }
-                                }
-
-                                Component.onCompleted: {
-                                    if (orderData && orderData.statusTag) {
-                                        currentIndex = findIndexByTag(statusModel, orderData.statusTag);
-                                        if (currentIndex !== -1) {
-                                            currentStatusTag = orderData.statusTag;
-                                        }
-                                    }
-                                }
-
-                                onActivated: {
-                                    if (currentIndex !== -1) {
-                                        currentStatusTag = statusModel.getTag(currentIndex);
-                                    }
+                                    wrapMode: TextEdit.Wrap
+                                    placeholderTextColor: "#8a2be2"
+                                    background: Item{}
                                 }
                             }
                         }
-                    }
-
-                    LabeledTextArea {
-                        id: descriptionField
-                        label: "Примечания"
-                        text: orderData && orderData.comment ? orderData.comment : ""
-                        Layout.fillWidth: true
-                        Layout.preferredHeight: 120
                     }
                 }
             }
@@ -651,153 +229,34 @@ Window {
                         cursorShape: Qt.PointingHandCursor
 
                         onClicked: {
+                            let valid = true;
+                            //valid = validateName(lastName) && valid;
+                            //valid = validateName(firstName) && valid;
+                            //valid = validateName(middleName) && valid;
+                            //valid = validatePhone(phoneNumber)&& valid;
+                            //valid = validateEmail(email) && valid;
+                            //valid = validateComboBox(carBrand) && valid;
+                            //valid = validateName(carModel) && valid;
+                            //valid = validateComboBox(employee) && valid;
+                            //valid = validateComboBox(services) && valid;
+                            if(!valid) return;
 
-                            function parseDate(dateStr) {
-                                if (!dateStr || !dateStr.includes('.')) return new Date();
-                                var parts = dateStr.split('.');
-                                if (parts.length !== 3) return new Date();
+                            databaseModel.setValueByIdTag(recordId, "client_name", clientNameField.text);
+                            databaseModel.setValueByIdTag(recordId, "phone_number", clientPhoneField.text);
+                            databaseModel.setValueByIdTag(recordId, "email", clientEmailField.text);
+                            databaseModel.setValueByIdTag(recordId, "car_brand_name", carBrandModel.getTag(carBrandBox.modelId));
+                            databaseModel.setValueByIdTag(recordId, "car_model", carModelField.text);
+                            databaseModel.setValueByIdTag(recordId, "comment", commentField.text);
+                            databaseModel.setValueByIdTag(recordId, "master_name", employeeModel.getTag(masterField.modelId));
+                            databaseModel.setValueByIdTag(recordId, "service_provided", servicesModel.getTag(servicesBox.modelId));
+                            databaseModel.setValueByIdTag(recordId, "repair_amount", recordPageLogic.getPrice(servicesModel.getTag(servicesBox.modelId)));
+                            databaseModel.setValueByIdTag(recordId, "visit_date", dateField.text);
+                            databaseModel.setValueByIdTag(recordId, "status", statusModel.getTag(statusBox.modelId));
 
-                                var day = parseInt(parts[0], 10);
-                                var month = parseInt(parts[1], 10) - 1; // 🔥 В JS месяцы с 0!
-                                var year = parseInt(parts[2], 10);
-
-                                if (year < 100) year += 2000;
-
-                                return new Date(year, month, day);
-                            }
-
-                            var dateObj = parseDate(dateField.text);
-                            var dateForCpp = Qt.formatDate(dateObj, "yyyy.MM.dd");
-
-                            var finalCarBrandTag = (carBrandField.currentIndex !== -1) ? carBrandModel.getTag(carBrandField.currentIndex) : (orderData ? orderData.carBrandTag : "");
-                            var finalServiceTag = (serviceField.currentIndex !== -1) ? servicesModel.getTag(serviceField.currentIndex) : (orderData ? orderData.serviceTag : "");
-                            var finalMasterTag = (masterField.currentIndex !== -1) ? employeeModel.getTag(masterField.currentIndex) : (orderData ? orderData.masterTag : "");
-                            var finalStatusTag = (statusField.currentIndex !== -1) ? statusModel.getTag(statusField.currentIndex) : (orderData ? orderData.statusTag : "");
-
-                            var dataToSave = {
-                                id: orderData ? orderData.id : 0,
-                                clientName: clientNameField.text,
-                                clientPhone: clientPhoneField.text,
-                                clientEmail: clientEmailField.text,
-
-                                carBrand: (carBrandField.currentIndex !== -1) ? carBrandField.currentText : (orderData ? orderData.carBrand : ""),
-                                carBrandTag: finalCarBrandTag,
-
-                                carModel: carModelField.text,
-
-                                serviceName: (serviceField.currentIndex !== -1) ? serviceField.currentText : (orderData ? orderData.serviceName : ""),
-                                serviceTag: finalServiceTag,
-
-                                masterName: (masterField.currentIndex !== -1) ? masterField.currentText : (orderData ? orderData.masterName : ""),
-                                masterTag: finalMasterTag,
-
-                                date: dateForCpp,
-
-                                price: priceField.text.includes("₽") ? priceField.text : priceField.text + "₽",
-
-                                status: (statusField.currentIndex !== -1) ? statusField.currentText : (orderData ? orderData.status : ""),
-                                statusTag: finalStatusTag,
-
-                                comment: descriptionField.text
-                            };
-
-                            console.log("Saving ", JSON.stringify(dataToSave));
-
-                            orderSaved(dataToSave);
+                            databaseModel.update();
                             editOrderWindow.close();
                         }
                     }
-                }
-            }
-        }
-    }
-
-    // === КОМПОНЕНТЫ ===
-    component SectionHeader: Rectangle {
-        property string text: ""
-        Layout.fillWidth: true
-        Layout.preferredHeight: 30
-        Layout.topMargin: 5
-        color: "transparent"
-        Text {
-            text: parent.text
-            color: "#8a2be2"
-            font.bold: true
-            font.pixelSize: 16
-            anchors.left: parent.left
-            anchors.verticalCenter: parent.verticalCenter
-        }
-        Rectangle {
-            anchors.bottom: parent.bottom
-            width: parent.width
-            height: 1
-            color: "#8a2be2"
-            opacity: 0.5
-        }
-    }
-
-    component LabeledTextField: ColumnLayout {
-        property string label: ""
-        property alias text: textField.text
-        property alias readOnly: textField.readOnly
-        spacing: 5
-        Layout.fillWidth: true
-        Text {
-            text: label
-            color: "#8a2be2"
-            font.pixelSize: 13
-            font.bold: true
-        }
-        Rectangle {
-            Layout.fillWidth: true
-            Layout.preferredHeight: 45
-            color: textField.readOnly ? "#1a1a1a" : "#000000"
-            radius: 8
-            border.color: textField.focus ? "#d05ce3" : "#8a2be2"
-            border.width: 2
-            TextField {
-                id: textField
-                anchors.fill: parent
-                anchors.margins: 1
-                color: "#d05ce3"
-                font.pixelSize: 14
-                verticalAlignment: Text.AlignVCenter
-                leftPadding: 12
-                rightPadding: 12
-                background: Rectangle { color: "transparent" }
-            }
-        }
-    }
-
-    component LabeledTextArea: ColumnLayout {
-        property string label: ""
-        property alias text: textArea.text
-        spacing: 5
-        Layout.fillWidth: true
-        Text {
-            text: label
-            color: "#8a2be2"
-            font.pixelSize: 13
-            font.bold: true
-        }
-        Rectangle {
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-            color: "#000000"
-            radius: 8
-            border.color: textArea.focus ? "#d05ce3" : "#8a2be2"
-            border.width: 2
-            ScrollView {
-                anchors.fill: parent
-                anchors.margins: 1
-                clip: true
-                TextArea {
-                    id: textArea
-                    color: "#d05ce3"
-                    font.pixelSize: 14
-                    wrapMode: TextEdit.Wrap
-                    placeholderTextColor: "#8a2be2"
-                    background: Rectangle { color: "transparent" }
                 }
             }
         }

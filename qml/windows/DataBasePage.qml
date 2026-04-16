@@ -8,60 +8,6 @@ Item {
     Layout.fillWidth: true
     Layout.fillHeight: true
 
-    property var editWindow: null
-
-    function getServiceNameFromTag(tag) {
-        if (!servicesModel || !tag) return tag;
-        for (var i = 0; i < servicesModel.count; i++) {
-            var item = servicesModel.get(i)
-            if (item && item.tag === tag) return item.name;
-        }
-        return tag;
-    }
-
-    function openEditWindow(orderData) {
-        var component = Qt.createComponent("EditWindow.qml")
-        if (component.status === Component.Ready) {
-            editWindow = component.createObject(dataBasePage, { "orderData": orderData })
-            editWindow.orderSaved.connect(function(updatedData) {
-                console.log("Сохранены данные:", JSON.stringify(updatedData))
-
-                // Обновляем БД через модель
-                if (updatedData.clientName !== undefined)
-                    databaseModel.setValueByIdTag(updatedData.id, "client_full_name", updatedData.clientName)
-                if (updatedData.clientPhone !== undefined)
-                    databaseModel.setValueByIdTag(updatedData.id, "phone_number", updatedData.clientPhone)
-                if (updatedData.clientEmail !== undefined)
-                    databaseModel.setValueByIdTag(updatedData.id, "email", updatedData.clientEmail)
-                if (updatedData.carBrandTag !== undefined)
-                    databaseModel.setValueByIdTag(updatedData.id, "car_brand_name", updatedData.carBrandTag)
-                if (updatedData.carModel !== undefined)
-                    databaseModel.setValueByIdTag(updatedData.id, "car_model", updatedData.carModel)
-                if (updatedData.serviceTag !== undefined)
-                    databaseModel.setValueByIdTag(updatedData.id, "service_provided", updatedData.serviceTag)
-                if (updatedData.masterTag !== undefined)
-                    databaseModel.setValueByIdTag(updatedData.id, "master_full_name", updatedData.masterTag)
-                if (updatedData.date !== undefined)
-                    databaseModel.setValueByIdTag(updatedData.id, "visit_date", updatedData.date)
-                if (updatedData.price !== undefined) {
-                    var priceValue = updatedData.price.toString().replace("₽", "")
-                    databaseModel.setValueByIdTag(updatedData.id, "repair_amount", priceValue)
-                }
-                if (updatedData.statusTag !== undefined)
-                    databaseModel.setValueByIdTag(updatedData.id, "status", updatedData.statusTag)
-                if (updatedData.comment !== undefined)
-                    databaseModel.setValueByIdTag(updatedData.id, "comment", updatedData.comment)
-
-                // Обновляем отображение таблицы
-                databaseModel.update(sortTagModel.getTag(sortBox.currentIndex), searchField.text)
-                editWindow = null
-            })
-            editWindow.show()
-        } else {
-            console.error("Ошибка загрузки EditWindow.qml:", component.errorString())
-        }
-    }
-
     Column {
         width: parent.width
         spacing: 20
@@ -80,6 +26,7 @@ Item {
                     font.pixelSize: 16
                     anchors.verticalCenter: parent.verticalCenter
                 }
+
                 BaseComboBox {
                     id: sortBox
                     model: sortTagModel
@@ -161,7 +108,9 @@ Item {
                             width: scrollView.width
                             spacing: 0
                             property var dataList: databaseModel
+
                             Repeater {
+                                id: repeater
                                 model: parent.dataList
                                 delegate: Item {
                                     width: rootColumn.width
@@ -170,10 +119,12 @@ Item {
                                         anchors.fill: parent
                                         color: (index % 2 === 0) ? "#050505" : "#000000"
                                     }
+
                                     Row {
                                         anchors.fill: parent
                                         spacing: 0
-                                        Rectangle {
+
+                                        TableTextHolder {
                                             width: 50
                                             height: parent.height
                                             color: "transparent"
@@ -192,74 +143,42 @@ Item {
                                                 hoverEnabled: true
 
                                                 onClicked: {
-                                                    var orderData = {
-                                                        id: idRole,
-
-                                                        // Клиент
-                                                        clientName: clientFullName,
-                                                        clientPhone: phoneNumber,
-                                                        clientEmail: email,
-
-                                                        // Авто
-                                                        carBrand: carBrand,
-                                                        carBrandTag: carBrand,
-
-                                                        carModel: carModel,
-
-                                                        // Услуга
-                                                        serviceName: dataBasePage.getServiceNameFromTag(serviceProvided),
-                                                        serviceTag: serviceProvided,
-
-                                                        // Мастер
-                                                        masterName: masterFullName,
-                                                        masterTag: masterFullName,
-
-                                                        date: date,
-                                                        price: price + (price.toString().includes("₽") ? "" : "₽"),
-
-                                                        // Статус
-                                                        status: status,
-                                                        statusTag: status,
-
-                                                        comment: comment
-                                                    }
-
-                                                    console.log("Opening edit window with ", JSON.stringify(orderData))
-                                                    dataBasePage.openEditWindow(orderData)
+                                                    dataBasePage.openEditWindow(idRole)
                                                 }
                                             }
                                         }
-                                        Rectangle { width: 160; height: parent.height; color: "transparent"; Text { text: clientShortName; color: "#d05ce3"; font.pixelSize: 14; anchors.fill: parent; horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter; elide: Text.ElideRight; leftPadding: 5; rightPadding: 5 } }
-                                        Rectangle { width: 100; height: parent.height; color: "transparent"; Text { text: date; color: "#d05ce3"; font.pixelSize: 14; anchors.centerIn: parent } }
-                                        Rectangle { width: 140; height: parent.height; color: "transparent"; Text { text: carBrand; color: "#d05ce3"; font.pixelSize: 14; anchors.fill: parent; horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter; elide: Text.ElideRight; leftPadding: 5; rightPadding: 5 } }
-                                        Rectangle { width: 100; height: parent.height; color: "transparent"; Text { text: masterShortName; color: "#d05ce3"; font.pixelSize: 14; anchors.fill: parent; horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter; elide: Text.ElideRight; leftPadding: 5; rightPadding: 5 } }
-                                        Rectangle { width: 100; height: parent.height; color: "transparent"; Text { text: price; color: "#d05ce3"; font.pixelSize: 14; anchors.centerIn: parent } }
+                                        TableTextHolder { width: 160; textFiller: clientShortName }
+                                        TableTextHolder { width: 100; textFiller: date }
+                                        TableTextHolder { width: 140; textFiller: carBrand }
+                                        TableTextHolder { width: 100; textFiller: masterShortName }
+                                        TableTextHolder { width: 100; textFiller: price }
+
                                         Rectangle {
-                                            width: 150; height: parent.height; color: "transparent"
+                                            width: 150;
+                                            height: parent.height;
+                                            color: "transparent"
+
                                             BaseComboBox {
                                                 id: statusBox
                                                 model: statusModel
                                                 textRole: "name"
-                                                width: 130; height: 35
+                                                width: 130;
+                                                height: 35
                                                 anchors.centerIn: parent
+
                                                 Component.onCompleted: {
-                                                    if (status) {
-                                                        for (var i = 0; i < statusModel.count; i++) {
-                                                            if (statusModel.get(i).tag === status) {
-                                                                currentIndex = i;
-                                                                break;
-                                                            }
-                                                        }
-                                                    }
+                                                    currentIndex = find(status)
                                                 }
+
                                                 onActivated: {
-                                                    if (statusBox.currentIndex >= 0) {
-                                                        databaseModel.setStatus(idRole, statusModel.getTag(statusBox.currentIndex))
-                                                    }
+                                                    databaseModel.setStatus(idRole, statusModel.getTag(statusBox.currentIndex))
                                                 }
+
                                                 background: Rectangle { color: "transparent" }
+
                                                 contentItem: Text {
-                                                    leftPadding: 10; rightPadding: 25
+                                                    leftPadding: 10;
+                                                    rightPadding: 5
                                                     text: parent.displayText
                                                     color: "#d05ce3"
                                                     font.pixelSize: 14
@@ -298,6 +217,13 @@ Item {
                     }
                 }
             }
+        }
+    }
+    function openEditWindow(recordId) {
+        const component = Qt.createComponent("EditWindow.qml");
+        if (component.status === Component.Ready) {
+            const editWindow = component.createObject(dataBasePage, {"recordId": recordId});
+            editWindow.show()
         }
     }
 }
