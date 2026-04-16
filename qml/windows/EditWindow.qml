@@ -66,7 +66,7 @@ Window {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
                 clip: true
-                ScrollBar.vertical.policy: ScrollBar.AsNeeded
+                ScrollBar.vertical.policy: ScrollBar.AlwaysOff
 
                 ColumnLayout {
                     width: parent.width - 10
@@ -142,6 +142,7 @@ Window {
                                 Layout.preferredHeight: 45
                                 currentIndex: -1
                                 displayText: currentIndex === -1 ? "Изменить" : currentText
+                                property int previousIndex: currentIndex
 
                                 background: Rectangle {
                                     color: "#000000"
@@ -205,6 +206,8 @@ Window {
                                 onActivated: {
                                     if (currentIndex !== -1) {
                                         currentCarBrandTag = carBrandModel.getTag(currentIndex);
+                                        currentCarBrand.text = carBrandModel.getName(currentIndex);
+                                        displayText = "Изменить";
                                     }
                                 }
                             }

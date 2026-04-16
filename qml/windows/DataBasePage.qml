@@ -258,9 +258,7 @@ Item {
                                                 }
                                                 onActivated: {
                                                     if (statusBox.currentIndex >= 0) {
-                                                        var newStatusTag = statusModel.getTag(statusBox.currentIndex)
-                                                        databaseModel.setValueByIdTag(idRole, "status", newStatusTag)
-                                                        databaseModel.update(sortTagModel.getTag(sortBox.currentIndex), searchField.text)
+                                                        databaseModel.setStatus(idRole, statusModel.getTag(statusBox.currentIndex))
                                                     }
                                                 }
                                                 background: Rectangle { color: "transparent" }

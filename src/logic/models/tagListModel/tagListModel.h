@@ -26,5 +26,8 @@ class TagListModel : public QAbstractListModel
     QHash<int, QByteArray> roleNames() const override;
 
     Q_INVOKABLE [[nodiscard]]
+    QString getName(int index) const;
+
+    Q_INVOKABLE [[nodiscard]]
     QString getTag(int index) const;
 };

@@ -25,6 +25,12 @@ QHash<int, QByteArray> TagListModel::roleNames() const
     return { {NameRole, "name"}, {TagRole, "tag"} };
 }
 
+QString TagListModel::getName(const int index) const
+{
+    if (index < 0 || index >= items.size()) return {};
+    return items.at(index).name;
+}
+
 QString TagListModel::getTag(const int index) const
 {
     if (index < 0 || index >= items.size()) return {};
