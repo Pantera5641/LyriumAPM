@@ -169,13 +169,13 @@ Record* Record::setDate(const QString& date)
 void Record::setValueByTag(const QString& tag, const QString& value)
 {
     if (tag == "id") { this->id = value.toInt(); return; }
-    if (tag == "client_full_name") { this->clientFullName = value; return; }
+    if (tag == "client_name") { this->clientFullName = value; return; }
     if (tag == "phone_number") { this->phoneNumber = value; return; }
     if (tag == "email") { this->email = value; return; }
     if (tag == "car_brand_name") { this->carBrandName = value; return; }
     if (tag == "car_model") { this->carModel = value; return; }
     if (tag == "comment") { this->comment = value; return; }
-    if (tag == "master_full_name") { this->masterFullName = value; return; }
+    if (tag == "master_name") { this->masterFullName = value; return; }
     if (tag == "service_provided") { this->serviceProvided = value; return; }
     if (tag == "repair_amount") { this->repairAmount = value.toInt(); return; }
     if (tag == "visit_date") { setDate(value); return; }
@@ -235,9 +235,11 @@ SimpleRecord Record::toSimpleRecord() const
     const auto masterNameTokens {simpleRecord.masterFullName.split(' ')};
     simpleRecord.masterShortName = masterNameTokens.at(0) + " " +
         masterNameTokens.at(1).at(0) + ". " + masterNameTokens.at(2).at(0) + ".";
-
-    //tags
-    simpleRecord.serviceProvided = this->serviceProvided;
+    
+    QList<QString> services {};
+    for (const auto& service : this->serviceProvided.split(','))
+        services.push_back(Utils::tagToName("servicesList.txt", service));
+    simpleRecord.serviceProvided = QStringList(services).join(',');
 
     simpleRecord.price = QString::number(this->repairAmount) + "₽";
 
