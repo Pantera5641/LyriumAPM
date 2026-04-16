@@ -10,12 +10,27 @@ Window {
     minimumWidth: 550
     minimumHeight: 750
     modality: Qt.ApplicationModal
-    flags: Qt.FramelessWindowHint | Qt.Dialog  // ← Убираем заголовок
+    flags: Qt.FramelessWindowHint | Qt.Dialog
     color: "#121212"
     title: "Редактирование заказа"
 
     property var orderData: null
     signal orderSaved(var updatedData)
+
+    property string currentCarBrandTag: ""
+    property string currentServiceTag: ""
+    property string currentMasterTag: ""
+    property string currentStatusTag: ""
+
+    function findIndexByTag(model, tag) {
+        if (!model || !tag) return -1;
+        for (var i = 0; i < model.count; i++) {
+            if (model.getTag(i) === tag) {
+                return i;
+            }
+        }
+        return -1;
+    }
 
     Rectangle {
         anchors.fill: parent
@@ -177,6 +192,21 @@ Window {
                                         color: highlighted ? "#3d0e69" : "#09020f"
                                     }
                                 }
+
+                                Component.onCompleted: {
+                                    if (orderData && orderData.carBrandTag) {
+                                        currentIndex = findIndexByTag(carBrandModel, orderData.carBrandTag);
+                                        if (currentIndex !== -1) {
+                                            currentCarBrandTag = orderData.carBrandTag;
+                                        }
+                                    }
+                                }
+
+                                onActivated: {
+                                    if (currentIndex !== -1) {
+                                        currentCarBrandTag = carBrandModel.getTag(currentIndex);
+                                    }
+                                }
                             }
                         }
                     }
@@ -286,11 +316,21 @@ Window {
                                     }
                                 }
 
+                                Component.onCompleted: {
+                                    if (orderData && orderData.serviceTag) {
+                                        currentIndex = findIndexByTag(servicesModel, orderData.serviceTag);
+                                        if (currentIndex !== -1) {
+                                            currentServiceTag = orderData.serviceTag;
+                                        }
+                                    }
+                                }
+
                                 onActivated: {
                                     if (currentIndex !== -1) {
-                                        var serviceTag = servicesModel.get(currentIndex).tag
-                                        var price = recordPageLogic.getPrice(serviceTag)
-                                        priceField.text = price + "₽"
+                                        var newTag = servicesModel.getTag(currentIndex);
+                                        currentServiceTag = newTag;
+                                        var price = recordPageLogic.getPrice(newTag);
+                                        priceField.text = price + "₽";
                                     }
                                 }
                             }
@@ -392,6 +432,21 @@ Window {
                                     }
                                     background: Rectangle {
                                         color: highlighted ? "#3d0e69" : "#09020f"
+                                    }
+                                }
+
+                                Component.onCompleted: {
+                                    if (orderData && orderData.masterTag) {
+                                        currentIndex = findIndexByTag(employeeModel, orderData.masterTag);
+                                        if (currentIndex !== -1) {
+                                            currentMasterTag = orderData.masterTag;
+                                        }
+                                    }
+                                }
+
+                                onActivated: {
+                                    if (currentIndex !== -1) {
+                                        currentMasterTag = employeeModel.getTag(currentIndex);
                                     }
                                 }
                             }
@@ -509,6 +564,21 @@ Window {
                                         color: highlighted ? "#3d0e69" : "#09020f"
                                     }
                                 }
+
+                                Component.onCompleted: {
+                                    if (orderData && orderData.statusTag) {
+                                        currentIndex = findIndexByTag(statusModel, orderData.statusTag);
+                                        if (currentIndex !== -1) {
+                                            currentStatusTag = orderData.statusTag;
+                                        }
+                                    }
+                                }
+
+                                onActivated: {
+                                    if (currentIndex !== -1) {
+                                        currentStatusTag = statusModel.getTag(currentIndex);
+                                    }
+                                }
                             }
                         }
                     }
@@ -576,30 +646,62 @@ Window {
                         anchors.fill: parent
                         enabled: clientNameField.text.length > 0 && dateField.text.length > 0
                         cursorShape: Qt.PointingHandCursor
+
                         onClicked: {
-                            var carBrandValue = carBrandField.currentIndex !== -1 ? carBrandField.currentText : currentCarBrand.text
-                            var serviceValue = serviceField.currentIndex !== -1 ? serviceField.currentText : currentService.text
-                            var masterValue = masterField.currentIndex !== -1 ? masterField.currentText : currentMaster.text
-                            var statusValue = statusField.currentIndex !== -1 ? statusField.currentText : currentStatus.text
+
+                            function parseDate(dateStr) {
+                                if (!dateStr || !dateStr.includes('.')) return new Date();
+                                var parts = dateStr.split('.');
+                                if (parts.length !== 3) return new Date();
+
+                                var day = parseInt(parts[0], 10);
+                                var month = parseInt(parts[1], 10) - 1; // 🔥 В JS месяцы с 0!
+                                var year = parseInt(parts[2], 10);
+
+                                if (year < 100) year += 2000;
+
+                                return new Date(year, month, day);
+                            }
+
+                            var dateObj = parseDate(dateField.text);
+                            var dateForCpp = Qt.formatDate(dateObj, "yyyy.MM.dd");
+
+                            var finalCarBrandTag = (carBrandField.currentIndex !== -1) ? carBrandModel.getTag(carBrandField.currentIndex) : (orderData ? orderData.carBrandTag : "");
+                            var finalServiceTag = (serviceField.currentIndex !== -1) ? servicesModel.getTag(serviceField.currentIndex) : (orderData ? orderData.serviceTag : "");
+                            var finalMasterTag = (masterField.currentIndex !== -1) ? employeeModel.getTag(masterField.currentIndex) : (orderData ? orderData.masterTag : "");
+                            var finalStatusTag = (statusField.currentIndex !== -1) ? statusModel.getTag(statusField.currentIndex) : (orderData ? orderData.statusTag : "");
 
                             var dataToSave = {
                                 id: orderData ? orderData.id : 0,
                                 clientName: clientNameField.text,
                                 clientPhone: clientPhoneField.text,
                                 clientEmail: clientEmailField.text,
-                                carBrand: carBrandValue,
-                                carModel: carModelField.text,
-                                serviceName: serviceValue,
-                                masterName: masterValue,
-                                date: dateField.text,
-                                price: priceField.text,
-                                status: statusValue,
-                                comment: descriptionField.text
-                            }
 
-                            // вставить хуйню для сохранения
-                            saveClicked(dataToSave)
-                            editOrderWindow.close()
+                                carBrand: (carBrandField.currentIndex !== -1) ? carBrandField.currentText : (orderData ? orderData.carBrand : ""),
+                                carBrandTag: finalCarBrandTag,
+
+                                carModel: carModelField.text,
+
+                                serviceName: (serviceField.currentIndex !== -1) ? serviceField.currentText : (orderData ? orderData.serviceName : ""),
+                                serviceTag: finalServiceTag,
+
+                                masterName: (masterField.currentIndex !== -1) ? masterField.currentText : (orderData ? orderData.masterName : ""),
+                                masterTag: finalMasterTag,
+
+                                date: dateForCpp,
+
+                                price: priceField.text.includes("₽") ? priceField.text : priceField.text + "₽",
+
+                                status: (statusField.currentIndex !== -1) ? statusField.currentText : (orderData ? orderData.status : ""),
+                                statusTag: finalStatusTag,
+
+                                comment: descriptionField.text
+                            };
+
+                            console.log("Saving ", JSON.stringify(dataToSave));
+
+                            orderSaved(dataToSave);
+                            editOrderWindow.close();
                         }
                     }
                 }
@@ -607,13 +709,13 @@ Window {
         }
     }
 
+    // === КОМПОНЕНТЫ ===
     component SectionHeader: Rectangle {
         property string text: ""
         Layout.fillWidth: true
         Layout.preferredHeight: 30
         Layout.topMargin: 5
         color: "transparent"
-
         Text {
             text: parent.text
             color: "#8a2be2"
@@ -622,7 +724,6 @@ Window {
             anchors.left: parent.left
             anchors.verticalCenter: parent.verticalCenter
         }
-
         Rectangle {
             anchors.bottom: parent.bottom
             width: parent.width
@@ -636,17 +737,14 @@ Window {
         property string label: ""
         property alias text: textField.text
         property alias readOnly: textField.readOnly
-
         spacing: 5
         Layout.fillWidth: true
-
         Text {
             text: label
             color: "#8a2be2"
             font.pixelSize: 13
             font.bold: true
         }
-
         Rectangle {
             Layout.fillWidth: true
             Layout.preferredHeight: 45
@@ -654,7 +752,6 @@ Window {
             radius: 8
             border.color: textField.focus ? "#d05ce3" : "#8a2be2"
             border.width: 2
-
             TextField {
                 id: textField
                 anchors.fill: parent
@@ -672,17 +769,14 @@ Window {
     component LabeledTextArea: ColumnLayout {
         property string label: ""
         property alias text: textArea.text
-
         spacing: 5
         Layout.fillWidth: true
-
         Text {
             text: label
             color: "#8a2be2"
             font.pixelSize: 13
             font.bold: true
         }
-
         Rectangle {
             Layout.fillWidth: true
             Layout.fillHeight: true
@@ -690,12 +784,10 @@ Window {
             radius: 8
             border.color: textArea.focus ? "#d05ce3" : "#8a2be2"
             border.width: 2
-
             ScrollView {
                 anchors.fill: parent
                 anchors.margins: 1
                 clip: true
-
                 TextArea {
                     id: textArea
                     color: "#d05ce3"

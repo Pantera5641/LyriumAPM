@@ -168,20 +168,20 @@ Record* Record::setDate(const QString& date)
 
 void Record::setValueByTag(const QString& tag, const QString& value)
 {
-    if (tag == "id") this->id = value.toInt();
-    if (tag == "client_full_name") this->clientFullName;
-    if (tag == "phone_number") this->phoneNumber = value;
-    if (tag == "email") this->email = value;
-    if (tag == "car_brand_name") this->carBrandName = value;
-    if (tag == "car_model") this->carModel = value;
-    if (tag == "comment") this->comment = value;
-    if (tag == "master_full_name") this->masterFullName = value;
-    if (tag == "service_provided") this->serviceProvided = value;
-    if (tag == "repair_amount") this->repairAmount = value.toInt();
-    if (tag == "visit_date") setDate(value);
-    if (tag == "status") this->status = value;
+    if (tag == "id") { this->id = value.toInt(); return; }
+    if (tag == "client_full_name") { this->clientFullName = value; return; }
+    if (tag == "phone_number") { this->phoneNumber = value; return; }
+    if (tag == "email") { this->email = value; return; }
+    if (tag == "car_brand_name") { this->carBrandName = value; return; }
+    if (tag == "car_model") { this->carModel = value; return; }
+    if (tag == "comment") { this->comment = value; return; }
+    if (tag == "master_full_name") { this->masterFullName = value; return; }
+    if (tag == "service_provided") { this->serviceProvided = value; return; }
+    if (tag == "repair_amount") { this->repairAmount = value.toInt(); return; }
+    if (tag == "visit_date") { setDate(value); return; }
+    if (tag == "status") { this->status = value; return; }
 
-    throw std::runtime_error("Unknown tag");
+    throw std::runtime_error("Unknown tag: " + tag.toStdString());
 }
 
 Record* Record::addService(const QString& serviceProvided)

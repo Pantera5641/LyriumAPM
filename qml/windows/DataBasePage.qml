@@ -1,7 +1,6 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
-import QtQuick.Window 2.15
 
 Item {
     id: dataBasePage
@@ -9,40 +8,52 @@ Item {
 
     property var editWindow: null
 
+    function getServiceNameFromTag(tag) {
+        if (!servicesModel || !tag) return tag;
+        for (var i = 0; i < servicesModel.count; i++) {
+            var item = servicesModel.get(i)
+            if (item && item.tag === tag) return item.name;
+        }
+        return tag;
+    }
+
     function openEditWindow(orderData) {
         var component = Qt.createComponent("EditWindow.qml")
-
         if (component.status === Component.Ready) {
-            editWindow = component.createObject(dataBasePage, {
-                "orderData": orderData
-            })
-
+            editWindow = component.createObject(dataBasePage, { "orderData": orderData })
             editWindow.orderSaved.connect(function(updatedData) {
                 console.log("Сохранены данные:", JSON.stringify(updatedData))
 
-                databaseModel.updateRecord(
-                    updatedData.id,
-                    updatedData.clientName,
-                    updatedData.clientPhone,
-                    updatedData.clientEmail,
-                    updatedData.carBrand,
-                    updatedData.carModel,
-                    updatedData.serviceTag,
-                    updatedData.serviceName,
-                    updatedData.masterTag,
-                    updatedData.masterName,
-                    updatedData.date,
-                    updatedData.price,
-                    updatedData.statusTag,
-                    updatedData.status,
-                    updatedData.comment
-                )
+                // Обновляем БД через модель
+                if (updatedData.clientName !== undefined)
+                    databaseModel.setValueByIdTag(updatedData.id, "client_full_name", updatedData.clientName)
+                if (updatedData.clientPhone !== undefined)
+                    databaseModel.setValueByIdTag(updatedData.id, "phone_number", updatedData.clientPhone)
+                if (updatedData.clientEmail !== undefined)
+                    databaseModel.setValueByIdTag(updatedData.id, "email", updatedData.clientEmail)
+                if (updatedData.carBrandTag !== undefined)
+                    databaseModel.setValueByIdTag(updatedData.id, "car_brand_name", updatedData.carBrandTag)
+                if (updatedData.carModel !== undefined)
+                    databaseModel.setValueByIdTag(updatedData.id, "car_model", updatedData.carModel)
+                if (updatedData.serviceTag !== undefined)
+                    databaseModel.setValueByIdTag(updatedData.id, "service_provided", updatedData.serviceTag)
+                if (updatedData.masterTag !== undefined)
+                    databaseModel.setValueByIdTag(updatedData.id, "master_full_name", updatedData.masterTag)
+                if (updatedData.date !== undefined)
+                    databaseModel.setValueByIdTag(updatedData.id, "visit_date", updatedData.date)
+                if (updatedData.price !== undefined) {
+                    var priceValue = updatedData.price.toString().replace("₽", "")
+                    databaseModel.setValueByIdTag(updatedData.id, "repair_amount", priceValue)
+                }
+                if (updatedData.statusTag !== undefined)
+                    databaseModel.setValueByIdTag(updatedData.id, "status", updatedData.statusTag)
+                if (updatedData.comment !== undefined)
+                    databaseModel.setValueByIdTag(updatedData.id, "comment", updatedData.comment)
 
+                // Обновляем отображение таблицы
                 databaseModel.update(sortTagModel.getTag(sortBox.currentIndex), searchField.text)
-
                 editWindow = null
             })
-
             editWindow.show()
         } else {
             console.error("Ошибка загрузки EditWindow.qml:", component.errorString())
@@ -60,12 +71,10 @@ Item {
         spacing: 20
         padding: 20
 
-        // === ВЕРХНЯЯ ПАНЕЛЬ УПРАВЛЕНИЯ ===
         Row {
             width: parent.width
             padding: 30
             spacing: 55
-
             Row {
                 spacing: 15
                 Text {
@@ -86,7 +95,6 @@ Item {
                     }
                 }
             }
-
             Row {
                 spacing: 15
                 Text {
@@ -108,14 +116,12 @@ Item {
             }
         }
 
-        // === ТАБЛИЦА ===
         Rectangle {
             width: 805
             height: 455
             anchors.horizontalCenter: parent.horizontalCenter
             color: "#8a2be2"
             radius: 17
-
             Rectangle {
                 anchors.centerIn: parent
                 width: 800
@@ -123,15 +129,11 @@ Item {
                 color: "#000000"
                 radius: 15
                 clip: true
-
                 Column {
                     anchors.fill: parent
-
-                    // --- ШАПКА ТАБЛИЦЫ ---
                     Item {
                         width: parent.width
                         height: 40
-
                         Rectangle {
                             anchors.bottom: parent.bottom
                             width: parent.width
@@ -139,105 +141,18 @@ Item {
                             color: "#8a2be2"
                             z: 0
                         }
-
                         Row {
                             anchors.fill: parent
                             z: 10
-
-                            Rectangle {
-                                width: 50
-                                height: parent.height
-                                color: "transparent"
-                                Text {
-                                    text: "ID"
-                                    color: "#FFFFFF"
-                                    font.bold: true
-                                    font.pixelSize: 14
-                                    anchors.centerIn: parent
-                                }
-                            }
-
-                            Rectangle {
-                                width: 160
-                                height: parent.height
-                                color: "transparent"
-                                Text {
-                                    text: "Заказчик"
-                                    color: "#FFFFFF"
-                                    font.bold: true
-                                    font.pixelSize: 14
-                                    anchors.centerIn: parent
-                                }
-                            }
-
-                            Rectangle {
-                                width: 100
-                                height: parent.height
-                                color: "transparent"
-                                Text {
-                                    text: "Дата"
-                                    color: "#FFFFFF"
-                                    font.bold: true
-                                    font.pixelSize: 14
-                                    anchors.centerIn: parent
-                                }
-                            }
-
-                            Rectangle {
-                                width: 140
-                                height: parent.height
-                                color: "transparent"
-                                Text {
-                                    text: "Марка"
-                                    color: "#FFFFFF"
-                                    font.bold: true
-                                    font.pixelSize: 14
-                                    anchors.centerIn: parent
-                                }
-                            }
-
-                            Rectangle {
-                                width: 100
-                                height: parent.height
-                                color: "transparent"
-                                Text {
-                                    text: "Мастер"
-                                    color: "#FFFFFF"
-                                    font.bold: true
-                                    font.pixelSize: 14
-                                    anchors.centerIn: parent
-                                }
-                            }
-
-                            Rectangle {
-                                width: 100
-                                height: parent.height
-                                color: "transparent"
-                                Text {
-                                    text: "Цена"
-                                    color: "#FFFFFF"
-                                    font.bold: true
-                                    font.pixelSize: 14
-                                    anchors.centerIn: parent
-                                }
-                            }
-
-                            Rectangle {
-                                width: 150
-                                height: parent.height
-                                color: "transparent"
-                                Text {
-                                    text: "Статус"
-                                    color: "#FFFFFF"
-                                    font.bold: true
-                                    font.pixelSize: 14
-                                    anchors.centerIn: parent
-                                }
-                            }
+                            Rectangle { width: 50; height: parent.height; color: "transparent"; Text { text: "ID"; color: "#FFFFFF"; font.bold: true; font.pixelSize: 14; anchors.centerIn: parent } }
+                            Rectangle { width: 160; height: parent.height; color: "transparent"; Text { text: "Заказчик"; color: "#FFFFFF"; font.bold: true; font.pixelSize: 14; anchors.centerIn: parent } }
+                            Rectangle { width: 100; height: parent.height; color: "transparent"; Text { text: "Дата"; color: "#FFFFFF"; font.bold: true; font.pixelSize: 14; anchors.centerIn: parent } }
+                            Rectangle { width: 140; height: parent.height; color: "transparent"; Text { text: "Марка"; color: "#FFFFFF"; font.bold: true; font.pixelSize: 14; anchors.centerIn: parent } }
+                            Rectangle { width: 100; height: parent.height; color: "transparent"; Text { text: "Мастер"; color: "#FFFFFF"; font.bold: true; font.pixelSize: 14; anchors.centerIn: parent } }
+                            Rectangle { width: 100; height: parent.height; color: "transparent"; Text { text: "Цена"; color: "#FFFFFF"; font.bold: true; font.pixelSize: 14; anchors.centerIn: parent } }
+                            Rectangle { width: 150; height: parent.height; color: "transparent"; Text { text: "Статус"; color: "#FFFFFF"; font.bold: true; font.pixelSize: 14; anchors.centerIn: parent } }
                         }
                     }
-
-                    // --- СПИСОК ДАННЫХ ---
                     ScrollView {
                         id: scrollView
                         width: parent.width
@@ -245,34 +160,27 @@ Item {
                         clip: true
                         contentWidth: width
                         ScrollBar.vertical.policy: ScrollBar.AlwaysOff
-
                         Column {
                             id: rootColumn
                             width: scrollView.width
                             spacing: 0
                             property var dataList: databaseModel
-
                             Repeater {
                                 model: parent.dataList
-
                                 delegate: Item {
                                     width: rootColumn.width
                                     height: 40
-
                                     Rectangle {
                                         anchors.fill: parent
                                         color: (index % 2 === 0) ? "#050505" : "#000000"
                                     }
-
                                     Row {
                                         anchors.fill: parent
                                         spacing: 0
-
                                         Rectangle {
                                             width: 50
                                             height: parent.height
                                             color: "transparent"
-
                                             Text {
                                                 id: idText
                                                 text: idRole
@@ -281,7 +189,6 @@ Item {
                                                 font.underline: idMouseArea.containsMouse
                                                 anchors.centerIn: parent
                                             }
-
                                             MouseArea {
                                                 id: idMouseArea
                                                 anchors.fill: parent
@@ -291,127 +198,74 @@ Item {
                                                 onClicked: {
                                                     var orderData = {
                                                         id: idRole,
+
+                                                        // Клиент
                                                         clientName: clientFullName,
                                                         clientPhone: phoneNumber,
                                                         clientEmail: email,
+
+                                                        // Авто
                                                         carBrand: carBrand,
+                                                        carBrandTag: carBrand,
+
                                                         carModel: carModel,
-                                                        serviceName: serviceProvided,
+
+                                                        // Услуга
+                                                        serviceName: dataBasePage.getServiceNameFromTag(serviceProvided),
+                                                        serviceTag: serviceProvided,
+
+                                                        // Мастер
                                                         masterName: masterFullName,
+                                                        masterTag: masterFullName,
+
                                                         date: date,
-                                                        price: price,
+                                                        price: price + (price.toString().includes("₽") ? "" : "₽"),
+
+                                                        // Статус
                                                         status: status,
+                                                        statusTag: status,
+
                                                         comment: comment
                                                     }
-                                                    console.log("Opening edit window with data:", JSON.stringify(orderData))
+
+                                                    console.log("Opening edit window with ", JSON.stringify(orderData))
                                                     dataBasePage.openEditWindow(orderData)
                                                 }
                                             }
                                         }
-
+                                        Rectangle { width: 160; height: parent.height; color: "transparent"; Text { text: clientShortName; color: "#d05ce3"; font.pixelSize: 14; anchors.fill: parent; horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter; elide: Text.ElideRight; leftPadding: 5; rightPadding: 5 } }
+                                        Rectangle { width: 100; height: parent.height; color: "transparent"; Text { text: date; color: "#d05ce3"; font.pixelSize: 14; anchors.centerIn: parent } }
+                                        Rectangle { width: 140; height: parent.height; color: "transparent"; Text { text: carBrand; color: "#d05ce3"; font.pixelSize: 14; anchors.fill: parent; horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter; elide: Text.ElideRight; leftPadding: 5; rightPadding: 5 } }
+                                        Rectangle { width: 100; height: parent.height; color: "transparent"; Text { text: masterShortName; color: "#d05ce3"; font.pixelSize: 14; anchors.fill: parent; horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter; elide: Text.ElideRight; leftPadding: 5; rightPadding: 5 } }
+                                        Rectangle { width: 100; height: parent.height; color: "transparent"; Text { text: price; color: "#d05ce3"; font.pixelSize: 14; anchors.centerIn: parent } }
                                         Rectangle {
-                                            width: 160
-                                            height: parent.height
-                                            color: "transparent"
-                                            Text {
-                                                text: clientShortName
-                                                color: "#d05ce3"
-                                                font.pixelSize: 14
-                                                anchors.fill: parent
-                                                horizontalAlignment: Text.AlignHCenter
-                                                verticalAlignment: Text.AlignVCenter
-                                                elide: Text.ElideRight
-                                                leftPadding: 5
-                                                rightPadding: 5
-                                            }
-                                        }
-
-                                        Rectangle {
-                                            width: 100
-                                            height: parent.height
-                                            color: "transparent"
-                                            Text {
-                                                text: date
-                                                color: "#d05ce3"
-                                                font.pixelSize: 14
-                                                anchors.centerIn: parent
-                                            }
-                                        }
-
-                                        Rectangle {
-                                            width: 140
-                                            height: parent.height
-                                            color: "transparent"
-                                            Text {
-                                                text: carBrand
-                                                color: "#d05ce3"
-                                                font.pixelSize: 14
-                                                anchors.fill: parent
-                                                horizontalAlignment: Text.AlignHCenter
-                                                verticalAlignment: Text.AlignVCenter
-                                                elide: Text.ElideRight
-                                                leftPadding: 5
-                                                rightPadding: 5
-                                            }
-                                        }
-
-                                        Rectangle {
-                                            width: 100
-                                            height: parent.height
-                                            color: "transparent"
-                                            Text {
-                                                text: masterShortName
-                                                color: "#d05ce3"
-                                                font.pixelSize: 14
-                                                anchors.fill: parent
-                                                horizontalAlignment: Text.AlignHCenter
-                                                verticalAlignment: Text.AlignVCenter
-                                                elide: Text.ElideRight
-                                                leftPadding: 5
-                                                rightPadding: 5
-                                            }
-                                        }
-
-                                        Rectangle {
-                                            width: 100
-                                            height: parent.height
-                                            color: "transparent"
-                                            Text {
-                                                text: price
-                                                color: "#d05ce3"
-                                                font.pixelSize: 14
-                                                anchors.centerIn: parent
-                                            }
-                                        }
-
-                                        Rectangle {
-                                            width: 150
-                                            height: parent.height
-                                            color: "transparent"
-
+                                            width: 150; height: parent.height; color: "transparent"
                                             BaseComboBox {
                                                 id: statusBox
                                                 model: statusModel
                                                 textRole: "name"
-                                                width: 130
-                                                height: 35
+                                                width: 130; height: 35
                                                 anchors.centerIn: parent
-
                                                 Component.onCompleted: {
-                                                    currentIndex = find(status)
+                                                    if (status) {
+                                                        for (var i = 0; i < statusModel.count; i++) {
+                                                            if (statusModel.get(i).tag === status) {
+                                                                currentIndex = i;
+                                                                break;
+                                                            }
+                                                        }
+                                                    }
                                                 }
-
                                                 onActivated: {
-                                                    databaseModel.setStatus(idRole, statusModel.getTag(statusBox.currentIndex))
+                                                    if (statusBox.currentIndex >= 0) {
+                                                        var newStatusTag = statusModel.getTag(statusBox.currentIndex)
+                                                        databaseModel.setValueByIdTag(idRole, "status", newStatusTag)
+                                                        databaseModel.update(sortTagModel.getTag(sortBox.currentIndex), searchField.text)
+                                                    }
                                                 }
-
-                                                background: Rectangle {
-                                                    color: "transparent"
-                                                }
-
+                                                background: Rectangle { color: "transparent" }
                                                 contentItem: Text {
-                                                    leftPadding: 10
-                                                    rightPadding: 25
+                                                    leftPadding: 10; rightPadding: 25
                                                     text: parent.displayText
                                                     color: "#d05ce3"
                                                     font.pixelSize: 14
@@ -419,12 +273,10 @@ Item {
                                                     verticalAlignment: Text.AlignVCenter
                                                     elide: Text.ElideRight
                                                 }
-
                                                 indicator: Canvas {
                                                     x: parent.width - width - 8
                                                     y: parent.height / 2 - height / 2
-                                                    width: 10
-                                                    height: 6
+                                                    width: 10; height: 6
                                                     contextType: "2d"
                                                     onPaint: {
                                                         context.reset()
@@ -439,7 +291,6 @@ Item {
                                             }
                                         }
                                     }
-
                                     Rectangle {
                                         anchors.bottom: parent.bottom
                                         width: parent.width
