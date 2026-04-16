@@ -39,3 +39,6 @@ target_link_libraries(LyriumAPM PRIVATE Qt5::Core Qt5::Quick Qt5::Qml)
 include(GNUInstallDirs)
 
 install(TARGETS LyriumAPM RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+
+file(COPY ${CMAKE_SOURCE_DIR}/data DESTINATION ${CMAKE_BINARY_DIR})
+file(COPY ${CMAKE_SOURCE_DIR}/logo.png DESTINATION ${CMAKE_BINARY_DIR})
