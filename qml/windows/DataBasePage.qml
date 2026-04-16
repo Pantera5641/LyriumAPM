@@ -5,7 +5,8 @@ import "../components"
 
 Item {
     id: dataBasePage
-    anchors.fill: parent
+    Layout.fillWidth: true
+    Layout.fillHeight: true
 
     property var editWindow: null
 

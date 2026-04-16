@@ -5,7 +5,8 @@ import "../components"
 
 Item {
     id: recordPage
-    anchors.fill: parent
+    Layout.fillWidth: true
+    Layout.fillHeight: true
 
     Column {
         width: parent.width
