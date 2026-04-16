@@ -52,7 +52,7 @@ void Database::initializeDatabase()
 
 void Database::saveDatabase() const
 {
-    QFile file("/data/dataBase.txt");
+    QFile file(QCoreApplication::applicationDirPath() + "/data/dataBase.txt");
     file.open(QIODevice::WriteOnly | QIODevice::Text);
     QTextStream stream(&file);
     stream.setCodec("UTF-8");
@@ -66,7 +66,7 @@ QList<Record> Database::getRecords(const QString& sortTag, const QString &search
     QList<Record> newRecords {};
 
     for (auto item : dataStore)
-        if (item.toSimpleRecord().toString().contains(search)) newRecords.push_back(item);
+        if (item.toSimpleRecord().toString().contains(search, Qt::CaseInsensitive)) newRecords.push_back(item);
 
     if (sortTag != "none")
     {
