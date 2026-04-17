@@ -3,17 +3,17 @@
 
 Record::Record(
     const int id,
-    const QString &clientFullName,
-    const QString &phoneNumber,
-    const QString &email,
-    const QString &carBrandName,
-    const QString &carModel,
-    const QString &comment,
-    const QString &masterFullName,
-    const QString &serviceProvided,
+    const QString& clientFullName,
+    const QString& phoneNumber,
+    const QString& email,
+    const QString& carBrandName,
+    const QString& carModel,
+    const QString& comment,
+    const QString& masterFullName,
+    const QString& serviceProvided,
     const int repairAmount,
-    const std::chrono::year_month_day &visitDate,
-    const QString &status) {
+    const QDate visitDate,
+    const QString& status) {
     this->id = id;
     this->clientFullName = clientFullName;
     this->phoneNumber = phoneNumber;
@@ -38,7 +38,7 @@ Record::Record(
     const QString& comment,
     const QString& masterFullName,
     const QString& serviceProvided,
-    const std::chrono::year_month_day& visitDate,
+    const QDate& visitDate,
     const QString& status) {
     this->id = id;
     this->clientFullName = clientFullName;
@@ -98,7 +98,7 @@ QString Record::getServiceProvided() const {return serviceProvided;}
 
 int Record::getRepairAmount() const {return repairAmount;}
 
-std::chrono::year_month_day Record::getVisitDate() const {return visitDate;}
+QDate Record::getVisitDate() const {return visitDate;}
 
 QString Record::getVisitDateYMN() const
 {
@@ -156,12 +156,8 @@ Record* Record::setDate(const QString& date)
     for (const auto token : date.split('.'))
         ymdTokens.append(token.toInt());
 
-    std::chrono::year_month_day ymd
-    {
-        std::chrono::year(ymdTokens.at(0)),
-        std::chrono::month(ymdTokens.at(1)),
-        std::chrono::day(ymdTokens.at(2))
-    };
+    const QDate ymd (ymdTokens.at(0), ymdTokens.at(1), ymdTokens.at(2));
+
     this->visitDate = ymd;
     return this;
 }

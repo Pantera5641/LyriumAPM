@@ -6,6 +6,7 @@
 #include <utility>
 #include <fstream>
 #include <map>
+#include <QDate>
 
 #include "../utils/utils.h"
 #include "simpleRecord.h"
@@ -24,7 +25,7 @@ struct Record
     QString masterFullName {};
     QString serviceProvided {};
     int repairAmount {};
-    std::chrono::year_month_day visitDate {};
+    QDate visitDate {};
     QString status {};
 
     void updateRepairAmount(const QString& serviceProvided);
@@ -34,17 +35,17 @@ struct Record
 
     Record(
     int id,
-    const QString& clientFullName,
-    const QString& phoneNumber,
-    const QString& email,
-    const QString& carBrandName,
-    const QString& carModel,
-    const QString& comment,
-    const QString& masterFullName,
-    const QString& serviceProvided,
-    int repairAmount,
-    const std::chrono::year_month_day& visitDate,
-    const QString& status);
+        const QString& clientFullName,
+        const QString& phoneNumber,
+        const QString& email,
+        const QString& carBrandName,
+        const QString& carModel,
+        const QString& comment,
+        const QString& masterFullName,
+        const QString& serviceProvided,
+        int repairAmount,
+        QDate visitDate,
+        const QString& status);
 
     Record(
         int id,
@@ -56,7 +57,7 @@ struct Record
         const QString& comment,
         const QString& masterFullName,
         const QString& serviceProvided,
-        const std::chrono::year_month_day& visitDate,
+        const QDate& visitDate,
         const QString& status);
 
     [[nodiscard]]
@@ -90,7 +91,7 @@ struct Record
     int getRepairAmount() const;
 
     [[nodiscard]]
-    std::chrono::year_month_day getVisitDate() const;
+    QDate getVisitDate() const;
 
     [[nodiscard]]
     QString getVisitDateYMN() const;

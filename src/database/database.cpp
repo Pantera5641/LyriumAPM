@@ -22,12 +22,7 @@ void Database::initializeDatabase()
         QString line = stream.readLine();
         QStringList tokens {line.split(';')};
         QStringList dataTokens {tokens.at(10).split('.')};
-        std::chrono::year_month_day data
-        {
-            std::chrono::year(dataTokens.at(0).toInt()),
-            std::chrono::month(dataTokens.at(1).toInt()),
-            std::chrono::day(dataTokens.at(2).toUInt())
-        };
+        const QDate data(dataTokens.at(0).toInt(), dataTokens.at(1).toInt(), dataTokens.at(2).toUInt());
 
         Record record(
         tokens.at(0).toInt(),
@@ -118,7 +113,7 @@ Database* Database::addRecord(
         comment,
         masterFullName,
         serviceProvided,
-        std::chrono::floor<std::chrono::days>(std::chrono::system_clock::now()),
+        QDate::currentDate(),
         status);
     dataStore.push_back(record);
     saveDatabase();
