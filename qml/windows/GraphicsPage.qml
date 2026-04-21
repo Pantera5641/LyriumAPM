@@ -4,6 +4,11 @@ import QtQuick.Layouts 1.15
 import QtMultimedia 5.15
 
 Item {
+    Rectangle{
+        anchors.fill: parent
+        color: '#101010'
+    }
+
     Video {
         id: videoPlayer
         anchors.fill: parent
