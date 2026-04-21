@@ -22,6 +22,6 @@
         <file>resources/logo.png</file>
         <file>resources/icon_cross.png</file>
         <file>resources/icon_dash.png</file>
-        <file>resources/zaako.mp4</file>
+        <file>resources/easter_egg.mp4</file>
     </qresource>
 </RCC>

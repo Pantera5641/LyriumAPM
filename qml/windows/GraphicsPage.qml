@@ -4,20 +4,15 @@ import QtQuick.Layouts 1.15
 import QtMultimedia 5.15
 
 Item {
-    MediaPlayer {
-        id: mediaPlayer
-        source: "file:///C:/Users/Pantera5641/Desktop/Projects/QtCreator/LyriumAPM/resources/zaako.mp4"
-    }
+    Video {
+        id: videoPlayer
+        anchors.fill: parent
+        source: "qrc:/resources/easter_egg.mp4"
+        loops: MediaPlayer.Infinite
+        fillMode: VideoOutput.PreserveAspectFit
 
-    VideoOutput {
-        Layout.fillWidth: true
-        Layout.fillHeight: true
-        source: mediaPlayer
-    }
-
-    MouseArea {
-        Layout.fillWidth: true
-        Layout.fillHeight: true
-        onPressed: mediaPlayer.play()
+        onVisibleChanged: {
+            visible ? videoPlayer.play() : videoPlayer.pause()
+        }
     }
 }
