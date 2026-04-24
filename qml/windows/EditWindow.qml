@@ -11,11 +11,17 @@ Window {
     minimumWidth: 550
     minimumHeight: 750
     modality: Qt.ApplicationModal
-    flags: Qt.FramelessWindowHint | Qt.Dialog
+    flags: Qt.FramelessWindowHint | Qt.Window | Qt.Dialog
     color: "transparent"
 
     property var recordId : 0
     property var orderData: databaseModel.getById(recordId)
+
+    MouseArea {
+        width: parent.width
+        height: parent.height * 0.1
+        onPressed: editOrderWindow.startSystemMove()
+    }
 
     Rectangle {
         anchors.fill: parent
@@ -121,10 +127,17 @@ Window {
                     }
 
                     SectionHeader { text: "Информация о заказе" }
-                    LabeledTextField {
-                        id: dateField
-                        label: "Дата"
-                        text: orderData.date
+                    Almanac {
+                        id: almanac
+                        selectedDate: parseDate(orderData.date)
+                        Layout.fillWidth: true
+                        Layout.preferredHeight: 45
+                    }
+
+                    Rectangle{
+                        color: "transparent"
+                        Layout.fillWidth: true
+                        Layout.preferredHeight: 5
                     }
 
                     TextFieldAndComboBox{
@@ -213,7 +226,7 @@ Window {
                     Layout.preferredHeight: 45
                     color: "#8a2be2"
                     radius: 8
-                    opacity: (clientNameField.text.length > 0 && dateField.text.length > 0) ? 1.0 : 0.5
+                    opacity: (clientNameField.text.length > 0 && orderData.date !== Qt.formatDate(almanac.selectedDate, "dd.MM.yyyy")) ? 1.0 : 0.5
 
                     Text {
                         text: "Сохранить"
@@ -225,7 +238,7 @@ Window {
 
                     MouseArea {
                         anchors.fill: parent
-                        enabled: clientNameField.text.length > 0 && dateField.text.length > 0
+                        enabled: clientNameField.text.length > 0 && orderData.date !== Qt.formatDate(almanac.selectedDate, "dd.MM.yyyy")
                         cursorShape: Qt.PointingHandCursor
 
                         onClicked: {
@@ -250,7 +263,7 @@ Window {
                             databaseModel.setValueByIdTag(recordId, "master_name", employeeModel.getTag(masterField.modelId));
                             databaseModel.setValueByIdTag(recordId, "service_provided", servicesModel.getTag(servicesBox.modelId));
                             databaseModel.setValueByIdTag(recordId, "repair_amount", recordPageLogic.getPrice(servicesModel.getTag(servicesBox.modelId)));
-                            databaseModel.setValueByIdTag(recordId, "visit_date", dateField.text);
+                            databaseModel.setValueByIdTag(recordId, "visit_date", Qt.formatDate(almanac.selectedDate, "yyyy.MM.dd"));
                             databaseModel.setValueByIdTag(recordId, "status", statusModel.getTag(statusBox.modelId));
 
                             databaseModel.update();
@@ -260,5 +273,14 @@ Window {
                 }
             }
         }
+    }
+    function parseDate(str) {
+        const items = str.split(".");
+
+        const day = parseInt(items[0], 10);
+        const month = parseInt(items[1], 10) - 1;
+        const year = parseInt(items[2], 10);
+
+        return new Date(year, month, day)
     }
 }

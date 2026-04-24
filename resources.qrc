@@ -12,6 +12,7 @@
         <file>qml/components/LabeledTextField.qml</file>
         <file>qml/components/TextFieldAndComboBox.qml</file>
         <file>qml/components/SectionHeader.qml</file>
+        <file>qml/components/Almanac.qml</file>
 
         <file>qml/windows/DataBasePage.qml</file>
         <file>qml/windows/EditWindow.qml</file>
@@ -22,6 +23,8 @@
         <file>resources/logo.png</file>
         <file>resources/icon_cross.png</file>
         <file>resources/icon_dash.png</file>
+        <file>resources/left_arrow.png</file>
+        <file>resources/right_arrow.png</file>
         <file>resources/easter_egg.mp4</file>
     </qresource>
 </RCC>
