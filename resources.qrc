@@ -27,6 +27,8 @@
         <file>resources/right_arrow.png</file>
         <file>resources/easter_egg.mp4</file>
 
+        <file>resources/reports/full_report.html</file>
+        <file>resources/reports/full_report_card.html</file>
         <file>resources/reports/record_report.html</file>
 
         <file>resources/reports/icons/brand.svg</file>

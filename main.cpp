@@ -2,6 +2,7 @@
 #include <QQmlApplicationEngine>
 #include <QIcon>
 #include <QQmlContext>
+#include <QWebEngineSettings>
 
 #include "src/utils/utils.h"
 #include "src/database/database.h"
@@ -52,6 +53,9 @@ int main(int argc, char *argv[])
         Qt::QueuedConnection);
 
     engine.load(QUrl(QStringLiteral("qrc:/qml/Main.qml")));
+
+    QWebEngineSettings::globalSettings()->setAttribute(
+    QWebEngineSettings::PrintElementBackgrounds, true);
 
     Database& database = Database::getInstance();
     database.initializeDatabase();

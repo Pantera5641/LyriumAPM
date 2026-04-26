@@ -5,6 +5,7 @@
 #include <QTextDocument>
 #include <QWebEnginePage>
 #include <QDesktopServices>
+#include <QPageLayout>
 
 #include "../../database/database.h"
 
@@ -16,6 +17,8 @@ class ReportsBuilder : public QObject
 
     static QString loadHtml(const QString &path);
 
+    static QString fillHtmlPlaceholders(const QString& baseHtml, const SimpleRecord& record);
+
     static QString getPdfPath(const QString &fileName);
 
     void createReport(const QString &html, const QString &pdfFilename, const QUrl &baseUrl);
@@ -26,6 +29,9 @@ class ReportsBuilder : public QObject
 
     Q_INVOKABLE
     static void openReportsFolder();
+
+    Q_INVOKABLE
+    void createFullReport();
 
     Q_INVOKABLE
     void createRecordReport(int id);
