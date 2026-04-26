@@ -32,3 +32,18 @@ QString Utils::tagToName(const QString &filename, const QString &tag)
 
     return tag;
 }
+
+QStringList Utils::find(const QString &filename, const QString &tag)
+{
+    QFile file(QCoreApplication::applicationDirPath() + "/data/" + filename);
+    file.open(QIODevice::ReadOnly | QIODevice::Text);
+    QTextStream stream(&file);
+    while (!stream.atEnd())
+    {
+        if (QString line = stream.readLine(); line.contains(tag))
+             return line.split(';');
+    }
+    file.close();
+
+    return {};
+}

@@ -15,4 +15,6 @@ class Utils
     static QList<TagItem> parseToModel(const QString &filename);
 
     static QString tagToName(const QString &filename, const QString &tag);
+
+    static QStringList find(const QString &filename, const QString &tag);
 };
