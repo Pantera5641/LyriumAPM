@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Отчет по заказам</title>
+    <style>
+        @page  {
+            margin: 0;
+            background: #121212;
+        }
+
+        * {
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: #121212;
+            color: #eaeaea;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        h1 {
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            color: #aaa;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: linear-gradient(145deg, #1a1a1a, #121212);
+            border: 1px solid rgba(138, 43, 226, 0.3);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 0 20px rgba(138, 43, 226, 0.15);
+            break-inside: avoid;
+            page-break-inside: avoid;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .id {
+            font-size: 20px;
+            color: #8a2be2;
+            font-weight: bold;
+        }
+
+        .status {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            background: rgba(138, 43, 226, 0.2);
+            color: #caa7ff;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .field {
+            margin-bottom: 8px;
+        }
+
+        .label {
+            font-size: 12px;
+            color: #8a2be2;
+        }
+
+        .value {
+            font-size: 14px;
+        }
+
+        .divider {
+            height: 1px;
+            background: rgba(138, 43, 226, 0.2);
+            margin: 15px 0;
+        }
+        .footer {
+            margin-top: 20mm;
+            padding: 10mm 0 0 0;
+            border-top: 1px solid #2a2a2a;
+            color: #888;
+            font-size: 12px;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="field" style="display:flex; align-items:center;">
+        <img src="icons/text_file.svg" width="58" height="58" alt="" style="margin-right:8px;">
+
+        <div>
+            <h1>Отчет по заказам</h1>
+            <div class="subtitle">Карточка с информацией о всех заказах</div>
+        </div>
+    </div>
+
+    {cards}
+
+    <div class="footer">
+        Дата создания: {creation_date}
+    </div>
+</div>
+</body>
+</html>
