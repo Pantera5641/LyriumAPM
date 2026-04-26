@@ -26,5 +26,18 @@
         <file>resources/left_arrow.png</file>
         <file>resources/right_arrow.png</file>
         <file>resources/easter_egg.mp4</file>
+
+        <file>resources/reports/record_report.html</file>
+
+        <file>resources/reports/icons/brand.svg</file>
+        <file>resources/reports/icons/calendar.svg</file>
+        <file>resources/reports/icons/car.svg</file>
+        <file>resources/reports/icons/comment.svg</file>
+        <file>resources/reports/icons/flag.svg</file>
+        <file>resources/reports/icons/mail.svg</file>
+        <file>resources/reports/icons/person.svg</file>
+        <file>resources/reports/icons/phone.svg</file>
+        <file>resources/reports/icons/text_file.svg</file>
+        <file>resources/reports/icons/tool.svg</file>
     </qresource>
 </RCC>

@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Заявка</title>
+</head>
+
+<body style="margin:0; padding:20px; background:#121212; font-family:Segoe UI, Arial, sans-serif; color:#ffffff;">
+
+<table width="100%" cellpadding="0" cellspacing="0" style="max-width:800px; margin:auto; border:1px solid #2a2a2a; border-radius:12px; background:#181818;">
+    
+    <!-- HEADER -->
+    <tr>
+        <td style="padding:20px; border-bottom:1px solid #2a2a2a;">
+            <table width="100%">
+                <tr>
+                    <td>
+                        <table cellpadding="0" cellspacing="0">
+                            <tr>
+                                <td style="vertical-align: middle; padding-right:10px;">
+                                    <div style="background: linear-gradient(to bottom, #9e3fff 0%, #3a1a55 30%, #202020 100%); border-radius:12px; color:#888; display: inline-block; padding: 10px;">
+                                        <img src="icons/text_file.svg" width="40" height="40" alt="">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div style="font-size:24px; font-weight:bold;">
+                                        Заявка <span style="color:#8a2be2;">№{id}</span>
+                                    </div>
+                                    <div style="color:#888;">Информация о заявке</div>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td align="right">
+                        <div align="left" style="padding:8px 16px; border:1px solid #8a2be2; border-radius:12px; color:#888; display: inline-block">
+                            Статус <br>
+                            <span style="color:#8a2be2;">{status_mark} {status}</span>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+
+    <!-- CLIENT + CAR -->
+    <tr>
+        <td style="padding:20px;">
+            <table width="100%">
+                <tr>
+                    <!-- CLIENT -->
+                    <td width="50%" valign="top" style="padding-right:10px;">
+                        <div style="color:#8a2be2; font-weight:bold; margin-bottom:10px;">
+                            <img src="icons/person.svg" width="34" height="34" style="vertical-align:middle;" alt="">
+                            Клиент
+                        </div>
+
+                        <table cellpadding="0" cellspacing="0">
+                            <tr>
+                                <td style="vertical-align: middle; padding-right:10px;">
+                                    <img src="icons/person.svg" width="24" height="24" alt="">
+                                </td>
+                                <td>
+                                    <div style="color:#888;">ФИО</div>
+                                    <div style="margin-bottom:10px;">{client_full_name}</div>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <table cellpadding="0" cellspacing="0">
+                            <tr>
+                                <td style="vertical-align: middle; padding-right:10px;">
+                                    <img src="icons/phone.svg" width="24" height="24" alt="">
+                                </td>
+                                <td>
+                                    <div style="color:#888;">Телефон</div>
+                                    <div style="margin-bottom:10px; color:#8a2be2;">{phone_number}</div>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <table cellpadding="0" cellspacing="0">
+                            <tr>
+                                <td style="vertical-align: middle; padding-right:10px;">
+                                    <img src="icons/mail.svg" width="24" height="24" alt="">
+                                </td>
+                                <td>
+                                    <div style="color:#888;">Email</div>
+                                    <div>{email}</div>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+
+                    <!-- CAR -->
+                    <td width="50%" valign="top" style="padding-left:10px;">
+                        <div style="color:#8a2be2; font-weight:bold; margin-bottom:10px;">
+                            <img src="icons/car.svg" width="34" height="34" style="vertical-align:middle;" alt="">
+                            Автомобиль
+                        </div>
+
+                        <table cellpadding="0" cellspacing="0">
+                            <tr>
+                                <td style="vertical-align: middle; padding-right:10px;">
+                                    <img src="icons/brand.svg" width="24" height="24" alt="">
+                                </td>
+                                <td>
+                                    <div style="color:#888;">Марка</div>
+                                    <div style="margin-bottom:10px;">{car_brand_name}</div>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <table cellpadding="0" cellspacing="0">
+                            <tr>
+                                <td style="vertical-align: middle; padding-right:10px;">
+                                    <img src="icons/car.svg" width="24" height="24" alt="">
+                                </td>
+                                <td>
+                                    <div style="color:#888;">Модель</div>
+                                    <div>{car_model}</div>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+
+    <!-- COMMENT -->
+    <tr>
+        <td style="padding:20px; border-top:1px solid #2a2a2a;">
+            <div style="color:#8a2be2; font-weight:bold; margin-bottom:10px;">
+                <img src="icons/comment.svg" width="34" height="34" style="vertical-align:middle;" alt="">
+                Комментарий
+            </div>
+            <div style="background:#202020; padding:15px; border-radius:8px; color:#ccc;">
+                {comment}
+            </div>
+        </td>
+    </tr>
+
+    <!-- MASTER + SERVICE -->
+    <tr>
+        <td style="padding:20px; border-top:1px solid #2a2a2a;">
+            <table width="100%">
+                <tr>
+                    <td width="50%" valign="top" style="padding-right:10px;">
+                        <table cellpadding="0" cellspacing="0">
+                            <tr>
+                                <td style="vertical-align:top; padding-right:8px;">
+                                    <img src="icons/person.svg" width="28" height="28" alt="">
+                                </td>
+
+                                <td style="vertical-align:top;">
+                                    <div style="color:#8a2be2; font-weight:bold; line-height:34px;">
+                                        Мастер
+                                    </div>
+
+                                    <div style="color:#888;">ФИО мастера</div>
+                                    <div>{master_full_name}</div>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+
+                    <td width="50%" valign="top" style="padding-right:10px;">
+                        <table cellpadding="0" cellspacing="0">
+                            <tr>
+                                <td style="vertical-align:top; padding-right:8px;">
+                                    <img src="icons/tool.svg" width="28" height="28" alt="">
+                                </td>
+
+                                <td style="vertical-align:top;">
+                                    <div style="color:#8a2be2; font-weight:bold; line-height:34px;">
+                                        Услуга
+                                    </div>
+
+                                    <div style="color:#888;">Оказанная услуга</div>
+                                    <div>{service_provided}</div>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+
+    <!-- DATE + STATUS -->
+     <tr>
+        <td style="padding:20px; border-top:1px solid #2a2a2a;">
+            <table width="100%">
+                <tr>
+                    <td width="50%" valign="top" style="padding-right:10px;">
+                        <table cellpadding="0" cellspacing="0">
+                            <tr>
+                                <td style="vertical-align:top; padding-right:8px;">
+                                    <img src="icons/calendar.svg" width="28" height="28" alt="">
+                                </td>
+
+                                <td style="vertical-align:top;">
+                                    <div style="color:#8a2be2; font-weight:bold;">Дата визита</div>
+                                    <div>{visit_date}</div>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+
+                    <td width="50%" valign="top" style="padding-right:10px;">
+                        <table cellpadding="0" cellspacing="0">
+                            <tr>
+                                <td style="vertical-align:top; padding-right:8px;">
+                                    <img src="icons/flag.svg" width="28" height="28" alt="">
+                                </td>
+
+                                <td style="vertical-align:top;">
+                                    <div style="color:#8a2be2; font-weight:bold;">Статус</div>
+                                    <div><span style="color:#8a2be2;">{status_mark}</span> {status}</div>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+
+    <!-- FOOTER -->
+    <tr>
+        <td style="padding:20px; border-top:1px solid #2a2a2a; color:#888;">
+            ID заявки: <span style="color:#8a2be2;">{id}</span><br>
+            Дата создания: {creation_date}
+        </td>
+    </tr>
+
+</table>
+
+</body>
+</html>
