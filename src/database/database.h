@@ -43,6 +43,9 @@ class Database
     [[nodiscard]]
     Record getRecordById(int id) const;
 
+    [[nodiscard]]
+    int getRecordCount() const;
+
     void setStatus(int id, const QString& status);
 
     void setValueByIdTag(int id, const QString& tag, const QString& status);

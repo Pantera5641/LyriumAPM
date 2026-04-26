@@ -131,6 +131,11 @@ Record Database::getRecordById(const int id) const
     throw std::out_of_range("Record does not exist");
 }
 
+int Database::getRecordCount() const
+{
+    return dataStore.size();
+}
+
 void Database::setStatus(const int id, const QString &status)
 {
     dataStore[id - 1].setStatus(status);
