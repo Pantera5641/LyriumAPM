@@ -9,7 +9,7 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
-find_package(Qt5 REQUIRED COMPONENTS Core Quick Qml)
+find_package(Qt5 REQUIRED COMPONENTS Core Quick Qml WebEngineWidgets)
 
 add_executable(LyriumAPM
         main.cpp
@@ -17,6 +17,7 @@ add_executable(LyriumAPM
         src/database/database.h
         src/database/record.cpp
         src/database/record.h
+        src/database/simpleRecord.cpp
         src/utils/utils.cpp
         src/utils/utils.h
         src/logic/recordPage/recordPageLogic.cpp
@@ -27,12 +28,13 @@ add_executable(LyriumAPM
         src/logic/models/databaseModel/databaseModel.h
         src/database/simpleRecord.h
         src/logic/models/databaseModel/databaseModel.cpp
-        src/database/simpleRecord.cpp
+        src/logic/reportBuilder/reportsBuilder.cpp
+        src/logic/reportBuilder/reportsBuilder.h
 
         resources.qrc
 )
 
-target_link_libraries(LyriumAPM PRIVATE Qt5::Core Qt5::Quick Qt5::Qml)
+target_link_libraries(LyriumAPM PRIVATE Qt5::Core Qt5::Quick Qt5::Qml Qt5::WebEngineWidgets)
 
 #set_target_properties(LyriumAPM PROPERTIES WIN32_EXECUTABLE TRUE)
 
