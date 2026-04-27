@@ -57,6 +57,9 @@ int main(int argc, char *argv[])
     QWebEngineSettings::globalSettings()->setAttribute(
     QWebEngineSettings::PrintElementBackgrounds, true);
 
+    QWebEngineSettings::globalSettings()->setAttribute(
+    QWebEngineSettings::JavascriptEnabled, false);
+
     Database& database = Database::getInstance();
     database.initializeDatabase();
     databaseModel->update();
