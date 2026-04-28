@@ -1,5 +1,6 @@
 ﻿#include "reportsBuilder.h"
 
+
 QString ReportsBuilder::loadHtml(const QString& path)
 {
     QFile file(path);
@@ -32,34 +33,67 @@ QString ReportsBuilder::fillHtmlPlaceholders(const QString& baseHtml, const Simp
 
 QString ReportsBuilder::getPdfPath(const QString &fileName)
 {
-    const QString pdfPath {QStringLiteral("%1/reports/%2%3.pdf")
+    static int counter {};
+
+    const QString pdfPath {QStringLiteral("%1/reports/%2%3%4.pdf")
         .arg(QCoreApplication::applicationDirPath())
         .arg(fileName)
-        .arg(QDateTime::currentDateTime().toString("_yyyy-MM-dd_HHmmsszzz"))};
-
+        .arg(QDateTime::currentDateTime().toString("_yyyy-MM-dd_HHmmsszzz"))
+        .arg(counter++)};
     return pdfPath;
 }
 
-void ReportsBuilder::createReport(const QString &html, const QString &pdfFilename, const QUrl &baseUrl)
+void ReportsBuilder::enqueueTask(const ReportTask& task)
+{
+    tasks.enqueue(task);
+
+    if (!busy) processNextTask();
+}
+
+void ReportsBuilder::processNextTask()
 {
     const QDir dir {};
     (void)dir.mkdir("reports");
 
+    if (busy || tasks.empty()) return;
+
+    busy = true;
+    const auto [html, baseUrl, filename] = tasks.dequeue();
+
+    page->setProperty("filename", filename);
+    page->setHtml(html, baseUrl);
+}
+
+ReportsBuilder::ReportsBuilder(QObject *parent) : QObject(parent)
+{
     page = new QWebEnginePage(this);
 
-    connect(page, &QWebEnginePage::loadFinished, this, [this, pdfFilename] {
+    connect(page, &QWebEnginePage::loadFinished, this, [this](const bool success) {
+        if (!success)
+        {
+            busy = false;
+            processNextTask();
+            return;
+        }
+
         QPageLayout layout {};
-        layout.setPageSize(QPageSize (QPageSize::A4));
+        layout.setPageSize(QPageSize(QPageSize::A4));
         layout.setOrientation(QPageLayout::Portrait);
         layout.setMode(QPageLayout::FullPageMode);
         layout.setMargins(QMarginsF(0, 0, 0, 0));
 
-        page->printToPdf(pdfFilename, layout);});
+        const QString filename {page->property("filename").toString()};
+        page->printToPdf(filename, layout);
+    });
 
-    page->setHtml(html, baseUrl);
+    connect(page, &QWebEnginePage::pdfPrintingFinished, this, [this](const QString &path, bool success) {
+        busy = false;
+        processNextTask();
+    });
+
+    page->setBackgroundColor(QColor("#121212"));
+    page->setHtml("<html></html>");
 }
-
-ReportsBuilder::ReportsBuilder(QObject *parent) : QObject(parent){}
 
 void ReportsBuilder::openReportsFolder()
 {
@@ -81,15 +115,19 @@ void ReportsBuilder::createFullReport()
         .arg(QDateTime::currentDateTime().toString("HH:mm"))};
     html.replace("{creation_date}", timeNow);
 
+    const QString cardTemplate {loadHtml(":/resources/reports/full_report_card.html")};
     for (int i = 0; i < database.getRecordCount(); i++)
     {
         const auto record = database.getRecordById(i + 1).toSimpleRecord();
-        cards+= fillHtmlPlaceholders(loadHtml(":/resources/reports/full_report_card.html"), record) + "\n";
+        cards+= fillHtmlPlaceholders(cardTemplate, record) + "\n";
     }
     html.replace("{cards}", cards);
 
-    createReport(html, getPdfPath(QStringLiteral("Полный_отчет")),
-        QUrl("qrc:/resources/reports/full_report_card.html"));
+    const ReportTask task {html,
+        QUrl("qrc:/resources/reports/full_report.html"),
+        getPdfPath(QStringLiteral("Полный_отчет"))};
+
+    enqueueTask(task);
 }
 
 void ReportsBuilder::createRecordReport(const int id)
@@ -103,6 +141,9 @@ void ReportsBuilder::createRecordReport(const int id)
         .arg(QDateTime::currentDateTime().toString("HH:mm"))};
     html.replace("{creation_date}", timeNow);
 
-    createReport(html, getPdfPath(QStringLiteral("Отчет_О_Записи_№%1").arg(record.id)),
-        QUrl("qrc:/resources/reports/record_report.html"));
+    const ReportTask task {html,
+        QUrl("qrc:/resources/reports/record_report.html"),
+        getPdfPath(QStringLiteral("Отчет_О_Записи_№%1").arg(record.id))};
+
+    enqueueTask(task);
 }

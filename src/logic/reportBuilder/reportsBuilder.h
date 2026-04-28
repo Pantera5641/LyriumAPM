@@ -6,14 +6,23 @@
 #include <QWebEnginePage>
 #include <QDesktopServices>
 #include <QPageLayout>
+#include <QQueue>
 
 #include "../../database/database.h"
 
+
+struct ReportTask {
+    QString html {};
+    QUrl baseUrl {};
+    QUrl filename {};
+};
 
 class ReportsBuilder : public QObject
 {
     private:
     QWebEnginePage *page {nullptr};
+    QQueue<ReportTask> tasks {};
+    bool busy {false};
 
     static QString loadHtml(const QString &path);
 
@@ -21,7 +30,9 @@ class ReportsBuilder : public QObject
 
     static QString getPdfPath(const QString &fileName);
 
-    void createReport(const QString &html, const QString &pdfFilename, const QUrl &baseUrl);
+    void enqueueTask(const ReportTask &task);
+
+    void processNextTask();
 
     Q_OBJECT
     public:
