@@ -19,6 +19,7 @@
         <file>qml/windows/GraphicsPage.qml</file>
         <file>qml/windows/RecordPage.qml</file>
         <file>qml/windows/TitleBar.qml</file>
+        <file>qml/windows/EasterWindow.qml</file>
         
         <file>resources/logo.png</file>
         <file>resources/icon_cross.png</file>

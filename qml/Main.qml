@@ -18,4 +18,20 @@ ApplicationWindow {
     }
 
     TitleBar {}
+
+    Shortcut {
+        sequence: "Ctrl+Shift+E"
+        property var easterWindow: null
+
+        onActivated: {
+            if(!easterWindow)
+            {
+                let component = Qt.createComponent("windows/EasterWindow.qml")
+                easterWindow = component.createObject()
+            }
+            easterWindow.show()
+            easterWindow.raise()
+            easterWindow.requestActivate()
+        }
+    }
 }
