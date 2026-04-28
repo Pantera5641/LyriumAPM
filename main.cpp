@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
     QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
     QApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
     qputenv("QT_SCALE_FACTOR", "0.8");
-    QApplication app(argc, argv);
+    const QApplication app(argc, argv);
 
     app.setWindowIcon(QIcon(QCoreApplication::applicationDirPath() + "/logo.png"));
 
@@ -39,8 +39,8 @@ int main(int argc, char *argv[])
     const auto databaseModel = new DatabaseModel(&engine);
     engine.rootContext()->setContextProperty("databaseModel", databaseModel);
 
-    const auto reportBuilder = new ReportsBuilder(&engine);
-    engine.rootContext()->setContextProperty("reportBuilder", reportBuilder);
+    const auto reportsBuilder = new ReportsBuilder(&engine);
+    engine.rootContext()->setContextProperty("reportsBuilder", reportsBuilder);
 
     QObject::connect(
         &engine,
