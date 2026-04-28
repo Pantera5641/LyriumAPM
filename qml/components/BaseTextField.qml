@@ -6,7 +6,7 @@ TextField {
     property bool error: false
 
     color: error ? "#c60046" : "#d05ce3"
-    placeholderTextColor: error ? "#ff0000" : "#8a2be2"
+    placeholderTextColor: error ? "#c60046" : "#8a2be2"
 
     leftPadding: 15
     rightPadding: 15

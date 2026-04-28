@@ -30,6 +30,7 @@ Item {
                 BaseComboBox {
                     id: sortBox
                     model: sortTagModel
+                    currentIndex: 0
                     textRole: "name"
                     width: 250
                     height: 45
@@ -222,7 +223,7 @@ Item {
     function openEditWindow(recordId) {
         const component = Qt.createComponent("EditWindow.qml");
         if (component.status === Component.Ready) {
-            const editWindow = component.createObject(dataBasePage, {"recordId": recordId});
+            const editWindow = component.createObject(ф);
             editWindow.show()
         }
     }
