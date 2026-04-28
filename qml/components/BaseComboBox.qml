@@ -3,10 +3,14 @@ import QtQuick.Controls 2.15
 
 ComboBox {
     id: baseComboBox
+    currentIndex: -1
+    displayText: currentIndex === -1 ? baseText : currentText
+
     property bool error: false
+    property string baseText: currentText
 
     onActivated: {
-        if (currentIndex !== 0 && error)
+        if (currentIndex !== -1 && error)
             error = false;
     }
 
@@ -22,9 +26,8 @@ ComboBox {
         rightPadding: 40
         text: parent.displayText
 
-        color: parent.currentIndex === 0
-            ? (error ? "#ff0000" : "#8a2be2")
-            : (error ? "#c60046" : "#d05ce3")
+        color: parent.currentIndex === -1
+            ? (error ? "#c60046" : "#8a2be2") : "#d05ce3"
 
         font.pixelSize: 16
 
