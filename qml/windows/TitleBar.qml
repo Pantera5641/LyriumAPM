@@ -40,7 +40,7 @@ ColumnLayout {
 
                 PageTabButton { text: "Запись" }
                 PageTabButton { text: "База Данных" }
-                PageTabButton { text: "Графики"}
+                PageTabButton { text: "Статистика"}
 
                 onCurrentIndexChanged: stack.currentIndex = currentIndex
             }
