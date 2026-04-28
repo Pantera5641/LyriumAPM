@@ -74,6 +74,7 @@ Item {
 
             BaseComboBox {
                 id: carBrand
+                baseText: "Выбрать марку автомобиля"
                 model: carBrandModel
                 textRole: "name"
                 width: 415
@@ -100,6 +101,7 @@ Item {
             //УСЛУГИ
             BaseComboBox {
                 id: services
+                baseText: "Выбрать услгугу"
                 model: servicesModel
                 textRole: "name"
                 width: 415
@@ -114,6 +116,7 @@ Item {
             BaseComboBox {
                 id: employee
                 model: employeeModel
+                baseText: "Выбрать мастера"
                 textRole: "name"
                 width: 415
                 height: 45
@@ -239,7 +242,7 @@ Item {
 
                     recordPageLogic.addRecordInDataBase(
                         formatText(lastName.text) + " " + formatText(firstName.text) + " " + formatText(middleName.text),
-                        phoneNumber.text,
+                        formatPhoneToPretty(phoneNumber.text),
                         email.text,
                         carBrandModel.getTag(carBrand.currentIndex),
                         carModel.text,
@@ -273,7 +276,7 @@ Item {
 
                 function validateComboBox(box)
                 {
-                    if (box.currentIndex !== 0) {
+                    if (box.currentIndex !== -1) {
                         box.error = false;
                         return true;
                     }
@@ -304,6 +307,22 @@ Item {
                 function formatText(text) {
                     let t = text.trim();
                     return t.charAt(0).toUpperCase() + t.slice(1)
+                }
+
+                function formatPhoneToPretty(phone) {
+                    let digits = phone;
+                    digits.replace(/\D/g, "");;
+
+                    if (digits.startsWith("8")) {
+                        digits = "7" + digits.slice(1);
+                    }
+
+                    const part1 = digits.slice(1, 4);
+                    const part2 = digits.slice(4, 7);
+                    const part3 = digits.slice(7, 9);
+                    const part4 = digits.slice(9, 11);
+
+                    return "+7 (" + part1 + ") " + part2 + "-" + part3 + "-"  + part4;
                 }
             }
         }
