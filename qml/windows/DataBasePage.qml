@@ -223,7 +223,7 @@ Item {
     function openEditWindow(recordId) {
         const component = Qt.createComponent("EditWindow.qml");
         if (component.status === Component.Ready) {
-            const editWindow = component.createObject(ф);
+            const editWindow = component.createObject(dataBasePage, {"recordId": recordId});
             editWindow.show()
         }
     }
