@@ -1,23 +1,22 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
-import QtMultimedia 5.15
 
 Item {
-    Rectangle{
-        anchors.fill: parent
-        color: '#101010'
-    }
+    Row{
+        Button {
+            text: "ReportsFolder()"
+            onClicked: reportsBuilder.openReportsFolder()
+        }
 
-    Video {
-        id: videoPlayer
-        anchors.fill: parent
-        source: "qrc:/resources/easter_egg.mp4"
-        loops: MediaPlayer.Infinite
-        fillMode: VideoOutput.PreserveAspectFit
+        Button {
+            text: "FullReport()"
+            onClicked: reportsBuilder.createFullReport()
+        }
 
-        onVisibleChanged: {
-            visible ? videoPlayer.play() : videoPlayer.pause()
+        Button {
+            text: "RecordReport(11)"
+            onClicked: reportsBuilder.createRecordReport(11)
         }
     }
 }
