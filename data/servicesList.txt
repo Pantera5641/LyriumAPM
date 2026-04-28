@@ -1,5 +1,4 @@
-﻿Услуга;none;0
-Диагностика двигателя;engine_diagnostics;2250
+﻿Диагностика двигателя;engine_diagnostics;2250
 Замена масла;oil_change;1000
 Замена тормозных колодок;brake_pads_replacement;2000
 Замена тормозных дисков;brake_discs_replacement;4250
