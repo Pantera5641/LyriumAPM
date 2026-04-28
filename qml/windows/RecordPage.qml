@@ -264,6 +264,11 @@ Item {
                     databaseModel.update()
                 }
 
+                Shortcut {
+                    sequence: "Return"
+                    onActivated: submitBtn.clicked()
+                }
+
                 function validateName(name) {
                     const re = /^[a-zA-Z0-9а-яА-ЯёЁ]+$/;
                     if (name.text && re.test(name.text.trim())) {
