@@ -38,6 +38,9 @@ int main(int argc, char *argv[])
 
     const auto databaseModel = new DatabaseModel(&engine);
     engine.rootContext()->setContextProperty("databaseModel", databaseModel);
+    Database& database = Database::getInstance();
+    database.initializeDatabase();
+    databaseModel->update();
 
     const auto reportsBuilder = new ReportsBuilder(&engine);
     engine.rootContext()->setContextProperty("reportsBuilder", reportsBuilder);
@@ -59,10 +62,6 @@ int main(int argc, char *argv[])
 
     QWebEngineSettings::globalSettings()->setAttribute(
     QWebEngineSettings::JavascriptEnabled, false);
-
-    Database& database = Database::getInstance();
-    database.initializeDatabase();
-    databaseModel->update();
 
     return app.exec();
 }
