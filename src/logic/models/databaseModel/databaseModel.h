@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include <QAbstractListModel>
+#include <QDebug>
 
 #include "../../../database/simpleRecord.h"
 #include "../../../database/database.h"
@@ -38,6 +39,12 @@ class DatabaseModel : public QAbstractListModel
     Q_INVOKABLE
     QVariantMap getById(int id);
 
-    Q_INVOKABLE
+    Q_INVOKABLE [[nodiscard]]
     int size() const;
+
+    Q_INVOKABLE
+    QVariantList pieSeriesModel();
+
+    Q_INVOKABLE
+    QVariantList barSeriesModel();
 };
