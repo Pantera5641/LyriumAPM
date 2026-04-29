@@ -143,3 +143,8 @@ QVariantMap DatabaseModel::getById(const int id)
 
     throw std::runtime_error("No such record in database");
 }
+
+int DatabaseModel::size() const
+{
+    return records.size();
+}

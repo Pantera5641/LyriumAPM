@@ -12,9 +12,11 @@ ApplicationWindow {
     flags: Qt.FramelessWindowHint | Qt.Window
 
     Rectangle {
+        color: "#17171B"
         anchors.fill: parent
         radius: 8
-        color: "#17171B"
+        border.width: 1
+        border.color: "#434343"
     }
 
     TitleBar {}
