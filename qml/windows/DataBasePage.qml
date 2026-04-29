@@ -16,7 +16,7 @@ Item {
         Row {
             width: parent.width
             padding: 30
-            spacing: 55
+            spacing: 30
             Row {
                 spacing: 15
                 Text {
@@ -32,7 +32,7 @@ Item {
                     model: sortTagModel
                     currentIndex: 0
                     textRole: "name"
-                    width: 250
+                    width: 230
                     height: 45
                     onActivated: {
                         databaseModel.update(sortTagModel.getTag(sortBox.currentIndex), searchField.text)
@@ -51,12 +51,42 @@ Item {
                 BaseTextField {
                     id: searchField
                     placeholderText: "Начните печатать..."
-                    width: 310
+                    width: 285
                     height: 45
                     onTextChanged: {
                         databaseModel.update(sortTagModel.getTag(sortBox.currentIndex), searchField.text)
                     }
                 }
+            }
+
+            Rectangle {
+                width: 50
+                height: 50
+                color: "transparent"
+                radius: 8
+                border.color: "#8a2be2"
+                border.width: 2
+
+                Image {
+                    anchors.centerIn: parent
+                    width: 30
+                    height: 30
+                    source: "qrc:/resources/report_icon.png"
+                    fillMode: Image.PreserveAspectFit
+                    opacity: 0.8
+                }
+
+                MouseArea {
+                    anchors.fill: parent
+                    cursorShape: Qt.PointingHandCursor
+                    hoverEnabled: true
+
+                    onEntered: parent.border.color = "#d05ce3"
+                    onExited: parent.border.color = "#8a2be2"
+
+                    onClicked: reportsBuilder.createFullReport()
+                }
+
             }
         }
 
