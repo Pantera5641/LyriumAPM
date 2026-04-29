@@ -37,4 +37,7 @@ class DatabaseModel : public QAbstractListModel
 
     Q_INVOKABLE
     QVariantMap getById(int id);
+
+    Q_INVOKABLE
+    int size() const;
 };
