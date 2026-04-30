@@ -93,13 +93,22 @@ void DatabaseModel::update(const QString& sortTag, const QString& search)
     Database& database = Database::getInstance();
     QList processedRecords {database.getRecords(sortTag, search)};
     QList<SimpleRecord> newRecords {};
+    QList<SimpleRecord> newCashRecords {};
 
     for (const auto& record : processedRecords)
         newRecords.push_back(record.toSimpleRecord());
 
+    for (const auto& record : database.getRecords())
+        newCashRecords.push_back(record.toSimpleRecord());
+
     beginResetModel();
     records = newRecords;
+    cashRecords = newCashRecords;
     endResetModel();
+
+    emit updated();
+    emit pieSeriesModelChanged();
+    emit barSeriesModelChanged();
 }
 
 void DatabaseModel::setStatus(const QString &id, const QString &status)
@@ -146,5 +155,76 @@ QVariantMap DatabaseModel::getById(const int id)
 
 int DatabaseModel::size() const
 {
-    return records.size();
+    return cashRecords.size();
+}
+
+QVariantList DatabaseModel::pieSeriesModel()
+{
+    QStringList masters {};
+    for (const auto& record : cashRecords)
+        masters.push_back(record.masterShortName);
+
+    QHash<QString, int> count {};
+    for (const auto& master : masters)
+        count[master]++;
+
+    QList<QPair<QString, int>> list;
+    for (auto it = count.begin(); it != count.end(); ++it) {
+        list.append({it.key(), it.value()});
+    }
+
+    std::sort(list.begin(), list.end(),
+          [](const QPair<QString,int> &a, const QPair<QString,int> &b) {
+              return a.second > b.second;
+          });
+
+    QVariantList result;
+    for (const auto &pair : list) {
+        QVariantMap item;
+        item["name"] = pair.first;
+        item["value"] = std::round((static_cast<float>(pair.second) / size() * 100) * 10.0f) / 10.0f;
+
+        result.append(item);
+    }
+
+    return result;
+}
+
+QVariantList DatabaseModel::barSeriesModel()
+{
+    QStringList services {};
+    for (const auto& record : cashRecords)
+        services.push_back(record.serviceProvided);
+
+    QHash<QString, int> count {};
+    for (const auto& service : services)
+        count[service]++;
+
+    QList<QPair<QString, int>> list;
+    for (auto it = count.begin(); it != count.end(); ++it) {
+        list.append({it.key(), it.value()});
+    }
+
+    std::sort(list.begin(), list.end(),
+          [](const QPair<QString,int> &a, const QPair<QString,int> &b) {
+              return a.second > b.second;
+          });
+
+    int val {};
+    QVariantList result;
+    for (const auto &pair : list) {
+        QVariantMap item;
+        item["name"] = pair.first;
+
+        QList<int> secondItem {};
+        for (int i = 0; i < 6; i++) {secondItem.push_back(0);}
+        secondItem[val++] = pair.second;
+        item["values"] = QVariant::fromValue(secondItem);
+
+        result.append(item);
+
+        if (val > 5) break;
+    }
+
+    return result;
 }

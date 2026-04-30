@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include <QAbstractListModel>
+#include <QDebug>
 
 #include "../../../database/simpleRecord.h"
 #include "../../../database/database.h"
@@ -7,10 +8,15 @@
 
 class DatabaseModel : public QAbstractListModel
 {
+    Q_OBJECT
     private:
     QList<SimpleRecord> records {};
+    QList<SimpleRecord> cashRecords {};
 
-    Q_OBJECT
+    Q_PROPERTY(QVariantList pieSeriesModel READ pieSeriesModel NOTIFY pieSeriesModelChanged);
+    Q_PROPERTY(QVariantList barSeriesModel READ barSeriesModel NOTIFY barSeriesModelChanged);
+    Q_PROPERTY(int size READ size NOTIFY updated);
+
     public:
     explicit DatabaseModel(QObject* parent = nullptr);
 
@@ -38,6 +44,17 @@ class DatabaseModel : public QAbstractListModel
     Q_INVOKABLE
     QVariantMap getById(int id);
 
-    Q_INVOKABLE
+    Q_INVOKABLE [[nodiscard]]
     int size() const;
+
+    Q_INVOKABLE
+    QVariantList pieSeriesModel();
+
+    Q_INVOKABLE
+    QVariantList barSeriesModel();
+
+    signals:
+    void updated();
+    void pieSeriesModelChanged();
+    void barSeriesModelChanged();
 };

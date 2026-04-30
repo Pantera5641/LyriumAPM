@@ -203,6 +203,7 @@ Item {
 
                                                 onActivated: {
                                                     databaseModel.setStatus(idRole, statusModel.getTag(statusBox.currentIndex))
+                                                    databaseModel.update(sortTagModel.getTag(sortBox.currentIndex), searchField.text)
                                                 }
 
                                                 background: Rectangle { color: "transparent" }

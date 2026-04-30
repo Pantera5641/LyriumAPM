@@ -56,6 +56,11 @@ void Database::saveDatabase() const
     file.close();
 }
 
+QList<Record> Database::getRecords()
+{
+    return dataStore;
+}
+
 QList<Record> Database::getRecords(const QString& sortTag, const QString &search)
 {
     QList<Record> newRecords {};
