@@ -93,13 +93,22 @@ void DatabaseModel::update(const QString& sortTag, const QString& search)
     Database& database = Database::getInstance();
     QList processedRecords {database.getRecords(sortTag, search)};
     QList<SimpleRecord> newRecords {};
+    QList<SimpleRecord> newCashRecords {};
 
     for (const auto& record : processedRecords)
         newRecords.push_back(record.toSimpleRecord());
 
+    for (const auto& record : database.getRecords())
+        newCashRecords.push_back(record.toSimpleRecord());
+
     beginResetModel();
     records = newRecords;
+    cashRecords = newCashRecords;
     endResetModel();
+
+    emit updated();
+    emit pieSeriesModelChanged();
+    emit barSeriesModelChanged();
 }
 
 void DatabaseModel::setStatus(const QString &id, const QString &status)
@@ -146,13 +155,13 @@ QVariantMap DatabaseModel::getById(const int id)
 
 int DatabaseModel::size() const
 {
-    return records.size();
+    return cashRecords.size();
 }
 
 QVariantList DatabaseModel::pieSeriesModel()
 {
     QStringList masters {};
-    for (const auto& record : records)
+    for (const auto& record : cashRecords)
         masters.push_back(record.masterShortName);
 
     QHash<QString, int> count {};
@@ -173,7 +182,7 @@ QVariantList DatabaseModel::pieSeriesModel()
     for (const auto &pair : list) {
         QVariantMap item;
         item["name"] = pair.first;
-        item["value"] = std::round((static_cast<float>(pair.second) / records.size() * 100) * 10.0f) / 10.0f;
+        item["value"] = std::round((static_cast<float>(pair.second) / size() * 100) * 10.0f) / 10.0f;
 
         result.append(item);
     }
@@ -184,7 +193,7 @@ QVariantList DatabaseModel::pieSeriesModel()
 QVariantList DatabaseModel::barSeriesModel()
 {
     QStringList services {};
-    for (const auto& record : records)
+    for (const auto& record : cashRecords)
         services.push_back(record.serviceProvided);
 
     QHash<QString, int> count {};

@@ -266,7 +266,7 @@ Window {
                             databaseModel.setValueByIdTag(recordId, "visit_date", Qt.formatDate(almanac.selectedDate, "yyyy.MM.dd"));
                             databaseModel.setValueByIdTag(recordId, "status", statusModel.getTag(statusBox.modelId));
 
-                            databaseModel.update();
+                            databaseModel.update(sortTagModel.getTag(sortBox.currentIndex), "");
                             editOrderWindow.close();
                         }
                     }

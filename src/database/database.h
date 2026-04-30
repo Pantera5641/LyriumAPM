@@ -23,6 +23,8 @@ class Database
 
     Database& operator = (const Database&) = delete;
 
+    QList<Record> getRecords();
+
     QList<Record> getRecords(const QString & chars, const QString & string);
 
     static Database& getInstance();

@@ -46,13 +46,13 @@ Item {
                             id: pieSeries
                             size: 0.8
 
-                            property var modelBarSeries: databaseModel.pieSeriesModel()
+                            property var modelPieSeries: databaseModel.pieSeriesModel
 
                             function setData(values) {
-                                clear()
+                                pieSeries.clear()
 
                                 for (let i = 0; i < values.length; i++) {
-                                    let slice = append(values[i] + "%", values[i])
+                                    let slice = append(Number(values[i]).toFixed(1) + "%", values[i])
 
                                     slice.color = randomPurpleShade(i)
                                     slice.borderWidth = 2
@@ -66,7 +66,16 @@ Item {
                             }
 
                             Component.onCompleted: {
-                                setData(pieSeries.modelBarSeries.map(v => v.value))
+                                setData(pieSeries.modelPieSeries.map(v => v.value))
+                            }
+
+                            Connections {
+                                target: databaseModel
+
+                                function onPieSeriesModelChanged() {
+                                    pieSeries.setData(pieSeries.modelPieSeries.map(v => v.value))
+                                    console.log(pieSeries.modelPieSeries.map(v => v.value))
+                                }
                             }
                         }
 
@@ -82,7 +91,7 @@ Item {
                                 columns: 3
 
                                 Repeater {
-                                    model: pieSeries.modelBarSeries
+                                    model: pieSeries.modelPieSeries
 
                                     delegate: RowLayout {
                                         spacing: 6
@@ -96,7 +105,7 @@ Item {
                                         }
 
                                         Text {
-                                            text: modelData.name + " — " + modelData.value + "%"
+                                            text: modelData.name + " — " + Number(modelData.value).toFixed(1) + "%"
                                             color: '#ffffff'
                                             font.pixelSize: 10
                                         }
@@ -115,7 +124,7 @@ Item {
                                 }
 
                                 Text {
-                                    text: databaseModel.size()
+                                    text: databaseModel.size
                                     color: "#8a2be2"
                                     font.pixelSize: 16
                                     font.bold: true
@@ -123,6 +132,7 @@ Item {
                             }
                         }
                     }
+
                     Text {
                         text: "Распределение заказов по мастерам"
                         color: '#ffffff'
@@ -161,7 +171,7 @@ Item {
                         StackedBarSeries {
                             id: mySeries
 
-                            property var modelBarSeries: databaseModel.barSeriesModel()
+                            property var modelBarSeries: databaseModel.barSeriesModel
 
                             axisX: BarCategoryAxis {
                                 categories: mySeries.modelBarSeries.map(m => m.name)
@@ -170,16 +180,31 @@ Item {
                             }
 
                             axisY: ValueAxis {
+                                id: aY
                                 labelFormat: "%.0f"
                                 labelsColor: "#ffffff"
                             }
 
-                            BarSet {values: mySeries.toNumArr(mySeries.modelBarSeries[0].values); color: randomPurpleShade(0)}
-                            BarSet {values: mySeries.toNumArr(mySeries.modelBarSeries[1].values); color: randomPurpleShade(1)}
-                            BarSet {values: mySeries.toNumArr(mySeries.modelBarSeries[2].values); color: randomPurpleShade(2)}
-                            BarSet {values: mySeries.toNumArr(mySeries.modelBarSeries[3].values); color: randomPurpleShade(3)}
-                            BarSet {values: mySeries.toNumArr(mySeries.modelBarSeries[4].values); color: randomPurpleShade(4)}
-                            BarSet {values: mySeries.toNumArr(mySeries.modelBarSeries[5].values); color: randomPurpleShade(5)}
+                            BarSet {id: s1; values: mySeries.toNumArr(mySeries.modelBarSeries[0].values); color: randomPurpleShade(0)}
+                            BarSet {id: s2; values: mySeries.toNumArr(mySeries.modelBarSeries[1].values); color: randomPurpleShade(1)}
+                            BarSet {id: s3; values: mySeries.toNumArr(mySeries.modelBarSeries[2].values); color: randomPurpleShade(2)}
+                            BarSet {id: s4; values: mySeries.toNumArr(mySeries.modelBarSeries[3].values); color: randomPurpleShade(3)}
+                            BarSet {id: s5; values: mySeries.toNumArr(mySeries.modelBarSeries[4].values); color: randomPurpleShade(4)}
+                            BarSet {id: s6; values: mySeries.toNumArr(mySeries.modelBarSeries[5].values); color: randomPurpleShade(5)}
+
+                            Connections {
+                                target: databaseModel
+
+                                function onBarSeriesModelChanged() {
+                                    var sets = [s1, s2, s3, s4, s5, s6]
+
+                                    for (let i = 0; i < sets.length; i++) {
+                                        sets[i].values = mySeries.toNumArr(mySeries.modelBarSeries[i].values)
+                                    }
+
+                                    aY.max = mySeries.modelBarSeries[0].values[0];
+                                }
+                            }
 
                             function toNumArr(v) {
                                 let arr = []
