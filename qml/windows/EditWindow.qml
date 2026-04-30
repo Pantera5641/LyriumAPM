@@ -16,6 +16,7 @@ Window {
 
     property var recordId : 0
     property var orderData: databaseModel.getById(recordId)
+    property bool isValid: true
 
     MouseArea {
         width: parent.width
@@ -79,9 +80,11 @@ Window {
                         onEntered: parent.border.color = "#d05ce3"
                         onExited: parent.border.color = "#8a2be2"
 
-                        onClicked: reportsBuilder.createRecordReport(recordId)
+                        onClicked: {
+                            reportsBuilder.createRecordReport(recordId)
+                            reportsBuilder.openReportsFolder()
+                        }
                     }
-
                 }
             }
 
@@ -102,6 +105,7 @@ Window {
                         label: "ФИО клиента"
                         text: orderData.clientFullName
                         Layout.fillWidth: true
+                        readOnly: true
                     }
 
                     LabeledTextField {
@@ -109,6 +113,10 @@ Window {
                         label: "Телефон"
                         text: orderData.phoneNumber
                         Layout.fillWidth: true
+
+                        onTextChanged: {
+                            isValid = validate();
+                        }
                     }
 
                     LabeledTextField {
@@ -116,6 +124,10 @@ Window {
                         label: "Email"
                         text: orderData.email
                         Layout.fillWidth: true
+
+                        onTextChanged: {
+                            isValid = validate();
+                        }
                     }
 
                     SectionHeader { text: "Информация об автомобиле" }
@@ -126,6 +138,10 @@ Window {
                         fieldText: orderData.carBrand
                         comboBoxModel: carBrandModel
                         Layout.fillWidth: true
+
+                        onModelIdChanged: {
+                            isValid = validate();
+                        }
                     }
 
                     LabeledTextField {
@@ -133,6 +149,10 @@ Window {
                         label: "Модель автомобиля"
                         text: orderData.carModel
                         Layout.fillWidth: true
+
+                        onTextChanged: {
+                            isValid = validate();
+                        }
                     }
 
                     SectionHeader { text: "Услуга" }
@@ -145,6 +165,7 @@ Window {
 
                         onModelIdChanged: {
                             priceField.text = recordPageLogic.getPrice(servicesModel.getTag(servicesBox.modelId)) + "₽"
+                            isValid = validate();
                         }
                     }
 
@@ -163,6 +184,10 @@ Window {
                         fieldText: orderData.masterFullName
                         comboBoxModel: employeeModel
                         Layout.fillWidth: true
+
+                        onModelIdChanged: {
+                            isValid = validate();
+                        }
                     }
 
                     SectionHeader { text: "Информация о заказе" }
@@ -266,6 +291,7 @@ Window {
                     Layout.preferredHeight: 45
                     color: "#8a2be2"
                     radius: 8
+                    opacity: isValid ? 1.0 : 0.5
 
                     Text {
                         text: "Сохранить"
@@ -278,13 +304,14 @@ Window {
                     MouseArea {
                         anchors.fill: parent
                         cursorShape: Qt.PointingHandCursor
+                        enabled: isValid
 
                         onClicked: {
                             let valid = true;
                             if(!valid) return;
 
                             databaseModel.setValueByIdTag(recordId, "client_name", clientNameField.text);
-                            databaseModel.setValueByIdTag(recordId, "phone_number", clientPhoneField.text);
+                            databaseModel.setValueByIdTag(recordId, "phone_number", formatPhoneToPretty(clientPhoneField.text));
                             databaseModel.setValueByIdTag(recordId, "email", clientEmailField.text);
                             databaseModel.setValueByIdTag(recordId, "car_brand_name", carBrandModel.getTag(carBrandBox.modelId));
                             databaseModel.setValueByIdTag(recordId, "car_model", carModelField.text);
@@ -310,5 +337,70 @@ Window {
         const month = parseInt(items[1], 10) - 1;
         const year = parseInt(items[2], 10);
         return new Date(year, month, day)
+    }
+
+    function validate() {
+        let valid = true;
+        valid = validatePhone(clientPhoneField)&& valid;
+        valid = validateEmail(clientEmailField) && valid;
+        valid = validateComboBox(carBrandBox) && valid;
+        valid = validateName(carModelField) && valid;
+        valid = validateComboBox(masterField) && valid;
+        valid = validateComboBox(servicesBox) && valid;
+
+        return valid;
+    }
+
+    function validateName(name) {
+        const re = /^[a-zA-Z0-9а-яА-ЯёЁ]+$/;
+        if (name.text && re.test(name.text.trim())) {
+            return true;
+        }
+        return false;
+    }
+
+    function validateComboBox(box)
+    {
+        if (box.modelId !== -1) {
+            return true;
+        }
+        return false;
+    }
+
+    function validatePhone(phone) {
+        const re = /^(\+7|8)\s?\(?\d{3}\)?\s?\d{3}[-\s]?\d{2}[-\s]?\d{2}$/;
+        if (phone.text && re.test(phone.text.trim())) {
+            return true;
+        }
+        return false;
+    }
+
+    function validateEmail(email) {
+        const re = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+        if (email.text && re.test(email.text.trim())) {
+            return true;
+        }
+        return false;
+    }
+
+    function formatText(text) {
+        let t = text.trim();
+        return t.charAt(0).toUpperCase() + t.slice(1)
+    }
+
+    function formatPhoneToPretty(phone) {
+        let digits = phone;
+        digits.replace(/\D/g, "");;
+
+        if (digits.startsWith("8")) {
+            digits = "7" + digits.slice(1);
+        }
+
+        const part1 = digits.slice(1, 4);
+        const part2 = digits.slice(4, 7);
+        const part3 = digits.slice(7, 9);
+        const part4 = digits.slice(9, 11);
+
+        return "+7 " + part1 + " " + part2 + " " + part3 + " "  + part4;
     }
 }
