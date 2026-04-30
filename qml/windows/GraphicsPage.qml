@@ -16,8 +16,8 @@ Item {
         RowLayout {
             Layout.fillWidth: true
             Layout.fillHeight: true
-            anchors.margins: 10
             Layout.topMargin: 15
+            spacing: 15
 
             Item {
                 Layout.fillWidth: true
@@ -27,7 +27,6 @@ Item {
                     anchors.fill: parent
                     anchors.margins: 3
 
-
                     ChartView {
                         id: chart
                         anchors.fill: parent
@@ -35,7 +34,6 @@ Item {
 
                         antialiasing: true
                         legend.visible: false
-
                         backgroundColor: "transparent"
                         plotAreaColor: "transparent"
 
@@ -44,20 +42,15 @@ Item {
 
                         PieSeries {
                             id: pieSeries
-                            size: 0.8
-
-                            property var modelPieSeries: databaseModel.pieSeriesModel
+                            size: 0.7
 
                             function setData(values) {
-                                pieSeries.clear()
-
+                                clear()
                                 for (let i = 0; i < values.length; i++) {
-                                    let slice = append(Number(values[i]).toFixed(1) + "%", values[i])
-
+                                    let slice = append(values[i] + "%", values[i])
                                     slice.color = randomPurpleShade(i)
                                     slice.borderWidth = 2
                                     slice.borderColor = "transparent"
-
                                     slice.labelVisible = true
                                     slice.labelPosition = 10
                                     slice.labelColor = '#ffffff'
@@ -66,16 +59,7 @@ Item {
                             }
 
                             Component.onCompleted: {
-                                setData(pieSeries.modelPieSeries.map(v => v.value))
-                            }
-
-                            Connections {
-                                target: databaseModel
-
-                                function onPieSeriesModelChanged() {
-                                    pieSeries.setData(pieSeries.modelPieSeries.map(v => v.value))
-                                    console.log(pieSeries.modelPieSeries.map(v => v.value))
-                                }
+                                setData([30, 30, 20, 10, 10])
                             }
                         }
 
@@ -91,11 +75,16 @@ Item {
                                 columns: 3
 
                                 Repeater {
-                                    model: pieSeries.modelPieSeries
+                                    model: [
+                                        {name: "Анна", value: 30},
+                                        {name: "Максим", value: 30},
+                                        {name: "Александра", value: 20},
+                                        {name: "Дмитрий", value: 10},
+                                        {name: "Дмитрий1", value: 10}
+                                    ]
 
                                     delegate: RowLayout {
                                         spacing: 6
-
                                         Rectangle {
                                             width: 12
                                             height: 12
@@ -103,9 +92,8 @@ Item {
                                             color: randomPurpleShade(index)
                                             opacity: 0.9
                                         }
-
                                         Text {
-                                            text: modelData.name + " — " + Number(modelData.value).toFixed(1) + "%"
+                                            text: modelData.name + " — " + modelData.value + "%"
                                             color: '#ffffff'
                                             font.pixelSize: 10
                                         }
@@ -116,15 +104,13 @@ Item {
                             Row {
                                 anchors.right: parent.right
                                 spacing: 2
-
                                 Text {
                                     text: "Всего записей:"
                                     color: '#ffffff'
                                     font.pixelSize: 16
                                 }
-
                                 Text {
-                                    text: databaseModel.size
+                                    text: databaseModel.size()
                                     color: "#8a2be2"
                                     font.pixelSize: 16
                                     font.bold: true
@@ -155,13 +141,11 @@ Item {
                     ChartView {
                         Layout.fillWidth: true
                         Layout.fillHeight: true
-
                         anchors.fill: parent
                         anchors.margins: 0
 
                         antialiasing: true
                         legend.visible: false
-
                         backgroundColor: "transparent"
                         plotAreaColor: "transparent"
 
@@ -170,8 +154,14 @@ Item {
 
                         StackedBarSeries {
                             id: mySeries
-
-                            property var modelBarSeries: databaseModel.barSeriesModel
+                            property var modelBarSeries: [
+                                { name: "Диагностика", values: [20, 0, 0, 0, 0, 0] },
+                                { name: "Замена масла", values: [0, 14, 0, 0, 0, 0] },
+                                { name: "Ремонт ходовой", values: [0, 0, 10, 0, 0, 0] },
+                                { name: "Шиномонтаж", values: [0, 0, 0, 7, 0, 0] },
+                                { name: "Детейлинг", values: [0, 0, 0, 0, 5, 0] },
+                                { name: "Кузовной ремонт", values: [0, 0, 0, 0, 0, 3] }
+                            ]
 
                             axisX: BarCategoryAxis {
                                 categories: mySeries.modelBarSeries.map(m => m.name)
@@ -180,41 +170,16 @@ Item {
                             }
 
                             axisY: ValueAxis {
-                                id: aY
                                 labelFormat: "%.0f"
                                 labelsColor: "#ffffff"
                             }
 
-                            BarSet {id: s1; values: mySeries.toNumArr(mySeries.modelBarSeries[0].values); color: randomPurpleShade(0)}
-                            BarSet {id: s2; values: mySeries.toNumArr(mySeries.modelBarSeries[1].values); color: randomPurpleShade(1)}
-                            BarSet {id: s3; values: mySeries.toNumArr(mySeries.modelBarSeries[2].values); color: randomPurpleShade(2)}
-                            BarSet {id: s4; values: mySeries.toNumArr(mySeries.modelBarSeries[3].values); color: randomPurpleShade(3)}
-                            BarSet {id: s5; values: mySeries.toNumArr(mySeries.modelBarSeries[4].values); color: randomPurpleShade(4)}
-                            BarSet {id: s6; values: mySeries.toNumArr(mySeries.modelBarSeries[5].values); color: randomPurpleShade(5)}
-
-                            Connections {
-                                target: databaseModel
-
-                                function onBarSeriesModelChanged() {
-                                    var sets = [s1, s2, s3, s4, s5, s6]
-
-                                    for (let i = 0; i < sets.length; i++) {
-                                        sets[i].values = mySeries.toNumArr(mySeries.modelBarSeries[i].values)
-                                    }
-
-                                    aY.max = mySeries.modelBarSeries[0].values[0];
-                                }
-                            }
-
-                            function toNumArr(v) {
-                                let arr = []
-
-                                for (let i = 0; i < v.length; i++) {
-                                    arr.push(Number(v[i]))
-                                }
-
-                                return arr
-                            }
+                            BarSet {values: mySeries.modelBarSeries[0].values; color: randomPurpleShade(0)}
+                            BarSet {values: mySeries.modelBarSeries[1].values; color: randomPurpleShade(1)}
+                            BarSet {values: mySeries.modelBarSeries[2].values; color: randomPurpleShade(2)}
+                            BarSet {values: mySeries.modelBarSeries[3].values; color: randomPurpleShade(3)}
+                            BarSet {values: mySeries.modelBarSeries[4].values; color: randomPurpleShade(4)}
+                            BarSet {values: mySeries.modelBarSeries[5].values; color: randomPurpleShade(5)}
                         }
                     }
 
@@ -230,12 +195,145 @@ Item {
             }
         }
 
-        Substrate {
+        Rectangle {
+            id: statsBar
             Layout.fillWidth: true
-            Layout.preferredHeight: parent.height * 0.2
-            Layout.alignment: Qt.AlignBottom
+            Layout.preferredHeight: 120
             Layout.bottomMargin: 15
-            anchors.margins: 10
+
+            color: "#121212"
+            radius: 14
+            border.color: "#8a2be2"
+            border.width: 2
+
+            RowLayout {
+                anchors.fill: parent
+                anchors.margins: 20
+                spacing: 0
+
+                StatItem {
+                    Layout.fillWidth: true
+                    title: "Всего заказов"
+                    value: "1 250"
+                    iconSource: "qrc:/resources/state/all.png"
+                    iconColor: "#8a2be2"
+                }
+
+                StatItem {
+                    Layout.fillWidth: true
+                    title: "Выполнено"
+                    value: "850"
+                    iconSource: "qrc:/resources/state/ready.png"
+                    iconColor: "#00ff9d"
+                }
+
+                Divider {}
+
+                StatItem {
+                    Layout.fillWidth: true
+                    title: "В процессе"
+                    value: "250"
+                    iconSource: "qrc:/resources/state/in_progress.png"
+                    iconColor: "#ffa500"
+                }
+
+                Divider {}
+
+                StatItem {
+                    Layout.fillWidth: true
+                    title: "Отменено"
+                    value: "150"
+                    iconSource: "qrc:/resources/state/cancel.png"
+                    iconColor: "#ff6b6b"
+                }
+
+                Divider {}
+
+                StatItem {
+                    Layout.fillWidth: true
+                    title: "Выручка"
+                    value: "3 245 890 ₽"
+                    iconSource: "qrc:/resources/state/money.png"
+                    iconColor: "#d05ce3"
+                    isLargeValue: true
+                }
+            }
+        }
+    }
+
+    // === КОМПОНЕНТЫ ===
+
+    component Divider: Rectangle {
+        width: 2
+        height: parent.height * 0.6
+        color: "#333333"
+        Layout.alignment: Qt.AlignVCenter
+    }
+
+    component StatItem: Item {
+        property string title: ""
+        property string value: ""
+        property string iconSource: ""
+        property string iconColor: "#8a2be2"
+        property bool isLargeValue: false
+
+        ColumnLayout {
+            anchors.fill: parent
+            anchors.topMargin: -35
+            spacing: 0
+
+            Image {
+                Layout.preferredWidth: 45
+                Layout.preferredHeight: 45
+                Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
+
+                source: iconSource
+                fillMode: Image.PreserveAspectFit
+                opacity: 1
+
+
+                Component {
+                    id: fallbackCircle
+                    Rectangle {
+                        width: 32; height: 32; radius: 16
+                        color: "transparent";
+                        border.color: iconColor;
+                        border.width: 2;
+                        opacity: 0.5
+                    }
+                }
+            }
+
+            Text {
+                text: title
+                color: "#aaaaaa"
+                font.pixelSize: 10
+                font.bold: true
+                Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
+                horizontalAlignment: Text.AlignHCenter
+                wrapMode: Text.Wrap
+                maximumLineCount: 1
+                elide: Text.ElideRight
+                Layout.bottomMargin: -2
+            }
+
+            Text {
+                text: value
+                color: isLargeValue ? "#d05ce3" : "#ffffff"
+                font.pixelSize: isLargeValue ? 16 : 20
+                font.bold: true
+                Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
+                horizontalAlignment: Text.AlignHCenter
+                Layout.bottomMargin: -5
+            }
+        }
+
+        MouseArea {
+            anchors.fill: parent
+            hoverEnabled: true
+            onEntered: parent.opacity = 0.8
+            onExited: parent.opacity = 1.0
+            Behavior on opacity { NumberAnimation { duration: 150 } }
         }
     }
 
@@ -251,7 +349,6 @@ Item {
                 "#673ab7",
                 "#9575cd"
             ]
-
             randomPurpleShade._map = {}
             randomPurpleShade._next = 0
         }

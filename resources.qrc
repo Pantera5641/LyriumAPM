@@ -43,5 +43,11 @@
         <file>resources/reports/icons/phone.svg</file>
         <file>resources/reports/icons/text_file.svg</file>
         <file>resources/reports/icons/tool.svg</file>
+
+        <file>resources/state/all.png</file>
+        <file>resources/state/ready.png</file>
+        <file>resources/state/in_progress.png</file>
+        <file>resources/state/cancel.png</file>
+        <file>resources/state/money.png</file>
     </qresource>
 </RCC>
