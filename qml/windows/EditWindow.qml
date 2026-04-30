@@ -6,9 +6,9 @@ import "../components"
 
 Window {
     id: editOrderWindow
-    width: 600
+    width: 500
     height: 800
-    minimumWidth: 550
+    minimumWidth: 420
     minimumHeight: 750
     modality: Qt.ApplicationModal
     flags: Qt.FramelessWindowHint | Qt.Window | Qt.Dialog
@@ -30,12 +30,13 @@ Window {
 
         ColumnLayout {
             anchors.fill: parent
-            anchors.margins: 25
+            anchors.margins: 20
             spacing: 15
+
 
             Rectangle {
                 Layout.fillWidth: true
-                Layout.preferredHeight: 40
+                Layout.preferredHeight: 50
                 color: "transparent"
 
                 Text {
@@ -52,6 +53,36 @@ Window {
                     height: 2
                     color: "#8a2be2"
                 }
+
+                Rectangle {
+                    width: 40
+                    height: 40
+                    color: "transparent"
+                    radius: 8
+                    border.color: "#8a2be2"
+                    border.width: 2
+
+                    Image {
+                        anchors.centerIn: parent
+                        width: 25
+                        height: 25
+                        source: "qrc:/resources/report_icon.png"
+                        fillMode: Image.PreserveAspectFit
+                        opacity: 0.8
+                    }
+
+                    MouseArea {
+                        anchors.fill: parent
+                        cursorShape: Qt.PointingHandCursor
+                        hoverEnabled: true
+
+                        onEntered: parent.border.color = "#d05ce3"
+                        onExited: parent.border.color = "#8a2be2"
+
+                        onClicked: reportsBuilder.createRecordReport(recordId)
+                    }
+
+                }
             }
 
             ScrollView {
@@ -61,7 +92,7 @@ Window {
                 ScrollBar.vertical.policy: ScrollBar.AlwaysOff
 
                 ColumnLayout {
-                    width: parent.width - 10
+                    Layout.fillWidth: true
                     spacing: 15
 
                     SectionHeader { text: "Информация о клиенте" }
@@ -70,18 +101,21 @@ Window {
                         id: clientNameField
                         label: "ФИО клиента"
                         text: orderData.clientFullName
+                        Layout.fillWidth: true
                     }
 
                     LabeledTextField {
                         id: clientPhoneField
                         label: "Телефон"
                         text: orderData.phoneNumber
+                        Layout.fillWidth: true
                     }
 
                     LabeledTextField {
                         id: clientEmailField
                         label: "Email"
                         text: orderData.email
+                        Layout.fillWidth: true
                     }
 
                     SectionHeader { text: "Информация об автомобиле" }
@@ -91,12 +125,14 @@ Window {
                         topText: "Марка автомобиля"
                         fieldText: orderData.carBrand
                         comboBoxModel: carBrandModel
+                        Layout.fillWidth: true
                     }
 
                     LabeledTextField {
                         id: carModelField
                         label: "Модель автомобиля"
                         text: orderData.carModel
+                        Layout.fillWidth: true
                     }
 
                     SectionHeader { text: "Услуга" }
@@ -105,6 +141,7 @@ Window {
                         topText: "Услуга"
                         fieldText: orderData.serviceProvided
                         comboBoxModel: servicesModel
+                        Layout.fillWidth: true
 
                         onModelIdChanged: {
                             priceField.text = recordPageLogic.getPrice(servicesModel.getTag(servicesBox.modelId)) + "₽"
@@ -116,6 +153,7 @@ Window {
                         label: "Цена"
                         text: orderData.price
                         readOnly: true
+                        Layout.fillWidth: true
                     }
 
                     SectionHeader { text: "Информация о мастере" }
@@ -124,6 +162,7 @@ Window {
                         topText: "Мастер"
                         fieldText: orderData.masterFullName
                         comboBoxModel: employeeModel
+                        Layout.fillWidth: true
                     }
 
                     SectionHeader { text: "Информация о заказе" }
@@ -145,6 +184,7 @@ Window {
                         topText: "Статус"
                         fieldText: orderData.status
                         comboBoxModel: statusModel
+                        Layout.fillWidth: true
                     }
 
                     ColumnLayout {
@@ -226,7 +266,6 @@ Window {
                     Layout.preferredHeight: 45
                     color: "#8a2be2"
                     radius: 8
-                    opacity: (clientNameField.text.length > 0 && orderData.date !== Qt.formatDate(almanac.selectedDate, "dd.MM.yyyy")) ? 1.0 : 0.5
 
                     Text {
                         text: "Сохранить"
@@ -238,20 +277,10 @@ Window {
 
                     MouseArea {
                         anchors.fill: parent
-                        enabled: clientNameField.text.length > 0 && orderData.date !== Qt.formatDate(almanac.selectedDate, "dd.MM.yyyy")
                         cursorShape: Qt.PointingHandCursor
 
                         onClicked: {
                             let valid = true;
-                            //valid = validateName(lastName) && valid;
-                            //valid = validateName(firstName) && valid;
-                            //valid = validateName(middleName) && valid;
-                            //valid = validatePhone(phoneNumber)&& valid;
-                            //valid = validateEmail(email) && valid;
-                            //valid = validateComboBox(carBrand) && valid;
-                            //valid = validateName(carModel) && valid;
-                            //valid = validateComboBox(employee) && valid;
-                            //valid = validateComboBox(services) && valid;
                             if(!valid) return;
 
                             databaseModel.setValueByIdTag(recordId, "client_name", clientNameField.text);
@@ -274,13 +303,12 @@ Window {
             }
         }
     }
+
     function parseDate(str) {
         const items = str.split(".");
-
         const day = parseInt(items[0], 10);
         const month = parseInt(items[1], 10) - 1;
         const year = parseInt(items[2], 10);
-
         return new Date(year, month, day)
     }
 }
