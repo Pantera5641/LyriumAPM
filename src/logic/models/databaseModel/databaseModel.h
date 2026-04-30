@@ -16,6 +16,7 @@ class DatabaseModel : public QAbstractListModel
     Q_PROPERTY(QVariantList pieSeriesModel READ pieSeriesModel NOTIFY pieSeriesModelChanged);
     Q_PROPERTY(QVariantList barSeriesModel READ barSeriesModel NOTIFY barSeriesModelChanged);
     Q_PROPERTY(int size READ size NOTIFY updated);
+    Q_PROPERTY(int revenue READ revenue NOTIFY updated);
 
     public:
     explicit DatabaseModel(QObject* parent = nullptr);
@@ -45,7 +46,13 @@ class DatabaseModel : public QAbstractListModel
     QVariantMap getById(int id);
 
     Q_INVOKABLE [[nodiscard]]
+    static int getNumOfStatuses(const QString& type);
+
+    Q_INVOKABLE [[nodiscard]]
     int size() const;
+
+    Q_INVOKABLE [[nodiscard]]
+    int revenue() const;
 
     Q_INVOKABLE
     QVariantList pieSeriesModel();

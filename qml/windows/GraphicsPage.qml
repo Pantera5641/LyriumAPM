@@ -110,7 +110,7 @@ Item {
                                     font.pixelSize: 16
                                 }
                                 Text {
-                                    text: databaseModel.size()
+                                    text: databaseModel.size
                                     color: "#8a2be2"
                                     font.pixelSize: 16
                                     font.bold: true
@@ -214,37 +214,64 @@ Item {
                 StatItem {
                     Layout.fillWidth: true
                     title: "Всего заказов"
-                    value: "1 250"
+                    value: databaseModel.size
                     iconSource: "qrc:/resources/state/all.png"
                     iconColor: "#8a2be2"
                 }
 
                 StatItem {
+                    id: completedId
                     Layout.fillWidth: true
                     title: "Выполнено"
-                    value: "850"
+                    value: databaseModel.getNumOfStatuses("completed")
                     iconSource: "qrc:/resources/state/ready.png"
                     iconColor: "#00ff9d"
+
+                    Connections {
+                        target: databaseModel
+
+                        function onUpdated() {
+                            completedId.value = databaseModel.getNumOfStatuses("completed")
+                        }
+                    }
                 }
 
                 Divider {}
 
                 StatItem {
+                    id: inProgressId
                     Layout.fillWidth: true
                     title: "В процессе"
-                    value: "250"
+                    value: databaseModel.getNumOfStatuses("in_progress")
                     iconSource: "qrc:/resources/state/in_progress.png"
                     iconColor: "#ffa500"
+
+                    Connections {
+                        target: databaseModel
+
+                        function onUpdated() {
+                            inProgressId.value = databaseModel.getNumOfStatuses("in_progress")
+                        }
+                    }
                 }
 
                 Divider {}
 
                 StatItem {
+                    id: canceledId
                     Layout.fillWidth: true
                     title: "Отменено"
-                    value: "150"
+                    value: databaseModel.getNumOfStatuses("canceled")
                     iconSource: "qrc:/resources/state/cancel.png"
                     iconColor: "#ff6b6b"
+
+                    Connections {
+                        target: databaseModel
+
+                        function onUpdated() {
+                            canceledId.value = databaseModel.getNumOfStatuses("canceled")
+                        }
+                    }
                 }
 
                 Divider {}
@@ -252,7 +279,7 @@ Item {
                 StatItem {
                     Layout.fillWidth: true
                     title: "Выручка"
-                    value: "3 245 890 ₽"
+                    value:  databaseModel.revenue + " ₽"
                     iconSource: "qrc:/resources/state/money.png"
                     iconColor: "#d05ce3"
                     isLargeValue: true

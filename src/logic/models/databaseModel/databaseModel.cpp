@@ -153,9 +153,31 @@ QVariantMap DatabaseModel::getById(const int id)
     throw std::runtime_error("No such record in database");
 }
 
+int DatabaseModel::getNumOfStatuses(const QString& type) {
+    Database& database = Database::getInstance();
+    auto records = database.getRecords();
+    QList<SimpleRecord> newRecords {};
+    int count {};
+
+    for (const auto& record : records)
+        if (record.getStatus() == type) count++;
+
+    return count;
+}
+
 int DatabaseModel::size() const
 {
     return cashRecords.size();
+}
+
+int DatabaseModel::revenue() const
+{
+    int result {};
+    for (const auto& record : cashRecords) {
+        result += record.price.left(record.price.size() - 1).toInt();
+    }
+
+    return result;
 }
 
 QVariantList DatabaseModel::pieSeriesModel()
