@@ -255,11 +255,11 @@ Item {
                     middleName.text = "";
                     phoneNumber.text = "";
                     email.text = "";
-                    carBrand.currentIndex = 0;
+                    carBrand.currentIndex = -1;
                     carModel.text = "";
                     comment.text = "";
-                    employee.currentIndex = 0;
-                    services.currentIndex = 0;
+                    employee.currentIndex = -1;
+                    services.currentIndex = -1;
                     priceBox.text = "";
                     databaseModel.update()
                 }
@@ -327,7 +327,7 @@ Item {
                     const part3 = digits.slice(7, 9);
                     const part4 = digits.slice(9, 11);
 
-                    return "+7 (" + part1 + ") " + part2 + "-" + part3 + "-"  + part4;
+                    return "+7 " + part1 + " " + part2 + " " + part3 + " "  + part4;
                 }
             }
         }

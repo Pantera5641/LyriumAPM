@@ -84,7 +84,10 @@ Item {
                     onEntered: parent.border.color = "#d05ce3"
                     onExited: parent.border.color = "#8a2be2"
 
-                    onClicked: reportsBuilder.createFullReport()
+                    onClicked: {
+                        reportsBuilder.createFullReport()
+                        reportsBuilder.openReportsFolder()
+                    }
                 }
 
             }
