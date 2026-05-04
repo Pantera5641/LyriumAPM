@@ -2,6 +2,7 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
 import QtCharts 2.15
+import styles 1.0
 import "../components"
 
 Item {
@@ -38,7 +39,7 @@ Item {
                         plotAreaColor: "transparent"
 
                         titleFont.bold: true
-                        titleColor: '#ffffff'
+                        titleColor: Colors.text
 
                         PieSeries {
                             id: pieSeries
@@ -55,7 +56,7 @@ Item {
                                     slice.borderColor = "transparent"
                                     slice.labelVisible = true
                                     slice.labelPosition = 10
-                                    slice.labelColor = '#ffffff'
+                                    slice.labelColor = Colors.text
                                     slice.labelFont.pixelSize = 20
                                 }
                             }
@@ -98,7 +99,7 @@ Item {
                                         }
                                         Text {
                                             text: modelData.name + " — " + Number(modelData.value).toFixed(1) + "%"
-                                            color: '#ffffff'
+                                            color: Colors.text
                                             font.pixelSize: 10
                                         }
                                     }
@@ -110,12 +111,12 @@ Item {
                                 spacing: 2
                                 Text {
                                     text: "Всего записей:"
-                                    color: '#ffffff'
+                                    color: Colors.text
                                     font.pixelSize: 16
                                 }
                                 Text {
                                     text: databaseModel.size
-                                    color: "#8a2be2"
+                                    color: Colors.main
                                     font.pixelSize: 16
                                     font.bold: true
                                 }
@@ -125,7 +126,7 @@ Item {
 
                     Text {
                         text: "Распределение заказов по мастерам"
-                        color: '#ffffff'
+                        color: Colors.text
                         font.pixelSize: 20
                         anchors.top: parent.top
                         anchors.horizontalCenter: parent.horizontalCenter
@@ -154,7 +155,7 @@ Item {
                         plotAreaColor: "transparent"
 
                         titleFont.bold: true
-                        titleColor: '#ffffff'
+                        titleColor: Colors.text
 
                         StackedBarSeries {
                             id: mySeries
@@ -162,13 +163,13 @@ Item {
 
                             axisX: BarCategoryAxis {
                                 categories: mySeries.modelBarSeries.map(m => m.name)
-                                labelsColor: "#8a2be2"
+                                labelsColor: Colors.main
                                 labelsAngle: 90
                             }
 
                             axisY: ValueAxis {
                                 labelFormat: "%.0f"
-                                labelsColor: "#ffffff"
+                                labelsColor: Colors.text
                             }
 
                             BarSet {id: s1; values: mySeries.toNumArr(mySeries.modelBarSeries[0].values); color: randomPurpleShade(0)}
@@ -206,7 +207,7 @@ Item {
 
                     Text {
                         text: "Распределение по услугам"
-                        color: '#ffffff'
+                        color: Colors.text
                         font.pixelSize: 20
                         anchors.top: parent.top
                         anchors.horizontalCenter: parent.horizontalCenter
@@ -222,9 +223,9 @@ Item {
             Layout.preferredHeight: 120
             Layout.bottomMargin: 15
 
-            color: "#121212"
+            color: Colors.substrate
             radius: 14
-            border.color: "#8a2be2"
+            border.color: Colors.main
             border.width: 2
 
             RowLayout {
@@ -237,7 +238,7 @@ Item {
                     title: "Всего заказов"
                     value: databaseModel.size
                     iconSource: "qrc:/resources/state/all.png"
-                    iconColor: "#8a2be2"
+                    iconColor: Colors.main
                 }
 
                 StatItem {
@@ -312,7 +313,7 @@ Item {
     component Divider: Rectangle {
         width: 2
         height: parent.height * 0.6
-        color: "#333333"
+        color: Colors.backgroundShade
         Layout.alignment: Qt.AlignVCenter
     }
 
@@ -320,7 +321,7 @@ Item {
         property string title: ""
         property string value: ""
         property string iconSource: ""
-        property string iconColor: "#8a2be2"
+        property string iconColor: Colors.main
         property bool isLargeValue: false
 
         ColumnLayout {
@@ -367,7 +368,7 @@ Item {
 
             Text {
                 text: value
-                color: isLargeValue ? "#d05ce3" : "#ffffff"
+                color: isLargeValue ? Colors.additional : Colors.text
                 font.pixelSize: isLargeValue ? 16 : 20
                 font.bold: true
                 Layout.alignment: Qt.AlignHCenter | Qt.AlignTop

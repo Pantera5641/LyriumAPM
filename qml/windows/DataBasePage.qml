@@ -1,6 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
+import styles 1.0
 import "../components"
 
 Item {
@@ -21,7 +22,7 @@ Item {
                 spacing: 15
                 Text {
                     text: "Сортировка"
-                    color: "#8a2be2"
+                    color: Colors.main
                     font.bold: true
                     font.pixelSize: 16
                     anchors.verticalCenter: parent.verticalCenter
@@ -43,7 +44,7 @@ Item {
                 spacing: 15
                 Text {
                     text: "Поиск"
-                    color: "#8a2be2"
+                    color: Colors.main
                     font.bold: true
                     font.pixelSize: 16
                     anchors.verticalCenter: parent.verticalCenter
@@ -64,7 +65,7 @@ Item {
                 height: 50
                 color: "transparent"
                 radius: 8
-                border.color: "#8a2be2"
+                border.color: Colors.main
                 border.width: 2
 
                 Image {
@@ -81,8 +82,8 @@ Item {
                     cursorShape: Qt.PointingHandCursor
                     hoverEnabled: true
 
-                    onEntered: parent.border.color = "#d05ce3"
-                    onExited: parent.border.color = "#8a2be2"
+                    onEntered: parent.border.color = Colors.additional
+                    onExited: parent.border.color = Colors.main
 
                     onClicked: {
                         reportsBuilder.createFullReport()
@@ -97,13 +98,13 @@ Item {
             width: 805
             height: 455
             anchors.horizontalCenter: parent.horizontalCenter
-            color: "#8a2be2"
+            color: Colors.main
             radius: 17
             Rectangle {
                 anchors.centerIn: parent
                 width: 800
                 height: 450
-                color: "#000000"
+                color: Colors.substrate
                 radius: 15
                 clip: true
                 Column {
@@ -115,19 +116,19 @@ Item {
                             anchors.bottom: parent.bottom
                             width: parent.width
                             height: 2
-                            color: "#8a2be2"
+                            color: Colors.main
                             z: 0
                         }
                         Row {
                             anchors.fill: parent
                             z: 10
-                            Rectangle { width: 50; height: parent.height; color: "transparent"; Text { text: "ID"; color: "#FFFFFF"; font.bold: true; font.pixelSize: 14; anchors.centerIn: parent } }
-                            Rectangle { width: 160; height: parent.height; color: "transparent"; Text { text: "Заказчик"; color: "#FFFFFF"; font.bold: true; font.pixelSize: 14; anchors.centerIn: parent } }
-                            Rectangle { width: 100; height: parent.height; color: "transparent"; Text { text: "Дата"; color: "#FFFFFF"; font.bold: true; font.pixelSize: 14; anchors.centerIn: parent } }
-                            Rectangle { width: 140; height: parent.height; color: "transparent"; Text { text: "Марка"; color: "#FFFFFF"; font.bold: true; font.pixelSize: 14; anchors.centerIn: parent } }
-                            Rectangle { width: 100; height: parent.height; color: "transparent"; Text { text: "Мастер"; color: "#FFFFFF"; font.bold: true; font.pixelSize: 14; anchors.centerIn: parent } }
-                            Rectangle { width: 100; height: parent.height; color: "transparent"; Text { text: "Цена"; color: "#FFFFFF"; font.bold: true; font.pixelSize: 14; anchors.centerIn: parent } }
-                            Rectangle { width: 150; height: parent.height; color: "transparent"; Text { text: "Статус"; color: "#FFFFFF"; font.bold: true; font.pixelSize: 14; anchors.centerIn: parent } }
+                            Rectangle { width: 50; height: parent.height; color: "transparent"; Text { text: "ID"; color: Colors.text; font.bold: true; font.pixelSize: 14; anchors.centerIn: parent } }
+                            Rectangle { width: 160; height: parent.height; color: "transparent"; Text { text: "Заказчик"; color: Colors.text; font.bold: true; font.pixelSize: 14; anchors.centerIn: parent } }
+                            Rectangle { width: 100; height: parent.height; color: "transparent"; Text { text: "Дата"; color: Colors.text; font.bold: true; font.pixelSize: 14; anchors.centerIn: parent } }
+                            Rectangle { width: 140; height: parent.height; color: "transparent"; Text { text: "Марка"; color: Colors.text; font.bold: true; font.pixelSize: 14; anchors.centerIn: parent } }
+                            Rectangle { width: 100; height: parent.height; color: "transparent"; Text { text: "Мастер"; color: Colors.text; font.bold: true; font.pixelSize: 14; anchors.centerIn: parent } }
+                            Rectangle { width: 100; height: parent.height; color: "transparent"; Text { text: "Цена"; color: Colors.text; font.bold: true; font.pixelSize: 14; anchors.centerIn: parent } }
+                            Rectangle { width: 150; height: parent.height; color: "transparent"; Text { text: "Статус"; color: Colors.text; font.bold: true; font.pixelSize: 14; anchors.centerIn: parent } }
                         }
                     }
                     ScrollView {
@@ -151,7 +152,7 @@ Item {
                                     height: 40
                                     Rectangle {
                                         anchors.fill: parent
-                                        color: (index % 2 === 0) ? "#050505" : "#000000"
+                                        color: (index % 2 === 0) ? "#050505" : Colors.substrate
                                     }
 
                                     Row {
@@ -165,7 +166,7 @@ Item {
                                             Text {
                                                 id: idText
                                                 text: idRole
-                                                color: idMouseArea.containsMouse ? "#8a2be2" : "#d05ce3"
+                                                color: idMouseArea.containsMouse ? Colors.main : Colors.additional
                                                 font.pixelSize: 14
                                                 font.underline: idMouseArea.containsMouse
                                                 anchors.centerIn: parent
@@ -215,7 +216,7 @@ Item {
                                                     leftPadding: 10;
                                                     rightPadding: 5
                                                     text: parent.displayText
-                                                    color: "#d05ce3"
+                                                    color: Colors.additional
                                                     font.pixelSize: 14
                                                     horizontalAlignment: Text.AlignHCenter
                                                     verticalAlignment: Text.AlignVCenter
@@ -232,7 +233,7 @@ Item {
                                                         context.lineTo(width, 0)
                                                         context.lineTo(width / 2, height)
                                                         context.closePath()
-                                                        context.fillStyle = "#8a2be2"
+                                                        context.fillStyle = Colors.main
                                                         context.fill()
                                                     }
                                                 }

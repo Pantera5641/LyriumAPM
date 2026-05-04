@@ -2,6 +2,7 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Window 2.15
+import styles 1.0
 import "../components"
 
 Window {
@@ -26,7 +27,7 @@ Window {
 
     Rectangle {
         anchors.fill: parent
-        color: "#121212"
+        color: Colors.background
         radius: 8
 
         ColumnLayout {
@@ -42,7 +43,7 @@ Window {
 
                 Text {
                     text: "Заказ  №" + recordId
-                    color: "#8a2be2"
+                    color: Colors.main
                     font.bold: true
                     font.pixelSize: 20
                     anchors.centerIn: parent
@@ -52,7 +53,7 @@ Window {
                     anchors.bottom: parent.bottom
                     width: parent.width
                     height: 2
-                    color: "#8a2be2"
+                    color: Colors.main
                 }
 
                 Rectangle {
@@ -60,7 +61,7 @@ Window {
                     height: 40
                     color: "transparent"
                     radius: 8
-                    border.color: "#8a2be2"
+                    border.color: Colors.main
                     border.width: 2
 
                     Image {
@@ -77,8 +78,8 @@ Window {
                         cursorShape: Qt.PointingHandCursor
                         hoverEnabled: true
 
-                        onEntered: parent.border.color = "#d05ce3"
-                        onExited: parent.border.color = "#8a2be2"
+                        onEntered: parent.border.color = Colors.additional
+                        onExited: parent.border.color = Colors.main
 
                         onClicked: {
                             reportsBuilder.createRecordReport(recordId)
@@ -220,7 +221,7 @@ Window {
 
                         Text {
                             text: "Примечания"
-                            color: "#8a2be2"
+                            color: Colors.main
                             font.pixelSize: 13
                             font.bold: true
                         }
@@ -228,9 +229,9 @@ Window {
                         Rectangle {
                             Layout.fillWidth: true
                             Layout.fillHeight: true
-                            color: "#000000"
+                            color: Colors.substrate
                             radius: 8
-                            border.color: textArea.focus ? "#d05ce3" : "#8a2be2"
+                            border.color: textArea.focus ? Colors.additional : Colors.main
                             border.width: 2
                             ScrollView {
                                 anchors.fill: parent
@@ -240,10 +241,10 @@ Window {
                                     id: textArea
                                     width: parent.width
                                     text: orderData.comment
-                                    color: "#d05ce3"
+                                    color: Colors.additional
                                     font.pixelSize: 14
                                     wrapMode: TextEdit.Wrap
-                                    placeholderTextColor: "#8a2be2"
+                                    placeholderTextColor: Colors.main
                                     background: Item{}
                                 }
                             }
@@ -268,12 +269,12 @@ Window {
                     Layout.preferredHeight: 45
                     color: "transparent"
                     radius: 8
-                    border.color: "#8a2be2"
+                    border.color: Colors.main
                     border.width: 2
 
                     Text {
                         text: "Отмена"
-                        color: "#8a2be2"
+                        color: Colors.main
                         font.bold: true
                         font.pixelSize: 14
                         anchors.centerIn: parent
@@ -289,13 +290,13 @@ Window {
                 Rectangle {
                     Layout.fillWidth: true
                     Layout.preferredHeight: 45
-                    color: "#8a2be2"
+                    color: Colors.main
                     radius: 8
                     opacity: isValid ? 1.0 : 0.5
 
                     Text {
                         text: "Сохранить"
-                        color: "#FFFFFF"
+                        color: Colors.text
                         font.bold: true
                         font.pixelSize: 14
                         anchors.centerIn: parent
