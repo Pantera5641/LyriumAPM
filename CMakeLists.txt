@@ -9,7 +9,7 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
-find_package(Qt5 REQUIRED COMPONENTS Core Quick Qml WebEngineWidgets)
+find_package(Qt5 REQUIRED COMPONENTS Core Quick Qml WebEngineWidgets Charts)
 
 add_executable(LyriumAPM
         main.cpp
@@ -34,7 +34,7 @@ add_executable(LyriumAPM
         resources.qrc
 )
 
-target_link_libraries(LyriumAPM PRIVATE Qt5::Core Qt5::Quick Qt5::Qml Qt5::WebEngineWidgets)
+target_link_libraries(LyriumAPM PRIVATE Qt5::Core Qt5::Quick Qt5::Qml Qt5::WebEngineWidgets Qt5::Charts)
 
 #set_target_properties(LyriumAPM PROPERTIES WIN32_EXECUTABLE TRUE)
 
