@@ -22,6 +22,7 @@ int main(int argc, char *argv[])
     app.setWindowIcon(QIcon(QCoreApplication::applicationDirPath() + "/logo.png"));
 
     QQmlApplicationEngine engine;
+    engine.addImportPath(":/qml");
 
     RecordPageLogic recordPageLogic;
     engine.rootContext()->setContextProperty("recordPageLogic", &recordPageLogic);

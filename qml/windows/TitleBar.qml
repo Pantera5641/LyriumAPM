@@ -1,6 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
+import styles 1.0
 import "../components"
 
 ColumnLayout {
@@ -75,7 +76,7 @@ ColumnLayout {
         Rectangle{
             height: 2
             width: parent.width
-            color: '#9000ff'
+            color: Colors.main
             anchors.bottom: parent.bottom
         }
     }
@@ -89,5 +90,13 @@ ColumnLayout {
         RecordPage{}
         DataBasePage{}
         GraphicsPage{}
+    }
+
+    Shortcut {
+        sequence: "Ctrl+T"
+
+        onActivated: {
+            Colors.darkTheme = !Colors.darkTheme
+        }
     }
 }

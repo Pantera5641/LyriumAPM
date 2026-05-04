@@ -1,15 +1,16 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtGraphicalEffects 1.15
+import styles 1.0
 
 Item {
     id: imageButton
     property alias imgSource: image.source
     property alias imgHeight: image.height
     property alias imgWidth: image.width
-    property color imgBaseColor: '#ffffff'
-    property color imgHoverColor: '#ffffff'
-    property color hoverColor: '#2b2b2f'
+    property color imgBaseColor: Colors.invertedBackground
+    property color imgHoverColor: Colors.invertedBackground
+    property color hoverColor: Colors.backgroundShade
     signal clicked
 
     Rectangle{

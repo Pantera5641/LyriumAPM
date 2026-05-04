@@ -1,5 +1,6 @@
 ﻿import QtQuick 2.15
 import QtQuick.Controls 2.15
+import styles 1.0
 
 ComboBox {
     id: baseComboBox
@@ -15,8 +16,8 @@ ComboBox {
     }
 
     background: Rectangle {
-        color: "#000000"
-        border.color: error ? "#ff0000" : "#8a2be2"
+        color: Colors.substrate
+        border.color: error ? Colors.mainError : Colors.main
         border.width: 2
         radius: 12
     }
@@ -27,7 +28,7 @@ ComboBox {
         text: parent.displayText
 
         color: parent.currentIndex === -1
-            ? (error ? "#c60046" : "#8a2be2") : "#d05ce3"
+            ? (error ? Colors.additionalError : Colors.main) : Colors.additional
 
         font.pixelSize: 16
 
@@ -48,7 +49,7 @@ ComboBox {
             context.lineTo(width, 0)
             context.lineTo(width / 2, height)
             context.closePath()
-            context.fillStyle = error ? "#ff0000" : "#8a2be2"
+            context.fillStyle = error ? Colors.mainError : Colors.main
             context.fill()
         }
     }
@@ -59,7 +60,7 @@ ComboBox {
 
         contentItem: Text {
             text: name
-            color: "#ffffff"
+            color: Colors.text
             font.pixelSize: 16
 
             leftPadding: 15

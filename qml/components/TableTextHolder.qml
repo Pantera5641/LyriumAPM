@@ -1,5 +1,6 @@
 ﻿import QtQuick 2.15
 import QtQuick.Controls 2.15
+import styles 1.0
 
 Rectangle {
     width: 100
@@ -9,7 +10,7 @@ Rectangle {
 
     Text {
         text: textFiller
-        color: "#d05ce3"
+        color: Colors.additional
         font.pixelSize: 14
         anchors.fill: parent
         horizontalAlignment: Text.AlignHCenter

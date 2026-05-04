@@ -1,6 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
+import styles 1.0
 import "../components"
 
 Item {
@@ -141,8 +142,8 @@ Item {
             ScrollBar.vertical.policy: ScrollBar.AlwaysOff
 
             background: Rectangle {
-                color: "#000000"
-                border.color: comment.focus ? "#d05ce3" : "#8a2be2"
+                color: Colors.substrate
+                border.color: comment.focus ? Colors.additional : Colors.main
                 border.width: 2
                 radius: 12
 
@@ -160,8 +161,8 @@ Item {
                 width: parent.width
                 height: Math.max(implicitHeight, parent.height)
 
-                color: "#d05ce3"
-                placeholderTextColor: "#8a2be2"
+                color: Colors.additional
+                placeholderTextColor: Colors.main
 
                 wrapMode: Text.WrapAnywhere
                 horizontalAlignment: Text.AlignLeft
@@ -200,7 +201,7 @@ Item {
                     horizontalAlignment: Text.AlignHCenter
                     verticalAlignment: Text.AlignVCenter
 
-                    color: parent.pressed ? "#8a2be2" : "#ffffff"
+                    color: parent.pressed ? Colors.main : "#ffffff"
 
                     Behavior on color {
                         ColorAnimation {
@@ -213,9 +214,9 @@ Item {
                     implicitWidth: 100
                     implicitHeight: 40
 
-                    color: parent.pressed ? "#000000" : "#8a2be2"
+                    color: parent.pressed ? Colors.substrate : Colors.main
 
-                    border.color: parent.pressed ? "#8a2be2" : "transparent"
+                    border.color: parent.pressed ? Colors.main : "transparent"
                     border.width: 2
 
                     radius: 12

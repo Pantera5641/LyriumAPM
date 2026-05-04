@@ -2,6 +2,9 @@
     <qresource prefix="/">
         <file>qml/Main.qml</file>
 
+        <file>qml/styles/Colors.qml</file>
+        <file>qml/styles/qmldir</file>
+
         <file>qml/components/BaseComboBox.qml</file>
         <file>qml/components/BaseTextField.qml</file>
         <file>qml/components/ImageButton.qml</file>

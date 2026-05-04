@@ -1,6 +1,7 @@
 ﻿import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
+import styles 1.0
 
 ColumnLayout {
     property string label: ""
@@ -13,7 +14,7 @@ ColumnLayout {
     Layout.fillWidth: true
     Text {
         text: label
-        color: "#8a2be2"
+        color: Colors.main
         font.pixelSize: 13
         font.bold: true
     }
@@ -22,16 +23,16 @@ ColumnLayout {
         Layout.fillWidth: true
         Layout.fillHeight: true
         Layout.preferredHeight: fieldHeight
-        color: textField.readOnly ? "#1a1a1a" : "#000000"
+        color: textField.readOnly ? "#1a1a1a" : Colors.substrate
         radius: 8
-        border.color: textField.focus ? "#d05ce3" : "#8a2be2"
+        border.color: textField.focus ? Colors.additional : Colors.main
         border.width: 2
 
         TextField {
             id: textField
             anchors.fill: parent
             anchors.margins: 1
-            color: "#d05ce3"
+            color: Colors.additional
             font.pixelSize: 14
             verticalAlignment: Text.AlignVCenter
             leftPadding: 12

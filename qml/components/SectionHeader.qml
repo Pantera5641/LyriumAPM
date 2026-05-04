@@ -1,6 +1,7 @@
 ﻿import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
+import styles 1.0
 
 Rectangle {
     property string text: ""
@@ -11,7 +12,7 @@ Rectangle {
     color: "transparent"
     Text {
         text: parent.text
-        color: "#8a2be2"
+        color: Colors.main
         font.bold: true
         font.pixelSize: 16
         anchors.left: parent.left
@@ -21,7 +22,7 @@ Rectangle {
         anchors.bottom: parent.bottom
         width: parent.width
         height: 1
-        color: "#8a2be2"
+        color: Colors.main
         opacity: 0.5
     }
 }

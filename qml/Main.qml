@@ -1,5 +1,6 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
+import styles 1.0
 import "windows"
 
 ApplicationWindow {
@@ -12,7 +13,7 @@ ApplicationWindow {
     flags: Qt.FramelessWindowHint | Qt.Window
 
     Rectangle {
-        color: "#17171B"
+        color: Colors.background
         anchors.fill: parent
         radius: 8
         border.width: 1
