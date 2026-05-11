@@ -156,7 +156,6 @@ QVariantMap DatabaseModel::getById(const int id)
 int DatabaseModel::getNumOfStatuses(const QString& type) {
     Database& database = Database::getInstance();
     auto records = database.getRecords();
-    QList<SimpleRecord> newRecords {};
     int count {};
 
     for (const auto& record : records)
@@ -172,12 +171,13 @@ int DatabaseModel::size() const
 
 int DatabaseModel::revenue() const
 {
-    int result {};
+    int revenue {};
     for (const auto& record : cashRecords) {
-        result += record.price.left(record.price.size() - 1).toInt();
+        if (record.status == QStringLiteral("Завершена"))
+            revenue += record.price.left(record.price.size() - 1).toInt();
     }
 
-    return result;
+    return revenue;
 }
 
 QVariantList DatabaseModel::pieSeriesModel()
