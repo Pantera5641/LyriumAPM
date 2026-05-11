@@ -1,15 +1,14 @@
 ﻿import QtQuick 2.15
 import QtQuick.Controls 2.15
+import QtQuick.Layouts 1.15
 import styles 1.0
 
 ComboBox {
     id: baseComboBox
-    currentIndex: -1
-    displayText: currentIndex === -1 ? baseText : currentText
 
     property bool error: false
     property string baseText: currentText
-    property real delegateFontMultiplier: 0.3
+    property real delegateFontMultiplier: 0.35
 
     Layout.fillWidth: true
     Layout.fillHeight: true
@@ -31,8 +30,8 @@ ComboBox {
     }
 
     contentItem: Text {
-        leftPadding: root.width * 0.03
-        rightPadding: root.width * 0.12
+        leftPadding: baseComboBox.width * 0.03
+        rightPadding: baseComboBox.width * 0.12
         text: parent.displayText
 
         color: parent.currentIndex === -1
@@ -45,9 +44,9 @@ ComboBox {
     }
 
     indicator: Canvas {
-        height: root.height * 0.2
+        height: baseComboBox.height * 0.2
         width: height * 1.5
-        x: parent.width - width - (root.width * 0.03)
+        x: parent.width - width - (baseComboBox.width * 0.03)
         y: parent.height / 2 - height / 2
         contextType: "2d"
 
@@ -70,7 +69,7 @@ ComboBox {
         contentItem: Text {
             text: name
             color: Colors.text
-            font.pixelSize: baseComboBox.height * root.delegateFontMultiplier
+            font.pixelSize: baseComboBox.height * baseComboBox.delegateFontMultiplier
             leftPadding: baseComboBox.width * 0.03
             verticalAlignment: Text.AlignVCenter
         }
