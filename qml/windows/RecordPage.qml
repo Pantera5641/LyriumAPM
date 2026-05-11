@@ -14,8 +14,8 @@ Item {
         spacing: parent.height * 0.03
 
         Item {
-            width: 1
-            height: 5
+            width: recordPage.width
+            height: recordPage.height * 0.05
         }
 
         RowLayout {
@@ -223,7 +223,7 @@ Item {
             contentItem: Text {
                 text: parent.text
                 font.bold: true
-                font.pixelSize: 16
+                font.pixelSize: submitBtn.height * 0.45
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
 
