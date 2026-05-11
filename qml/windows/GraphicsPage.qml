@@ -91,7 +91,7 @@ Item {
                         Text {
                             anchors.horizontalCenter: parent.horizontalCenter
                             text: "всего заказов"
-                            color: "#aaaaaa"
+                            color: Colors.invertedbackgroundShade
                             font.pixelSize: 20
                         }
                     }
