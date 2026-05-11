@@ -11,14 +11,13 @@ Item {
 
     ColumnLayout {
         anchors.fill: parent
-        anchors.margins: 10
-        spacing: 10
+        anchors.margins: 12
+        spacing: 16
 
         RowLayout {
             Layout.fillWidth: true
             Layout.fillHeight: true
-            Layout.topMargin: 15
-            spacing: 15
+            spacing: 16
 
             Item {
                 Layout.fillWidth: true
@@ -26,101 +25,74 @@ Item {
 
                 Substrate {
                     anchors.fill: parent
-                    anchors.margins: 3
+                    anchors.margins: 4
 
                     ChartView {
-                        id: chart
+                        id: pieChart
                         anchors.fill: parent
-                        anchors.margins: 0
+                        anchors.margins: 8
 
                         antialiasing: true
                         legend.visible: false
                         backgroundColor: "transparent"
                         plotAreaColor: "transparent"
 
-                        titleFont.bold: true
-                        titleColor: Colors.text
+                        plotArea: Qt.rect(
+                            width * 0.015,
+                            height * 0.04,
+                            width * 0.78,
+                            height * 0.74
+                        )
 
                         PieSeries {
                             id: pieSeries
-                            size: 0.7
+                            holeSize: 0.59
+                            size: 0.80
 
-                            property var modelPieSeries: databaseModel.pieSeriesModel
+                            property var modelData: databaseModel.pieSeriesModel
 
-                            function setData(values) {
+                            function updateData() {
                                 pieSeries.clear()
-                                for (let i = 0; i < values.length; i++) {
-                                    let slice = append(Number(values[i]).toFixed(1) + "%", values[i])
+                                for (var i = 0; i < modelData.length; ++i) {
+                                    var slice = append(
+                                        Number(modelData[i].value).toFixed(1) + "%",
+                                        modelData[i].value
+                                    )
                                     slice.color = randomPurpleShade(i)
-                                    slice.borderWidth = 2
-                                    slice.borderColor = "transparent"
-                                    slice.labelVisible = true
-                                    slice.labelPosition = 10
-                                    slice.labelColor = Colors.text
-                                    slice.labelFont.pixelSize = 20
+                                    slice.borderWidth = 4
+                                    slice.borderColor = "#1a1a2e"
+                                    slice.labelVisible = false
                                 }
                             }
 
-                            Component.onCompleted: {
-                                setData(pieSeries.modelPieSeries.map(v => v.value))
-                            }
+                            Component.onCompleted: updateData()
 
                             Connections {
                                 target: databaseModel
-
                                 function onPieSeriesModelChanged() {
-                                    pieSeries.setData(pieSeries.modelPieSeries.map(v => v.value))
+                                    pieSeries.updateData()
                                 }
                             }
                         }
+                    }
 
-                        Column {
-                            anchors.bottom: parent.bottom
+                    Column {
+                        anchors.centerIn: pieChart
+                        spacing: 4
+                        z: 5
+
+                        Text {
                             anchors.horizontalCenter: parent.horizontalCenter
-                            anchors.margins: 10
-                            spacing: 8
-
-                            GridLayout {
-                                anchors.margins: 10
-                                columnSpacing: 8
-                                columns: 3
-
-                                Repeater {
-                                    model: databaseModel.pieSeriesModel
-
-                                    delegate: RowLayout {
-                                        spacing: 6
-                                        Rectangle {
-                                            width: 12
-                                            height: 12
-                                            radius: 6
-                                            color: randomPurpleShade(index)
-                                            opacity: 0.9
-                                        }
-                                        Text {
-                                            text: modelData.name + " — " + Number(modelData.value).toFixed(1) + "%"
-                                            color: Colors.text
-                                            font.pixelSize: 10
-                                        }
-                                    }
-                                }
-                            }
-
-                            Row {
-                                anchors.right: parent.right
-                                spacing: 2
-                                Text {
-                                    text: "Всего записей:"
-                                    color: Colors.text
-                                    font.pixelSize: 16
-                                }
-                                Text {
-                                    text: databaseModel.size
-                                    color: Colors.main
-                                    font.pixelSize: 16
-                                    font.bold: true
-                                }
-                            }
+                            text: databaseModel.size
+                            color: Colors.text
+                            font.pixelSize: 52
+                            font.bold: true
+                        }
+                        Text {
+                            anchors.horizontalCenter: parent.horizontalCenter
+                            text: "всего заказов"
+                            color: "#aaaaaa"
+                            font.pixelSize: 20
                         }
                     }
 
@@ -128,12 +100,41 @@ Item {
                         text: "Распределение заказов по мастерам"
                         color: Colors.text
                         font.pixelSize: 20
+                        font.bold: true
                         anchors.top: parent.top
                         anchors.horizontalCenter: parent.horizontalCenter
-                        anchors.topMargin: 10
+                        anchors.topMargin: 14
+                    }
+
+                    GridLayout {
+                        anchors.bottom: parent.bottom
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        anchors.bottomMargin: 22
+                        columns: 2
+                        columnSpacing: 18
+                        rowSpacing: 8
+
+                        Repeater {
+                            model: databaseModel.pieSeriesModel
+                            delegate: RowLayout {
+                                spacing: 8
+                                Rectangle {
+                                    width: 14
+                                    height: 14
+                                    radius: 7
+                                    color: randomPurpleShade(index)
+                                }
+                                Text {
+                                    text: modelData.name + " — " + Number(modelData.value).toFixed(1) + "%"
+                                    color: Colors.text
+                                    font.pixelSize: 14
+                                }
+                            }
+                        }
                     }
                 }
             }
+
 
             Item {
                 Layout.fillWidth: true
@@ -141,66 +142,86 @@ Item {
 
                 Substrate {
                     anchors.fill: parent
-                    anchors.margins: 3
+                    anchors.margins: 4
 
                     ChartView {
-                        Layout.fillWidth: true
-                        Layout.fillHeight: true
+                        id: barChart
                         anchors.fill: parent
-                        anchors.margins: 0
+                        anchors.margins: 12
 
                         antialiasing: true
                         legend.visible: false
                         backgroundColor: "transparent"
                         plotAreaColor: "transparent"
 
-                        titleFont.bold: true
-                        titleColor: Colors.text
+                        plotArea: Qt.rect(
+                            width * 0.06,
+                            height * 0.05,
+                            width * 0.7,
+                            height * 0.52
+                        )
 
                         StackedBarSeries {
-                            id: mySeries
-                            property var modelBarSeries: databaseModel.barSeriesModel
+                            id: stackedSeries
 
                             axisX: BarCategoryAxis {
-                                categories: mySeries.modelBarSeries.map(m => m.name)
-                                labelsColor: Colors.main
-                                labelsAngle: 90
+                                id: axisX
+                                labelsColor: Colors.text
+                                labelsAngle: -75     // сильнее наклон
+                                gridVisible: false
+                                labelsFont.pixelSize: 16
                             }
 
                             axisY: ValueAxis {
+                                id: axisY
                                 labelFormat: "%.0f"
                                 labelsColor: Colors.text
+                                labelsFont.pixelSize: 15
+                                min: 0
                             }
 
-                            BarSet {id: s1; values: mySeries.toNumArr(mySeries.modelBarSeries[0].values); color: randomPurpleShade(0)}
-                            BarSet {id: s2; values: mySeries.toNumArr(mySeries.modelBarSeries[1].values); color: randomPurpleShade(1)}
-                            BarSet {id: s3; values: mySeries.toNumArr(mySeries.modelBarSeries[2].values); color: randomPurpleShade(2)}
-                            BarSet {id: s4; values: mySeries.toNumArr(mySeries.modelBarSeries[3].values); color: randomPurpleShade(3)}
-                            BarSet {id: s5; values: mySeries.toNumArr(mySeries.modelBarSeries[4].values); color: randomPurpleShade(4)}
-                            BarSet {id: s6; values: mySeries.toNumArr(mySeries.modelBarSeries[5].values); color: randomPurpleShade(5)}
+                            property var modelData: databaseModel.barSeriesModel
+
+                            function updateSeries() {
+                                while (stackedSeries.count > 0)
+                                    stackedSeries.remove(stackedSeries.at(0))
+
+                                if (modelData.length === 0) return
+
+                                var categories = []
+                                for (var i = 0; i < modelData.length; ++i) {
+                                    categories.push(modelData[i].name || "Услуга " + (i+1))
+                                }
+                                axisX.categories = categories
+
+                                for (var i = 0; i < modelData.length; ++i) {
+                                    var barSet = stackedSeries.append(modelData[i].name || "Серия " + i, [])
+                                    barSet.color = randomPurpleShade(i)
+
+                                    var numValues = []
+                                    for (var j = 0; j < modelData[i].values.length; ++j) {
+                                        numValues.push(Number(modelData[i].values[j] || 0))
+                                    }
+                                    barSet.values = numValues
+                                }
+
+                                var maxVal = 0
+                                for (var m = 0; m < modelData.length; ++m) {
+                                    for (var n = 0; n < modelData[m].values.length; ++n) {
+                                        var v = Number(modelData[m].values[n] || 0)
+                                        if (v > maxVal) maxVal = v
+                                    }
+                                }
+                                axisY.max = Math.max(maxVal * 1.15, 10)
+                            }
+
+                            Component.onCompleted: updateSeries()
 
                             Connections {
                                 target: databaseModel
-
                                 function onBarSeriesModelChanged() {
-                                    var sets = [s1, s2, s3, s4, s5, s6]
-
-                                    for (let i = 0; i < sets.length; i++) {
-                                        sets[i].values = mySeries.toNumArr(mySeries.modelBarSeries[i].values)
-                                    }
-
-                                    aY.max = mySeries.modelBarSeries[0].values[0];
+                                    stackedSeries.updateSeries()
                                 }
-                            }
-
-                            function toNumArr(v) {
-                                let arr = []
-
-                                for (let i = 0; i < v.length; i++) {
-                                    arr.push(Number(v[i]))
-                                }
-
-                                return arr
                             }
                         }
                     }
@@ -209,20 +230,20 @@ Item {
                         text: "Распределение по услугам"
                         color: Colors.text
                         font.pixelSize: 20
+                        font.bold: true
                         anchors.top: parent.top
                         anchors.horizontalCenter: parent.horizontalCenter
-                        anchors.topMargin: 10
+                        anchors.topMargin: 14
                     }
                 }
             }
         }
 
+        // ==================== НИЖНЯЯ СТАТИСТИКА ====================
         Rectangle {
             id: statsBar
             Layout.fillWidth: true
-            Layout.preferredHeight: 120
-            Layout.bottomMargin: 15
-
+            Layout.preferredHeight: 118
             color: Colors.substrate
             radius: 14
             border.color: Colors.main
@@ -251,7 +272,6 @@ Item {
 
                     Connections {
                         target: databaseModel
-
                         function onUpdated() {
                             completedId.value = databaseModel.getNumOfStatuses("completed")
                         }
@@ -270,7 +290,6 @@ Item {
 
                     Connections {
                         target: databaseModel
-
                         function onUpdated() {
                             inProgressId.value = databaseModel.getNumOfStatuses("in_progress")
                         }
@@ -289,7 +308,6 @@ Item {
 
                     Connections {
                         target: databaseModel
-
                         function onUpdated() {
                             canceledId.value = databaseModel.getNumOfStatuses("canceled")
                         }
@@ -301,7 +319,7 @@ Item {
                 StatItem {
                     Layout.fillWidth: true
                     title: "Выручка"
-                    value:  databaseModel.revenue + " ₽"
+                    value: databaseModel.revenue + " ₽"
                     iconSource: "qrc:/resources/state/money.png"
                     iconColor: "#d05ce3"
                     isLargeValue: true
@@ -312,7 +330,7 @@ Item {
 
     component Divider: Rectangle {
         width: 2
-        height: parent.height * 0.6
+        height: parent.height * 0.65
         color: Colors.backgroundShade
         Layout.alignment: Qt.AlignVCenter
     }
@@ -326,94 +344,51 @@ Item {
 
         ColumnLayout {
             anchors.fill: parent
-            anchors.topMargin: -35
+            anchors.topMargin: -42
             spacing: 0
 
             Image {
-                Layout.preferredWidth: 45
-                Layout.preferredHeight: 45
-                Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
-
+                Layout.preferredWidth: 46
+                Layout.preferredHeight: 46
+                Layout.alignment: Qt.AlignHCenter
                 source: iconSource
                 fillMode: Image.PreserveAspectFit
-                opacity: 1
-                smooth: true
                 mipmap: true
-
-
-                Component {
-                    id: fallbackCircle
-                    Rectangle {
-                        width: 32; height: 32; radius: 16
-                        color: "transparent";
-                        border.color: iconColor;
-                        border.width: 2;
-                        opacity: 0.5
-                    }
-                }
             }
 
             Text {
                 text: title
-                color: Colors.invertedbackgroundShade
-                font.pixelSize: 10
+                color: "#aaaaaa"
+                font.pixelSize: 11
                 font.bold: true
-                Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
+                Layout.alignment: Qt.AlignHCenter
                 horizontalAlignment: Text.AlignHCenter
-                wrapMode: Text.Wrap
-                maximumLineCount: 1
-                elide: Text.ElideRight
-                Layout.bottomMargin: -2
+                Layout.topMargin: 4
             }
 
             Text {
                 text: value
                 color: isLargeValue ? Colors.additional : Colors.text
-                font.pixelSize: isLargeValue ? 16 : 20
+                font.pixelSize: isLargeValue ? 17 : 22
                 font.bold: true
-                Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
-                horizontalAlignment: Text.AlignHCenter
-                Layout.bottomMargin: -5
+                Layout.alignment: Qt.AlignHCenter
             }
-        }
-
-        MouseArea {
-            anchors.fill: parent
-            hoverEnabled: true
-            onEntered: parent.opacity = 0.8
-            onExited: parent.opacity = 1.0
-            Behavior on opacity { NumberAnimation { duration: 150 } }
         }
     }
 
     function randomPurpleShade(key) {
         if (!randomPurpleShade._palette) {
             randomPurpleShade._palette = [
-                "#8a2be2",
-                "#7b1fa2",
-                "#9c27b0",
-                "#ab47bc",
-                "#ba68c8",
-                "#5e35b1",
-                "#673ab7",
-                "#9575cd"
+                "#8a2be2", "#7b1fa2", "#9c27b0", "#ab47bc",
+                "#ba68c8", "#5e35b1", "#673ab7", "#9575cd"
             ]
-            randomPurpleShade._map = {}
-            randomPurpleShade._next = 0
+            randomPurpleShade._cache = {}
         }
+        if (randomPurpleShade._cache[key] !== undefined)
+            return randomPurpleShade._cache[key]
 
-        let map = randomPurpleShade._map
-
-        if (map[key] !== undefined) {
-            return map[key]
-        }
-
-        let palette = randomPurpleShade._palette
-        let color = palette[randomPurpleShade._next % palette.length]
-
-        randomPurpleShade._map[key] = color
-        randomPurpleShade._next++
-
+        var color = randomPurpleShade._palette[key % randomPurpleShade._palette.length]
+        randomPurpleShade._cache[key] = color
         return color
     }
 }

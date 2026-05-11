@@ -6,8 +6,8 @@ import "windows"
 ApplicationWindow {
     id: window
     visible: true
-    width: 900
-    height: 700
+    width: 1200
+    height: 900
     color: "transparent"
     title: "LyriumAPM"
     flags: Qt.FramelessWindowHint | Qt.Window
