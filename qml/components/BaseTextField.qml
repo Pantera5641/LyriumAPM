@@ -1,10 +1,16 @@
 ﻿import QtQuick 2.15
 import QtQuick.Controls 2.15
+import QtQuick.Layouts 1.15
 import styles 1.0
 
 TextField {
-    font.pixelSize: 16
     property bool error: false
+
+    Layout.fillWidth: true
+    Layout.fillHeight: true
+    implicitWidth: 0
+    implicitHeight: 0
+    font.pixelSize: height * 0.35
 
     color: error ? Colors.additionalError : Colors.additional
     placeholderTextColor: error ? Colors.additionalError : Colors.main

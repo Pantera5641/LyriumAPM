@@ -1,14 +1,18 @@
 ﻿import QtQuick 2.15
 import QtQuick.Controls 2.15
+import QtQuick.Layouts 1.15
 import styles 1.0
 
 ComboBox {
-    id: baseComboBox
-    currentIndex: -1
-    displayText: currentIndex === -1 ? baseText : currentText
-
     property bool error: false
     property string baseText: currentText
+
+    Layout.fillWidth: true
+    Layout.fillHeight: true
+    implicitWidth: 0
+    implicitHeight: 0
+    currentIndex: -1
+    displayText: currentIndex === -1 ? baseText : currentText
 
     onActivated: {
         if (currentIndex !== -1 && error)
@@ -30,7 +34,7 @@ ComboBox {
         color: parent.currentIndex === -1
             ? (error ? Colors.additionalError : Colors.main) : Colors.additional
 
-        font.pixelSize: 16
+        font.pixelSize: parent.height * 0.35
 
         verticalAlignment: Text.AlignVCenter
         elide: Text.ElideRight
