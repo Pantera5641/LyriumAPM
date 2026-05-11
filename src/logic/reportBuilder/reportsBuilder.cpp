@@ -98,7 +98,7 @@ ReportsBuilder::ReportsBuilder(QObject *parent) : QObject(parent)
 void ReportsBuilder::openReportsFolder()
 {
     const QDir dir {};
-    (void)dir.mkdir("reports");
+    (void)dir.mkdir(QCoreApplication::applicationDirPath() + "/reports");
 
     QDesktopServices::openUrl(QUrl::fromLocalFile(QCoreApplication::applicationDirPath() + "/reports"));
 }
