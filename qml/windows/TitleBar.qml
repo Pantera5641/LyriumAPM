@@ -1,6 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
+import QtQuick.Window 2.15
 import styles 1.0
 import "../components"
 
@@ -55,10 +56,35 @@ ColumnLayout {
                 height: titleBar.height
                 width: titleBar.height
 
+                imgHeight: 20
+                imgWidth: 20
+                imgSource: Colors.darkTheme ? "qrc:/resources/sun.png" : "qrc:/resources/moon.png"
+                onClicked: Colors.darkTheme = !Colors.darkTheme
+            }
+
+            ImageButton {
+                height: titleBar.height
+                width: titleBar.height
+
                 imgHeight: 15
                 imgWidth: 15
                 imgSource: "qrc:/resources/icon_dash.png"
                 onClicked: window.showMinimized()
+            }
+
+            ImageButton {
+                height: titleBar.height
+                width: titleBar.height
+
+                imgHeight: 20
+                imgWidth: 20
+                imgSource: window.visibility === Window.Maximized ?
+                    "qrc:/resources/minimize.png" :
+                    "qrc:/resources/maximize.png"
+
+                onClicked: window.visibility === Window.Maximized ?
+                    window.showNormal() :
+                    window.showMaximized()
             }
 
             ImageButton {
