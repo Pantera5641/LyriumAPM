@@ -229,6 +229,9 @@ Window {
                         Rectangle {
                             Layout.fillWidth: true
                             Layout.fillHeight: true
+                            implicitWidth: 0
+                            implicitHeight: 0
+
                             color: Colors.substrate
                             radius: 8
                             border.color: textArea.focus ? Colors.additional : Colors.main
