@@ -3,7 +3,7 @@ import QtQuick.Controls 2.15
 import styles 1.0
 
 TextField {
-    font.pixelSize: 16
+    font.pixelSize: parent.height * 0.34
     property bool error: false
 
     color: error ? Colors.additionalError : Colors.additional

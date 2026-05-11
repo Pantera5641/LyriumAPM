@@ -11,93 +11,99 @@ Item {
 
     Column {
         width: parent.width
-        spacing: 20
-        padding: 20
+        height: parent.height
+
+        spacing: parent.width * 0.025
+        padding: parent.height * 0.025
 
         Item {
-            width: 1
-            height: 5
+            width: parent.width * 0.001
+            height: parent.height * 0.025
         }
 
         Row {
-            spacing: 10
+            spacing: parent.width * 0.033
+            width: parent.width
+            height: parent.height * 0.058
 
             BaseTextField {
                 id: lastName
                 placeholderText: "Фамилия"
-                width: 280
-                height: 45
+                width: parent.width * 0.3
+                height: parent.height
             }
 
             BaseTextField {
                 id: firstName
                 placeholderText: "Имя"
-                width: 280
-                height: 45
-            }
+                width: parent.width * 0.3
+                height: parent.height       }
 
             BaseTextField {
                 id: middleName
                 placeholderText: "Отчество"
-                width: 280
-                height: 45
-            }
+                width: parent.width * 0.3
+                height: parent.height          }
         }
 
         // Контакты
         Row {
-            spacing: 30
+            spacing: parent.width * 0.046
+            width: parent.width
+            height: parent.height * 0.058
 
             BaseTextField {
                 id: phoneNumber
                 placeholderText: "Номер телефона"
-                width: 415
-                height: 45
-            }
+                width: parent.width * 0.46
+                height: parent.height         }
 
             BaseTextField {
                 id: email
                 placeholderText: "Электронная почта"
-                width: 415
-                height: 45
-            }
+                width: parent.width * 0.46
+                height: parent.height                  }
         }
 
         Rectangle {
-            width: 900
-            height: 15
+            width: parent.width
+            height: parent.height * 0.03
             color: "transparent"
         }
 
         // МАШИНА
         Row {
-            spacing: 30
+            spacing: parent.width * 0.046
+            width: parent.width
+            height: parent.height * 0.058
 
             BaseComboBox {
                 id: carBrand
                 baseText: "Выбрать марку автомобиля"
                 model: carBrandModel
                 textRole: "name"
-                width: 415
-                height: 45
+                width: parent.width * 0.46
+                height: parent.height
             }
 
             BaseTextField {
                 id: carModel
                 placeholderText: "Модель машины"
-                width: 415
-                height: 45
+                width: parent.width * 0.46
+                height: parent.height
             }
         }
 
         Rectangle {
-            width: 900
-            height: 15
+            width: parent.width
+            height: parent.height * 0.03
             color: "transparent"
         }
 
         Row {
-            spacing: 30
+            spacing: parent.width * 0.046
+            width: parent.width
+            height: parent.height * 0.058
 
             //УСЛУГИ
             BaseComboBox {
@@ -105,8 +111,8 @@ Item {
                 baseText: "Выбрать услгугу"
                 model: servicesModel
                 textRole: "name"
-                width: 415
-                height: 45
+                width: parent.width * 0.46
+                height: parent.height
 
                 onActivated: {
                     priceBox.text = recordPageLogic.getPrice(servicesModel.getTag(services.currentIndex)) + "₽"
@@ -119,33 +125,39 @@ Item {
                 model: employeeModel
                 baseText: "Выбрать мастера"
                 textRole: "name"
-                width: 415
-                height: 45
+                width: parent.width * 0.46
+                height: parent.height
             }
         }
 
         // ПРИМЕРНАЯ ЦЕНА (только просмотр)
-        BaseTextField {
-            id: priceBox
-            placeholderText: "Примерная цена"
-            readOnly: true
-            width: 280
-            height: 45
+        Row {
+            spacing: parent.width * 0.046
+            width: parent.width
+            height: parent.height * 0.058
+
+            BaseTextField {
+                id: priceBox
+                placeholderText: "Примерная цена"
+                readOnly: true
+                width: parent.width * 0.4
+                height: parent.height
+            }
         }
 
         // КОММЕНТАРИЙ
         ScrollView {
-            width: 855
-            height: 120
-            font.pixelSize: 16
+            width: parent.width * 0.965
+            height: parent.height * 0.18
+            font.pixelSize: parent.height * 0.02
             clip: true
             ScrollBar.vertical.policy: ScrollBar.AlwaysOff
 
             background: Rectangle {
                 color: Colors.substrate
                 border.color: comment.focus ? Colors.additional : Colors.main
-                border.width: 2
-                radius: 12
+                border.width: Math.max(1, recordPage.height * 0.0025)
+                radius: recordPage.height * 0.015
 
                 Behavior on border.color {
                     ColorAnimation {
@@ -180,24 +192,26 @@ Item {
 
         //КНОПКА
         Row {
-            spacing: 30
+            spacing: parent.width * 0.046
+            width: parent.width
+            height: parent.height * 0.058
 
             Item {
-                width: 630
-                height: 1
+                width: parent.width * 0.72
+                height: parent.height * 0.001
             }
 
             Button {
                 id: submitBtn
                 text: "Отправить"
-                width: 180
-                height: 40
+                width: parent.width * 0.2
+                height: parent.height
                 hoverEnabled: false
 
                 contentItem: Text {
                     text: parent.text
                     font.bold: true
-                    font.pixelSize: 16
+                    font.pixelSize: parent.height * 0.4
                     horizontalAlignment: Text.AlignHCenter
                     verticalAlignment: Text.AlignVCenter
 
@@ -217,9 +231,10 @@ Item {
                     color: parent.pressed ? Colors.substrate : Colors.main
 
                     border.color: parent.pressed ? Colors.main : "transparent"
-                    border.width: 2
+                    border.width: Math.max(1, recordPage.height * 0.0025)
 
-                    radius: 12
+                    radius: recordPage.height * 0.015
+
                     Behavior on color {
                         ColorAnimation {
                             duration: 150

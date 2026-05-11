@@ -3,46 +3,41 @@ import QtQuick.Controls 2.15
 import styles 1.0
 
 ComboBox {
-    id: baseComboBox
+    id: root
     currentIndex: -1
     displayText: currentIndex === -1 ? baseText : currentText
 
     property bool error: false
     property string baseText: currentText
+    property real delegateFontMultiplier: 0.3
 
     onActivated: {
-        if (currentIndex !== -1 && error)
-            error = false;
+        if (currentIndex !== -1 && error) error = false
     }
 
     background: Rectangle {
         color: Colors.substrate
         border.color: error ? Colors.mainError : Colors.main
         border.width: 2
-        radius: 12
+        radius: root.height * 0.25
     }
 
     contentItem: Text {
-        leftPadding: 15
-        rightPadding: 40
+        leftPadding: root.width * 0.03
+        rightPadding: root.width * 0.12
         text: parent.displayText
-
-        color: parent.currentIndex === -1
-            ? (error ? Colors.additionalError : Colors.main) : Colors.additional
-
-        font.pixelSize: 16
-
+        color: parent.currentIndex === -1 ? (error ? Colors.additionalError : Colors.main) : Colors.additional
+        font.pixelSize: root.height * 0.34
         verticalAlignment: Text.AlignVCenter
         elide: Text.ElideRight
     }
 
     indicator: Canvas {
-        x: parent.width - width - 15
+        height: root.height * 0.2
+        width: height * 1.5
+        x: parent.width - width - (root.width * 0.03)
         y: parent.height / 2 - height / 2
-        width: 12
-        height: 8
         contextType: "2d"
-
         onPaint: {
             context.reset()
             context.moveTo(0, 0)
@@ -56,17 +51,15 @@ ComboBox {
 
     delegate: ItemDelegate {
         width: parent.width
+        height: root.height
         highlighted: ListView.isCurrentItem
-
         contentItem: Text {
             text: name
             color: Colors.text
-            font.pixelSize: 16
-
-            leftPadding: 15
+            font.pixelSize: root.height * root.delegateFontMultiplier
+            leftPadding: root.width * 0.03
             verticalAlignment: Text.AlignVCenter
         }
-
         background: Rectangle {
             color: highlighted ? "#3d0e69" : "#09020f"
         }

@@ -168,6 +168,7 @@ Item {
                             }
 
                             axisY: ValueAxis {
+                                id: aY
                                 labelFormat: "%.0f"
                                 labelsColor: Colors.text
                             }
@@ -333,13 +334,12 @@ Item {
                 Layout.preferredWidth: 45
                 Layout.preferredHeight: 45
                 Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
+                smooth: true
+                mipmap: true
 
                 source: iconSource
                 fillMode: Image.PreserveAspectFit
                 opacity: 1
-                smooth: true
-                mipmap: true
-
 
                 Component {
                     id: fallbackCircle
