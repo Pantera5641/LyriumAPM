@@ -355,7 +355,7 @@ Item {
 
             Text {
                 text: title
-                color: "#aaaaaa"
+                color: Colors.invertedbackgroundShade
                 font.pixelSize: 10
                 font.bold: true
                 Layout.alignment: Qt.AlignHCenter | Qt.AlignTop

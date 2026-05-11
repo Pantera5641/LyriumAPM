@@ -29,6 +29,8 @@ Window {
         anchors.fill: parent
         color: Colors.background
         radius: 8
+        border.width: 1
+        border.color: "#434343"
 
         ColumnLayout {
             anchors.fill: parent

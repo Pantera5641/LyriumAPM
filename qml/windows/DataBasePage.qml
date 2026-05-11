@@ -152,7 +152,7 @@ Item {
                                     height: 40
                                     Rectangle {
                                         anchors.fill: parent
-                                        color: (index % 2 === 0) ? "#050505" : Colors.substrate
+                                        color: (index % 2 === 0) ? Colors.lighterSustrate : Colors.substrate
                                     }
 
                                     Row {

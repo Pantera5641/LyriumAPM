@@ -55,7 +55,7 @@ ComboBox {
     }
 
     delegate: ItemDelegate {
-        width: parent.width
+        width: baseComboBox.width
         highlighted: ListView.isCurrentItem
 
         contentItem: Text {
@@ -68,7 +68,7 @@ ComboBox {
         }
 
         background: Rectangle {
-            color: highlighted ? "#3d0e69" : "#09020f"
+            color: highlighted ? Colors.hover : Colors.substrate
         }
     }
 }
