@@ -3,7 +3,7 @@ import QtQuick.Controls 2.15
 import styles 1.0
 
 ComboBox {
-    id: root
+    id: baseComboBox
     currentIndex: -1
     displayText: currentIndex === -1 ? baseText : currentText
 
@@ -11,23 +11,35 @@ ComboBox {
     property string baseText: currentText
     property real delegateFontMultiplier: 0.3
 
+    Layout.fillWidth: true
+    Layout.fillHeight: true
+    implicitWidth: 0
+    implicitHeight: 0
+    currentIndex: -1
+    displayText: currentIndex === -1 ? baseText : currentText
+
     onActivated: {
-        if (currentIndex !== -1 && error) error = false
+        if (currentIndex !== -1 && error)
+            error = false;
     }
 
     background: Rectangle {
         color: Colors.substrate
         border.color: error ? Colors.mainError : Colors.main
         border.width: 2
-        radius: root.height * 0.25
+        radius: 12
     }
 
     contentItem: Text {
         leftPadding: root.width * 0.03
         rightPadding: root.width * 0.12
         text: parent.displayText
-        color: parent.currentIndex === -1 ? (error ? Colors.additionalError : Colors.main) : Colors.additional
-        font.pixelSize: root.height * 0.34
+
+        color: parent.currentIndex === -1
+            ? (error ? Colors.additionalError : Colors.main) : Colors.additional
+
+        font.pixelSize: parent.height * 0.35
+
         verticalAlignment: Text.AlignVCenter
         elide: Text.ElideRight
     }
@@ -38,6 +50,7 @@ ComboBox {
         x: parent.width - width - (root.width * 0.03)
         y: parent.height / 2 - height / 2
         contextType: "2d"
+
         onPaint: {
             context.reset()
             context.moveTo(0, 0)
@@ -51,13 +64,14 @@ ComboBox {
 
     delegate: ItemDelegate {
         width: parent.width
-        height: root.height
+        height: baseComboBox.height
         highlighted: ListView.isCurrentItem
+
         contentItem: Text {
             text: name
             color: Colors.text
-            font.pixelSize: root.height * root.delegateFontMultiplier
-            leftPadding: root.width * 0.03
+            font.pixelSize: baseComboBox.height * root.delegateFontMultiplier
+            leftPadding: baseComboBox.width * 0.03
             verticalAlignment: Text.AlignVCenter
         }
 
