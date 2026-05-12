@@ -157,7 +157,7 @@ Item {
 
                                     Rectangle {
                                         anchors.fill: parent
-                                        color: (index % 2 === 0) ? Colors.lighterSustrate : Colors.substrate
+                                        color: (index % 2 === 0) ? Colors.lighterSubstrate : Colors.substrate
                                     }
 
                                     Row {

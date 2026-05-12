@@ -7,12 +7,12 @@ QtObject{
     property color background: darkTheme ? "#17171b" : "#ffffff"
     property color backgroundShade: darkTheme ? "#2b2b2f" : "#d5d5d5"
     property color substrate: darkTheme ? "#000000" : "#d5d5d5"
-    property color lighterSustrate: darkTheme ? "#191919" : "#ecebeb"
+    property color lighterSubstrate: darkTheme ? "#191919" : "#ecebeb"
 
     property color invertedBackground: darkTheme ? "#ffffff" : "#17171b"
     property color invertedbackgroundShade: darkTheme ? "#d5d5d5" : "#2b2b2f"
     property color invertedSubstrate: darkTheme ? "#d5d5d5" : "#000000"
-    property color invertedLighterSustrate: darkTheme ? "#ecebeb" : "#191919"
+    property color invertedLighterSubstrate: darkTheme ? "#ecebeb" : "#191919"
 
     property color text: darkTheme ? "#ffffff" : "#000000"
     property color hover: darkTheme ? "#3d0e69" : "#b99ae6"

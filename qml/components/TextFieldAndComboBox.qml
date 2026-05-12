@@ -27,7 +27,7 @@ ColumnLayout {
         Rectangle {
             Layout.preferredWidth: 280
             Layout.preferredHeight: 45
-            color: "#1a1a1a"
+            color: Colors.lighterSubstrate
             radius: 8
             border.color: Colors.main
             border.width: 2
@@ -101,7 +101,7 @@ ColumnLayout {
                     elide: Text.ElideRight
                 }
                 background: Rectangle {
-                    color: highlighted ? "#3d0e69" : "#09020f"
+                    color: highlighted ? Colors.hover : Colors.substrate
                 }
             }
 

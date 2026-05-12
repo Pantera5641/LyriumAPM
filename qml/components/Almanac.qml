@@ -2,6 +2,7 @@
 import QtQuick.Controls 1.4
 import QtQuick.Controls 2.15
 import QtQuick.Controls.Styles 1.4
+import styles 1.0
 
 Item {
     id: almanac
@@ -15,7 +16,7 @@ Item {
 
         Text {
             text: label
-            color: "#8a2be2"
+            color: Colors.main
             font.pixelSize: 13
             font.bold: true
         }
@@ -25,8 +26,8 @@ Item {
             height: almanac.height
 
             Rectangle {
-                color: '#000000'
-                border.color: '#8a2be2'
+                color: Colors.substrate
+                border.color: Colors.main
                 border.width: 2
                 radius: 8
                 anchors.fill: parent
@@ -36,7 +37,7 @@ Item {
                 leftPadding: 12
                 rightPadding: 30
                 text: Qt.formatDate(calendar.selectedDate, "dd.MM.yyyy")
-                color: '#d05ce3'
+                color: Colors.additional
                 font.pixelSize: 14
                 anchors.fill: parent
                 verticalAlignment: Text.AlignVCenter
@@ -93,8 +94,8 @@ Item {
 
                                 imgHeight: parent.height * 0.8
                                 imgWidth: parent.height * 0.8
-                                imgBaseColor: '#8a2be2'
-                                imgHoverColor: '#d05ce3'
+                                imgBaseColor: Colors.main
+                                imgHoverColor: Colors.additional
                                 hoverColor: 'transparent'
                                 imgSource: "qrc:/resources/right_arrow.png"
 
@@ -103,7 +104,7 @@ Item {
 
                             TabText {
                                 anchors.centerIn: parent
-                                color: '#8a2be2'
+                                color: Colors.main
                                 text: styleData.title
                                 font.pixelSize: parent.height * 0.6
                             }
@@ -115,8 +116,8 @@ Item {
 
                                 imgHeight: parent.height * 0.8
                                 imgWidth: parent.height * 0.8
-                                imgBaseColor: '#8a2be2'
-                                imgHoverColor: '#d05ce3'
+                                imgBaseColor: Colors.main
+                                imgHoverColor: Colors.additional
                                 hoverColor: 'transparent'
                                 imgSource: "qrc:/resources/left_arrow.png"
 
@@ -127,7 +128,7 @@ Item {
                         Rectangle {
                             width: substrate.width * 0.99
                             height: 2
-                            color: '#8a2be2'
+                            color: Colors.main
                             anchors.bottom: parent.bottom
                             anchors.horizontalCenter: parent.horizontalCenter
                         }
@@ -138,9 +139,9 @@ Item {
                         height: substrate.height * 0.1
                         radius: 4
 
-                        color: styleData.selected ? '#8a2be2'
-                            : styleData.visibleMonth ? '#17171b'
-                                : '#333333'
+                        color: styleData.selected ? Colors.main
+                            : styleData.visibleMonth ? Colors.background
+                                : Colors.lighterSubstrate
 
                         TabText {
                             anchors.centerIn: parent
@@ -157,7 +158,7 @@ Item {
                         TabText {
                             anchors.centerIn: parent
                             text: Qt.locale().dayName(styleData.dayOfWeek, Locale.ShortFormat)
-                            color: (styleData.dayOfWeek === 0 || styleData.dayOfWeek === 6) ? '#d05ce3' : '#ffffff'
+                            color: (styleData.dayOfWeek === 0 || styleData.dayOfWeek === 6) ? Colors.additional : Colors.text
                             font.pixelSize: parent.height * 0.4
                         }
                     }

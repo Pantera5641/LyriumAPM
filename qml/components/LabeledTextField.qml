@@ -23,7 +23,7 @@ ColumnLayout {
         Layout.fillWidth: true
         Layout.fillHeight: true
         Layout.preferredHeight: fieldHeight
-        color: textField.readOnly ? "#1a1a1a" : Colors.substrate
+        color: textField.readOnly ? Colors.lighterSubstrate : Colors.substrate
         radius: 8
         border.color: textField.focus ? Colors.additional : Colors.main
         border.width: 2
