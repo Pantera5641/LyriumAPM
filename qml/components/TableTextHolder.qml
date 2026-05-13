@@ -11,7 +11,7 @@ Rectangle {
     Text {
         text: textFiller
         color: Colors.additional
-        font.pixelSize: 14
+        font.pixelSize: dataBasePage.height * 0.018
         anchors.fill: parent
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter

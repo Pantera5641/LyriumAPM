@@ -38,8 +38,8 @@ Item {
                         plotAreaColor: "transparent"
 
                         plotArea: Qt.rect(
-                            width * 0.015,
-                            height * 0.04,
+                            width * 0.014,
+                            height * 0.03,
                             width * 0.78,
                             height * 0.74
                         )
@@ -85,21 +85,21 @@ Item {
                             anchors.horizontalCenter: parent.horizontalCenter
                             text: databaseModel.size
                             color: Colors.text
-                            font.pixelSize: 52
+                            font.pixelSize: parent.height *0.5
                             font.bold: true
                         }
                         Text {
                             anchors.horizontalCenter: parent.horizontalCenter
                             text: "всего заказов"
                             color: Colors.invertedbackgroundShade
-                            font.pixelSize: 20
+                            font.pixelSize: 25
                         }
                     }
 
                     Text {
                         text: "Распределение заказов по мастерам"
                         color: Colors.text
-                        font.pixelSize: 20
+                        font.pixelSize: parent.height *0.03
                         font.bold: true
                         anchors.top: parent.top
                         anchors.horizontalCenter: parent.horizontalCenter
@@ -127,7 +127,7 @@ Item {
                                 Text {
                                     text: modelData.name + " — " + Number(modelData.value).toFixed(1) + "%"
                                     color: Colors.text
-                                    font.pixelSize: 14
+                                    font.pixelSize: parent.height * 0.74
                                 }
                             }
                         }
@@ -167,7 +167,7 @@ Item {
                             axisX: BarCategoryAxis {
                                 id: axisX
                                 labelsColor: Colors.text
-                                labelsAngle: -75     // сильнее наклон
+                                labelsAngle: -75
                                 gridVisible: false
                                 labelsFont.pixelSize: 16
                             }
@@ -176,7 +176,7 @@ Item {
                                 id: axisY
                                 labelFormat: "%.0f"
                                 labelsColor: Colors.text
-                                labelsFont.pixelSize: 15
+                                labelsFont.pixelSize: parent.height *0.02
                                 min: 0
                             }
 
@@ -229,7 +229,7 @@ Item {
                     Text {
                         text: "Распределение по услугам"
                         color: Colors.text
-                        font.pixelSize: 20
+                        font.pixelSize: parent.height *0.03
                         font.bold: true
                         anchors.top: parent.top
                         anchors.horizontalCenter: parent.horizontalCenter
@@ -359,7 +359,7 @@ Item {
             Text {
                 text: title
                 color: "#aaaaaa"
-                font.pixelSize: 11
+                font.pixelSize: parent.height *0.01
                 font.bold: true
                 Layout.alignment: Qt.AlignHCenter
                 horizontalAlignment: Text.AlignHCenter

@@ -56,5 +56,6 @@
         <file>resources/state/in_progress.png</file>
         <file>resources/state/cancel.png</file>
         <file>resources/state/money.png</file>
+        <file>resources/down-arrow.png</file>
     </qresource>
 </RCC>

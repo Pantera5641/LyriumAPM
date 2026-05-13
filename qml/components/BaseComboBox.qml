@@ -43,22 +43,16 @@ ComboBox {
         elide: Text.ElideRight
     }
 
-    indicator: Canvas {
-        height: baseComboBox.height * 0.2
-        width: height * 1.5
-        x: parent.width - width - (baseComboBox.width * 0.03)
-        y: parent.height / 2 - height / 2
-        contextType: "2d"
-
-        onPaint: {
-            context.reset()
-            context.moveTo(0, 0)
-            context.lineTo(width, 0)
-            context.lineTo(width / 2, height)
-            context.closePath()
-            context.fillStyle = error ? Colors.mainError : Colors.main
-            context.fill()
-        }
+    indicator: Image {
+        width: parent.height * 0.4
+        height: parent.height * 0.4
+        source: "qrc:/resources/down-arrow.png"
+        fillMode: Image.PreserveAspectFit
+        anchors.right: parent.right
+        anchors.rightMargin: baseComboBox.width * 0.035
+        anchors.verticalCenter: parent.verticalCenter
+        smooth: true
+        mipmap:true
     }
 
     delegate: ItemDelegate {

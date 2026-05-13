@@ -72,22 +72,18 @@ ColumnLayout {
                 elide: Text.ElideRight
             }
 
-            indicator: Canvas {
-                x: parent.width - width - 12
-                y: parent.height / 2 - height / 2
-                width: 12
-                height: 8
-                contextType: "2d"
-                onPaint: {
-                    context.reset()
-                    context.moveTo(0, 0)
-                    context.lineTo(width, 0)
-                    context.lineTo(width / 2, height)
-                    context.closePath()
-                    context.fillStyle = Colors.main
-                    context.fill()
-                }
+            indicator: Image {
+                width: parent.height * 0.4
+                height: parent.height * 0.4
+                source: "qrc:/resources/down-arrow.png"
+                fillMode: Image.PreserveAspectFit
+                anchors.right: parent.right
+                anchors.rightMargin: parent.width * 0.06
+                anchors.verticalCenter: parent.verticalCenter
+                smooth: true
+                mipmap:true
             }
+
 
             delegate: ItemDelegate {
                 width: ListView.view.width

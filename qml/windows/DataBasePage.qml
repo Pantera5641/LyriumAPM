@@ -122,13 +122,13 @@ Item {
 
                         Row {
                             anchors.fill: parent
-                            Rectangle { width: parent.width * 0.06; height: parent.height; color: "transparent"; Text { text: "ID"; color: Colors.text; font.bold: true; font.pixelSize: dataBasePage.height * 0.018; anchors.centerIn: parent } }
-                            Rectangle { width: parent.width * 0.21; height: parent.height; color: "transparent"; Text { text: "Заказчик"; color: Colors.text; font.bold: true; font.pixelSize: dataBasePage.height * 0.018; anchors.centerIn: parent } }
-                            Rectangle { width: parent.width * 0.12; height: parent.height; color: "transparent"; Text { text: "Дата"; color: Colors.text; font.bold: true; font.pixelSize: dataBasePage.height * 0.018; anchors.centerIn: parent } }
-                            Rectangle { width: parent.width * 0.17; height: parent.height; color: "transparent"; Text { text: "Марка"; color: Colors.text; font.bold: true; font.pixelSize: dataBasePage.height * 0.018; anchors.centerIn: parent } }
-                            Rectangle { width: parent.width * 0.12; height: parent.height; color: "transparent"; Text { text: "Мастер"; color: Colors.text; font.bold: true; font.pixelSize: dataBasePage.height * 0.018; anchors.centerIn: parent } }
-                            Rectangle { width: parent.width * 0.12; height: parent.height; color: "transparent"; Text { text: "Цена"; color: Colors.text; font.bold: true; font.pixelSize: dataBasePage.height * 0.018; anchors.centerIn: parent } }
-                            Rectangle { width: parent.width * 0.20; height: parent.height; color: "transparent"; Text { text: "Статус"; color: Colors.text; font.bold: true; font.pixelSize: dataBasePage.height * 0.018; anchors.centerIn: parent } }
+                            Rectangle { width: parent.width * 0.06; height: parent.height; color: "transparent"; Text { text: "ID"; color: Colors.text; font.bold: true; font.pixelSize: dataBasePage.height * 0.02; anchors.centerIn: parent } }
+                            Rectangle { width: parent.width * 0.21; height: parent.height; color: "transparent"; Text { text: "Заказчик"; color: Colors.text; font.bold: true; font.pixelSize: dataBasePage.height * 0.02; anchors.centerIn: parent } }
+                            Rectangle { width: parent.width * 0.12; height: parent.height; color: "transparent"; Text { text: "Дата"; color: Colors.text; font.bold: true; font.pixelSize: dataBasePage.height * 0.02; anchors.centerIn: parent } }
+                            Rectangle { width: parent.width * 0.17; height: parent.height; color: "transparent"; Text { text: "Марка"; color: Colors.text; font.bold: true; font.pixelSize: dataBasePage.height * 0.02; anchors.centerIn: parent } }
+                            Rectangle { width: parent.width * 0.12; height: parent.height; color: "transparent"; Text { text: "Мастер"; color: Colors.text; font.bold: true; font.pixelSize: dataBasePage.height * 0.02; anchors.centerIn: parent } }
+                            Rectangle { width: parent.width * 0.12; height: parent.height; color: "transparent"; Text { text: "Цена"; color: Colors.text; font.bold: true; font.pixelSize: dataBasePage.height * 0.02; anchors.centerIn: parent } }
+                            Rectangle { width: parent.width * 0.20; height: parent.height; color: "transparent"; Text { text: "Статус"; color: Colors.text; font.bold: true; font.pixelSize: dataBasePage.height * 0.02; anchors.centerIn: parent } }
                         }
                     }
 
@@ -203,7 +203,7 @@ Item {
                                                 textRole: "name"
                                                 delegateFontMultiplier: 0.45
                                                 anchors.left: parent.left
-                                                anchors.leftMargin: parent.width * 0.03
+                                                anchors.leftMargin: parent.width * 0.33
                                                 anchors.right: parent.right
                                                 anchors.rightMargin: parent.width * 0.05
                                                 anchors.verticalCenter: parent.verticalCenter
@@ -224,23 +224,18 @@ Item {
                                                     verticalAlignment: Text.AlignVCenter
                                                     elide: Text.ElideNone
                                                 }
-                                                indicator: Canvas {
-                                                    width: dataBasePage.width * 0.012
-                                                    height: dataBasePage.height * 0.008
+                                                indicator: Image {
+                                                    width: parent.height * 0.4
+                                                    height: parent.height * 0.4
+                                                    source: "qrc:/resources/down-arrow.png"
+                                                    fillMode: Image.PreserveAspectFit
                                                     anchors.right: parent.right
-                                                    anchors.rightMargin: dataBasePage.width * 0.01
+                                                    anchors.rightMargin: parent.width * 0.08
                                                     anchors.verticalCenter: parent.verticalCenter
-                                                    contextType: "2d"
-                                                    onPaint: {
-                                                        context.reset()
-                                                        context.moveTo(0, 0)
-                                                        context.lineTo(width, 0)
-                                                        context.lineTo(width / 2, height)
-                                                        context.closePath()
-                                                        context.fillStyle = Colors.main
-                                                        context.fill()
-                                                    }
+                                                    smooth: true
+                                                    mipmap:true
                                                 }
+
                                             }
                                         }
                                     }
