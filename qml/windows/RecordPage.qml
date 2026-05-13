@@ -211,7 +211,7 @@ Item {
         //КНОПКА
         Button {
             id: submitBtn
-            text: "Отправить"
+            text: "Добавить"
 
             width: recordPage.width * 0.2
             height: recordPage.height * 0.06
