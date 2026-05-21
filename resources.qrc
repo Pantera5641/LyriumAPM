@@ -23,18 +23,20 @@
         <file>qml/windows/RecordPage.qml</file>
         <file>qml/windows/TitleBar.qml</file>
         <file>qml/windows/EasterWindow.qml</file>
-        
+        <file>qml/windows/LoadingWindow.qml</file>
+
         <file>resources/logo.png</file>
         <file>resources/icon_cross.png</file>
         <file>resources/icon_dash.png</file>
         <file>resources/left_arrow.png</file>
         <file>resources/report_icon.png</file>
         <file>resources/right_arrow.png</file>
-        <file>resources/easter_egg.mp4</file>
         <file>resources/maximize.png</file>
         <file>resources/minimize.png</file>
         <file>resources/moon.png</file>
         <file>resources/sun.png</file>
+        <file>resources/easter_egg.mp4</file>
+        <file>resources/loading.mov</file>
 
         <file>resources/reports/full_report.html</file>
         <file>resources/reports/full_report_card.html</file>
