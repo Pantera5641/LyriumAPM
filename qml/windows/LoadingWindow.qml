@@ -19,7 +19,7 @@ ApplicationWindow {
         Video {
             id: videoPlayer
             anchors.fill: parent
-            source: "qrc:/resources/loading.mov"
+            source: "qrc:/resources/loading.mp4"
             fillMode: VideoOutput.PreserveAspectFit
             Component.onCompleted: videoPlayer.play()
 
