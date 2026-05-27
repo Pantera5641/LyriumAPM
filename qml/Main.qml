@@ -5,12 +5,29 @@ import "windows"
 
 ApplicationWindow {
     id: window
-    visible: true
+    visible: false
     width: 1200
     height: 900
     color: "transparent"
     title: "LyriumAPM"
     flags: Qt.FramelessWindowHint | Qt.Window
+
+    property var loadingWindow: null
+    Component.onCompleted: {
+        if(!loadingWindow)
+        {
+            let component = Qt.createComponent("windows/LoadingWindow.qml")
+            loadingWindow = component.createObject()
+        }
+        loadingWindow.show()
+        loadingWindow.raise()
+        loadingWindow.requestActivate()
+
+        loadingWindow.finished.connect(() => {
+            window.visible = true
+            loadingWindow.destroy()
+        })
+    }
 
     Rectangle {
         color: Colors.background
